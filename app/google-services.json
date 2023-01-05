@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "437266577661",
+    "project_id": "bluegit-c8e08",
+    "storage_bucket": "bluegit-c8e08.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437266577661:android:682ad593645413b2b32694",
+        "android_client_info": {
+          "package_name": "com.example.bluegit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437266577661-b4a78ee4390f45nk4rht9dqdqu469tag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrjXnqNdOt7mtPrB771oqvssQ69I0FTUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437266577661-b4a78ee4390f45nk4rht9dqdqu469tag.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
