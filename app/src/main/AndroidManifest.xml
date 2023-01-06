@@ -12,10 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BlueGit"
         tools:targetApi="31">
+        <activity
+            android:name=".Item"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
         <service
             android:name=".DatabaseService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".MainActivity"
