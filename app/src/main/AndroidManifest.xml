@@ -25,7 +25,7 @@
         </activity>
 
         <activity
-            android:name=".Item"
+            android:name=".ProductActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
