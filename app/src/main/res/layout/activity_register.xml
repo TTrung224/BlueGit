@@ -7,4 +7,113 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  <ImageView
+      android:layout_width="250dp"
+      android:layout_height="250dp"
+      android:layout_marginTop="10dp"
+      android:contentDescription="@string/app_logo_description"
+      android:src="@drawable/bluegit_logo"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"/>
+
+  <TextView
+      android:id="@+id/register_header"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="270dp"
+      android:text="@string/register_header"
+      android:textColor="@color/dark_blue"
+      android:textSize="20sp"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
+
+  <EditText
+      android:id="@+id/register_email"
+      android:drawableStart="@drawable/ic_baseline_email_24"
+      android:drawableTint="@color/dark_grey"
+      android:drawablePadding="5sp"
+      android:layout_width="340dp"
+      android:layout_height="50dp"
+      android:layout_marginTop="10dp"
+      android:background="@drawable/text_box_round"
+      android:hint="@string/prompt_email"
+      android:inputType="textEmailAddress"
+      android:minHeight="48dp"
+      android:selectAllOnFocus="true"
+      android:textColorHint="@color/dark_grey"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/register_name" />
+
+  <EditText
+      android:drawableStart="@drawable/ic_baseline_lock_24"
+      android:drawableTint="@color/dark_grey"
+      android:drawablePadding="5sp"
+      android:id="@+id/register_password"
+      android:layout_width="340dp"
+      android:layout_height="50dp"
+      android:layout_marginTop="10dp"
+      android:background="@drawable/text_box_round"
+      android:hint="@string/password"
+      android:inputType="textPassword"
+      android:minHeight="48dp"
+      android:selectAllOnFocus="true"
+      android:textColorHint="@color/dark_grey"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/register_email" />
+
+  <EditText
+      android:drawableStart="@drawable/ic_baseline_person_24"
+      android:drawableTint="@color/dark_grey"
+      android:drawablePadding="5sp"
+      android:id="@+id/register_name"
+      android:layout_width="340dp"
+      android:layout_height="50dp"
+      android:layout_marginTop="10dp"
+      android:background="@drawable/text_box_round"
+      android:hint="@string/name"
+      android:inputType="textPersonName"
+      android:minHeight="48dp"
+      android:selectAllOnFocus="true"
+      android:textColorHint="@color/dark_grey"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/register_header" />
+
+  <EditText
+      android:drawableStart="@drawable/ic_baseline_local_phone_24"
+      android:drawableTint="@color/dark_grey"
+      android:drawablePadding="5sp"
+      android:id="@+id/register_phone"
+      android:layout_width="340dp"
+      android:layout_height="50dp"
+      android:layout_marginTop="10dp"
+      android:background="@drawable/text_box_round"
+      android:hint="@string/phone"
+      android:inputType="phone"
+      android:minHeight="48dp"
+      android:selectAllOnFocus="true"
+      android:textColorHint="@color/dark_grey"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/register_password" />
+
+  <Button
+      android:layout_width="150dp"
+      android:layout_height="40dp"
+      android:layout_marginTop="20dp"
+      android:text="@string/register"
+      android:textSize="17sp"
+      android:textColor="@color/white"
+      android:background="@drawable/dark_blue_button"
+      android:onClick="onRegisterSubmitClick"
+      app:layout_constraintHorizontal_bias="0.8"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/register_phone"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

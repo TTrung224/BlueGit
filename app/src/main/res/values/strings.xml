@@ -11,4 +11,10 @@
     <string name="login_failed">"Login failed"</string>
     <string name="register_text">Don\'t have an account? Register now!</string>
     <string name="continue_with_google">Continue With Google</string>
+    <string name="password">Password</string>
+    <string name="register_header">REGISTER</string>
+    <string name="name">Name</string>
+    <string name="app_logo_description">Circle with BlueGit inside and a cart on above it</string>
+    <string name="phone">Phone</string>
+    <string name="register">REGISTER</string>
 </resources>
