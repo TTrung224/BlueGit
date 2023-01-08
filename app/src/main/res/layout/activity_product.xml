@@ -9,22 +9,24 @@
     <ImageView
         android:id="@+id/productImg"
         android:layout_width="match_parent"
-        android:layout_height="256dp"
+        android:layout_height="260dp"
         android:background="#7ED7FE"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/car" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="422dp"
+        android:layout_height="347dp"
         android:layout_below="@+id/productImg"
-        android:layout_marginTop="-16dp"
+        android:layout_marginTop="-20dp"
         android:layout_marginBottom="0dp"
-        android:background="@drawable/item_desc_shape">
+        android:background="@drawable/shape_item_desc">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="200px"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="5dp">
 
             <TextView
                 android:id="@+id/productName"
@@ -38,6 +40,31 @@
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/productPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="54dp"
+                android:text="$ Price "
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/oldPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="54dp"
+                android:layout_toEndOf="@+id/productPrice"
+                android:text="$ Old Price "
+                android:textColor="@color/dark_grey"
+                android:textSize="20sp"
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/descriptionTitle"
@@ -89,18 +116,6 @@
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/productPrice"
-                android:layout_width="162dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="54dp"
-                android:text="$ Price "
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
         </RelativeLayout>
     </ScrollView>
 
@@ -126,14 +141,16 @@
             android:layout_weight="1"
             android:background="#EDEDED"
             android:textAlignment="gravity"
-            app:srcCompat="@drawable/minus_icon" />
+            app:srcCompat="@drawable/minus_icon"
+            android:onClick="minusQuantity"/>
 
-        <TextView
-            android:id="@+id/quantityTextview"
-            android:layout_width="10dp"
+        <EditText
+            android:id="@+id/quantity"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:inputType="numberSigned"
             android:text="1"
             android:textAlignment="center"
             android:textColor="@color/black"
@@ -146,7 +163,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#EDEDED"
-            app:srcCompat="@drawable/ic_baseline_add_24" />
+            app:srcCompat="@drawable/ic_baseline_add_24"
+            android:onClick="bonusQuantity"/>
 
         <Button
             android:id="@+id/addToCartBtn"
@@ -154,11 +172,23 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_weight="5"
-            android:background="@drawable/button_main_color_shape"
+            android:background="@drawable/shape_button_main_color"
             android:text="Add to Cart"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="24sp" />
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/productBackBtn"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/shape_circle_button"
+        android:paddingStart="14dp"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
 
 </RelativeLayout>
