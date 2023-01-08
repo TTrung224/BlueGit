@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginBottom="4dp"
     android:background="@drawable/shape_order_list_item"
     android:paddingTop="3dp">
 
@@ -46,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/createdDateLabel"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="8dp"
         android:layout_toStartOf="@+id/orderPrice"
         android:text="Order Price: "
         android:textColor="#585858" />
@@ -56,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/orderId"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/createdDateLabel"
         android:text="12/12/2022"
@@ -68,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/createdDateLabel"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/orderQuantityLabel"
         android:text="5"
