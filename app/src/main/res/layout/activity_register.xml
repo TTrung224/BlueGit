@@ -5,104 +5,154 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".RegisterActivity"
+    android:padding="10dp">
 
   <ImageView
-      android:layout_width="250dp"
-      android:layout_height="250dp"
-      android:layout_marginTop="10dp"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
       android:contentDescription="@string/app_logo_description"
       android:src="@drawable/bluegit_logo"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"/>
 
-  <TextView
-      android:id="@+id/register_header"
-      android:layout_width="wrap_content"
+  <androidx.cardview.widget.CardView
+      android:id="@+id/register_picture_view"
+      android:layout_width="180dp"
+      android:layout_height="180dp"
+      android:elevation="10dp"
+      app:cardCornerRadius="360dp"
+      android:layout_marginTop="110dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" >
+    <ImageView
+        android:id="@+id/register_picture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/default_profile_picture" />
+
+  </androidx.cardview.widget.CardView>
+  <ImageButton
+      android:elevation="10dp"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:background="@drawable/shape_change_picture"
+      android:onClick="onChangeProfileClick"
+      android:src="@drawable/ic_baseline_image_search_24"
+      app:layout_constraintBottom_toBottomOf="@id/register_picture_view"
+      app:layout_constraintEnd_toEndOf="@id/register_picture_view"
+      app:layout_constraintHorizontal_bias="1.0"
+      app:layout_constraintStart_toStartOf="@id/register_picture_view" />
+
+
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/register_layout"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="270dp"
-      android:text="@string/register_header"
-      android:textColor="@color/dark_blue"
-      android:textSize="20sp"
-      android:textStyle="bold"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
-
-  <EditText
-      android:id="@+id/register_email"
-      android:drawableStart="@drawable/ic_baseline_email_24"
-      android:drawableTint="@color/dark_grey"
-      android:drawablePadding="5sp"
-      android:layout_width="340dp"
-      android:layout_height="50dp"
       android:layout_marginTop="10dp"
-      android:background="@drawable/text_box_round"
-      android:hint="@string/prompt_email"
-      android:inputType="textEmailAddress"
-      android:minHeight="48dp"
-      android:selectAllOnFocus="true"
-      android:textColorHint="@color/dark_grey"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.157"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/register_name" />
+      app:layout_constraintTop_toBottomOf="@id/register_picture_view">
 
-  <EditText
-      android:drawableStart="@drawable/ic_baseline_lock_24"
-      android:drawableTint="@color/dark_grey"
-      android:drawablePadding="5sp"
-      android:id="@+id/register_password"
-      android:layout_width="340dp"
-      android:layout_height="50dp"
-      android:layout_marginTop="10dp"
-      android:background="@drawable/text_box_round"
-      android:hint="@string/password"
-      android:inputType="textPassword"
-      android:minHeight="48dp"
-      android:selectAllOnFocus="true"
-      android:textColorHint="@color/dark_grey"
+    <EditText
+        android:id="@+id/register_email"
+        android:layout_width="340dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/text_box_round"
+        android:drawableStart="@drawable/ic_baseline_email_24"
+        android:drawablePadding="5sp"
+        android:drawableTint="@color/dark_grey"
+        android:hint="@string/prompt_email"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:selectAllOnFocus="true"
+        android:textColorHint="@color/dark_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_name" />
+
+    <EditText
+        android:id="@+id/register_password"
+        android:layout_width="340dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/text_box_round"
+        android:drawableStart="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="5sp"
+        android:drawableTint="@color/dark_grey"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:selectAllOnFocus="true"
+        android:textColorHint="@color/dark_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_email" />
+
+    <EditText
+        android:id="@+id/register_name"
+        android:layout_width="340dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/text_box_round"
+        android:drawableStart="@drawable/ic_baseline_person_24"
+        android:drawablePadding="5sp"
+        android:drawableTint="@color/dark_grey"
+        android:hint="@string/name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:selectAllOnFocus="true"
+        android:textColorHint="@color/dark_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/register_phone"
+        android:layout_width="340dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/text_box_round"
+        android:drawableStart="@drawable/ic_baseline_local_phone_24"
+        android:drawablePadding="5sp"
+        android:drawableTint="@color/dark_grey"
+        android:hint="@string/phone"
+        android:inputType="phone"
+        android:minHeight="48dp"
+        android:selectAllOnFocus="true"
+        android:textColorHint="@color/dark_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_password" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="@color/dark_blue"
+      app:layout_constraintTop_toBottomOf="@id/register_layout"
+      app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/register_email" />
+      android:layout_marginTop="10dp"/>
 
-  <EditText
-      android:drawableStart="@drawable/ic_baseline_person_24"
-      android:drawableTint="@color/dark_grey"
-      android:drawablePadding="5sp"
-      android:id="@+id/register_name"
-      android:layout_width="340dp"
-      android:layout_height="50dp"
-      android:layout_marginTop="10dp"
-      android:background="@drawable/text_box_round"
-      android:hint="@string/name"
-      android:inputType="textPersonName"
-      android:minHeight="48dp"
-      android:selectAllOnFocus="true"
-      android:textColorHint="@color/dark_grey"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/register_header" />
-
-  <EditText
-      android:drawableStart="@drawable/ic_baseline_local_phone_24"
-      android:drawableTint="@color/dark_grey"
-      android:drawablePadding="5sp"
-      android:id="@+id/register_phone"
-      android:layout_width="340dp"
-      android:layout_height="50dp"
-      android:layout_marginTop="10dp"
-      android:background="@drawable/text_box_round"
-      android:hint="@string/phone"
-      android:inputType="phone"
-      android:minHeight="48dp"
-      android:selectAllOnFocus="true"
-      android:textColorHint="@color/dark_grey"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/register_password" />
-
+  <ProgressBar
+      android:id="@+id/register_progress"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:layout_marginTop="20dp"
+      android:indeterminate="true"
+      android:indeterminateTint="@color/main"
+      app:layout_constraintEnd_toStartOf="@id/register_button"
+      app:layout_constraintTop_toBottomOf="@id/register_layout"/>
   <Button
+      android:id="@+id/register_button"
       android:layout_width="150dp"
       android:layout_height="40dp"
       android:layout_marginTop="20dp"
@@ -114,6 +164,6 @@
       app:layout_constraintHorizontal_bias="0.8"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/register_phone"/>
+      app:layout_constraintTop_toBottomOf="@id/register_layout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

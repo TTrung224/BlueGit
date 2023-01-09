@@ -4,21 +4,47 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.bluegit.model.Product;
+import com.example.bluegit.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<Product> products = new ArrayList<>();
+    FirebaseAuth firebaseAuth;
+    ImageView profilePic;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        firebaseAuth = FirebaseAuth.getInstance();
+        profilePic = findViewById(R.id.main_profile_pic);
+
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if(currentUser != null){
+            currentUser.reload();
+            user = new User(currentUser.getDisplayName(), currentUser.getEmail(), currentUser.getPhotoUrl());
+            String welcomeMessage = "WELCOME! " + user.getDisplayName();
+            Toast.makeText(this, welcomeMessage, Toast.LENGTH_SHORT).show();
+        }else{
+            finish();
+        }
+
+        Picasso.get().load(user.getProfileImageSrc()).into(profilePic);
 
         Product p1 = new Product("Very Nice Hat", 10000, "https://i.imgur.com/vve6kCY.jpeg");
         Product p2 = new Product("Green T-Shirt", 50000, "https://i.imgur.com/M8lSriJ.jpeg");
@@ -32,9 +58,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        if(firebaseAuth.getCurrentUser() == null){
+            finish();
+        }
+
         RecyclerView productDisplay = findViewById(R.id.items_display);
         ProductDisplayAdapter adapter = new ProductDisplayAdapter(products, this);
         productDisplay.setAdapter(adapter);
         productDisplay.setLayoutManager(new GridLayoutManager(this, 2));
+    }
+
+    public void onSignOutClick(View view) {
+        firebaseAuth.signOut();
+        finish();
     }
 }
