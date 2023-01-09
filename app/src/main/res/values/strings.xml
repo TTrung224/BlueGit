@@ -17,7 +17,7 @@
     <string name="app_logo_description">Circle with BlueGit inside and a cart on above it</string>
     <string name="phone">Phone</string>
     <string name="register">REGISTER</string>
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="string_placeholder">PLACEHOLDER</string>
     <string name="item_image_placeholder">Item image</string>
