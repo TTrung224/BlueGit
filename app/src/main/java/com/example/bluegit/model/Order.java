@@ -29,7 +29,7 @@ public class Order {
 
         this.status = "preparing";
 
-        createdDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now();
 
         float price = 0;
         for(int i = 0; i < products.size(); i++){
