@@ -20,6 +20,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".AdminProduct"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".CardActivity"
             android:exported="false">
             <meta-data
