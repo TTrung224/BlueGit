@@ -1,16 +1,22 @@
 package com.example.bluegit.model;
 
+import android.net.Uri;
+
 public class Account {
     private String name;
+    private String nameDisplay;
     private int age;
     private String phone;
     private String address;
+    private Uri profileImg;
 
-    public Account(String name, int age, String phone, String address) {
+    public Account(Uri profileImg, String nameDisplay, String name, int age, String phone, String address) {
         this.name = name;
+        this.nameDisplay = nameDisplay;
         this.age = age;
         this.phone = phone;
         this.address = address;
+        this.profileImg = profileImg;
     }
 
     public String getName() {

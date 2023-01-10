@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 
 public class AdminVoucherActivity extends AppCompatActivity {
-    ImageButton addNewVoucher;
+    ImageButton addNewVoucher,removeInputVoucher;
     LinearLayout inputNewVoucher;
 
     @Override
@@ -19,6 +19,7 @@ public class AdminVoucherActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_voucher);
         addNewVoucher = (ImageButton) findViewById(R.id.addNewVoucher);
         inputNewVoucher = (LinearLayout) findViewById(R.id.inputVoucher);
+        removeInputVoucher = (ImageButton) findViewById(R.id.removeInputVoucher);
     }
 
     public void addClick(View v){
