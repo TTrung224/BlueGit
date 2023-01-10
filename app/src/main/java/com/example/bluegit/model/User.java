@@ -3,6 +3,7 @@ package com.example.bluegit.model;
 import android.net.Uri;
 
 public class User {
+    private String id;
     private String displayName;
     private Uri profileImageSrc;
     private String email;
@@ -12,6 +13,14 @@ public class User {
         this.displayName = displayName;
         this.email = email;
         this.profileImageSrc = profileImageSrc;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDisplayName() {

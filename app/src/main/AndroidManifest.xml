@@ -27,7 +27,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".AdminProduct"
+            android:name=".AdminProductActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -63,6 +63,13 @@
         </activity>
         <activity
             android:name=".OrdersBuyActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".AccountActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

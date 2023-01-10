@@ -16,7 +16,7 @@
         app:cardCornerRadius="10dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/orderProductImg"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:scaleType="centerCrop"
