@@ -39,28 +39,31 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/items_display"
         android:layout_width="0dp"
-        android:layout_height="528dp"
+        android:layout_height="0dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="1dp"
         android:padding="5dp"
         app:flow_horizontalAlign="center"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="60dp"
         android:background="@color/main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/items_display">
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/businessNav"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
+            android:onClick="toBusiness"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/orderNav"
             app:layout_constraintStart_toStartOf="parent"
@@ -104,6 +107,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
+            android:onClick="toOrders"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/homeNav"
             app:layout_constraintStart_toEndOf="@+id/businessNav"
@@ -148,6 +152,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
+            android:onClick="refresh"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/cartNav"
             app:layout_constraintStart_toEndOf="@+id/orderNav"
@@ -158,11 +163,11 @@
                 android:id="@+id/homeNavImg"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                app:tint="#7BFA4B"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/home" />
+                app:srcCompat="@drawable/home"
+                app:tint="#7BFA4B" />
 
             <TextView
                 android:id="@+id/homeNavTxt"
@@ -192,6 +197,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
+            android:onClick="toCart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/accountNav"
             app:layout_constraintStart_toEndOf="@+id/homeNav"
@@ -235,6 +241,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
+            android:onClick="toAccount"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cartNav"
