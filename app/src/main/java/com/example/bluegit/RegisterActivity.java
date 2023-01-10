@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -59,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         mAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
-        fireStoreManager = new FireStoreManager(this, FirebaseFirestore.getInstance());
+        fireStoreManager = new FireStoreManager(this);
 
         tUserName = findViewById(R.id.register_name);
         tEmail = findViewById(R.id.register_email);
@@ -110,11 +111,10 @@ public class RegisterActivity extends AppCompatActivity {
                         if(task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             String id = user.getUid();
-                            User userDat = new User(id, name, email, Uri.parse(DEFAULT_PIC_SRC));
-
+                            User userDat = new User(id, name, email, phone, Uri.parse(DEFAULT_PIC_SRC));
                             storageReference = storage.getReference();
                             StorageReference pictureRef = storageReference.child("/users/" + user.getUid() + "/profilePicture.png/");
-                            Log.d("RefPath", pictureRef.getPath());
+
                             profilePicture.setDrawingCacheEnabled(true);
                             Bitmap bitmap = ((BitmapDrawable) profilePicture.getDrawable()).getBitmap();
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -153,6 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
                             });
 
                         } else {
+                            progressBar.setVisibility(View.GONE);
                             try{
                                 throw task.getException();
                             } catch(FirebaseAuthWeakPasswordException e){
