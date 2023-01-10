@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/adminProductNameItem"
         android:layout_width="103dp"
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
@@ -17,7 +17,7 @@
         android:textColor="@color/black" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/adminProductImageItem"
         android:layout_width="127dp"
         android:layout_height="93dp"
         android:layout_alignParentTop="true"
@@ -25,29 +25,29 @@
         app:srcCompat="@drawable/car" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/adminProductSellerItem"
         android:layout_width="107dp"
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="48dp"
-        android:text="address"
+        android:text="khoi shop"
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/adminProductPriceItem"
         android:layout_width="107dp"
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="55dp"
         android:layout_marginEnd="170dp"
-        android:text="phone"
+        android:text="30k"
         android:textColor="@color/black" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/adminProductDeleteItem"
         android:layout_width="117dp"
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
