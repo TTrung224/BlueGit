@@ -9,7 +9,11 @@ public class User {
     private String email;
     private String phoneNumber;
 
-    public User(String displayName, String email, Uri profileImageSrc) {
+    public User() {
+    }
+
+    public User(String id, String displayName, String email, Uri profileImageSrc) {
+        this.id = id;
         this.displayName = displayName;
         this.email = email;
         this.profileImageSrc = profileImageSrc;

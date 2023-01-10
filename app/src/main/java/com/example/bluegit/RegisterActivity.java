@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.bluegit.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -37,16 +39,19 @@ import java.io.ByteArrayOutputStream;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    public String DEFAULT_PIC_SRC = "https://firebasestorage.googleapis.com/v0/b/bluegit-c8e08.appspot.com/o/user.png?alt=media&token=53098173-427e-4a05-beb6-d1c62ba9df6f";
+
     EditText tUserName;
     EditText tEmail;
     EditText tPassword;
     EditText tPhone;
     ImageView profilePicture;
+    ProgressBar progressBar;
+
     FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener authStateListener;
     FirebaseStorage storage;
     StorageReference storageReference;
-    ProgressBar progressBar;
+    FireStoreManager fireStoreManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         mAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
+        fireStoreManager = new FireStoreManager(this, FirebaseFirestore.getInstance());
 
         tUserName = findViewById(R.id.register_name);
         tEmail = findViewById(R.id.register_email);
@@ -103,6 +109,8 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
+                            String id = user.getUid();
+                            User userDat = new User(id, name, email, Uri.parse(DEFAULT_PIC_SRC));
 
                             storageReference = storage.getReference();
                             StorageReference pictureRef = storageReference.child("/users/" + user.getUid() + "/profilePicture.png/");
@@ -114,48 +122,33 @@ public class RegisterActivity extends AppCompatActivity {
                             byte[] imageData = baos.toByteArray();
                             UploadTask uploadTask = pictureRef.putBytes(imageData);
 
-                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // If can't upload image to Firebase, use default icon
-                                    Toast.makeText(RegisterActivity.this, "Unable to upload photo", Toast.LENGTH_SHORT).show();
-                                    user.updateProfile(new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(name)
-                                            .setPhotoUri(Uri.parse("https://firebasestorage.googleapis.com/v0/b/bluegit-c8e08.appspot.com/o/user.png?alt=media&token=53098173-427e-4a05-beb6-d1c62ba9df6f"))
-                                            .build()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                    pictureRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                                         @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            progressBar.setVisibility(View.GONE);
-                                            Toast.makeText(RegisterActivity.this, "Register Complete", Toast.LENGTH_SHORT).show();
-                                            Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-                                            setResult(RESULT_OK, i);
-                                            finish();
-                                        }
-                                    });
+                                        public void onComplete(@NonNull Task<Uri> task) {
+                                            if(task.isSuccessful()){
+                                                userDat.setProfileImageSrc(task.getResult());
+                                            }
 
-                                }
-                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    pictureRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
                                             user.updateProfile(new UserProfileChangeRequest.Builder()
-                                                    .setDisplayName(name)
-                                                    .setPhotoUri(uri)
+                                                    .setDisplayName(userDat.getDisplayName())
+                                                    .setPhotoUri(userDat.getProfileImageSrc())
                                                     .build()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     progressBar.setVisibility(View.GONE);
+                                                    fireStoreManager.addNewUser(userDat);
                                                     Toast.makeText(RegisterActivity.this, "Register Complete", Toast.LENGTH_SHORT).show();
                                                     Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
                                                     setResult(RESULT_OK, i);
                                                     finish();
                                                 }
                                             });
-
                                         }
                                     });
+
                                 }
                             });
 
