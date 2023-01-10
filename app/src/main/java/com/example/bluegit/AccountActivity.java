@@ -2,7 +2,6 @@ package com.example.bluegit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.bluegit.model.Account;
 
-public class AccountPage extends AppCompatActivity {
+public class AccountActivity extends AppCompatActivity {
     TextView nameTV;
     EditText nameEdit;
     EditText ageEdit;
@@ -22,7 +21,7 @@ public class AccountPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account_page);
+        setContentView(R.layout.activity_account);
         nameTV = (TextView) findViewById(R.id.nameTextView);
         nameEdit = (EditText) findViewById(R.id.nameEditText);
         ageEdit = (EditText) findViewById(R.id.ageEditText);

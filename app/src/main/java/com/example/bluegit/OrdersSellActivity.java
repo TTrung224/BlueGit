@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.example.bluegit.model.Seller;
 
-public class SellingPage extends AppCompatActivity {
+public class OrdersSellActivity extends AppCompatActivity {
     TextView numCompleted;
     TextView numConfirmed;
     TextView numDelivery;
@@ -17,7 +17,7 @@ public class SellingPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_page_selling);
+        setContentView(R.layout.activity_orders_sell);
 
         numCompleted = findViewById(R.id.numCompleted);
         numConfirmed = findViewById(R.id.numConfirmed);

@@ -5,24 +5,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.widget.ListView;
 
-import com.example.bluegit.adapters.BuyerOrderAdapter;
+import com.example.bluegit.adapters.OrderBuyAdapter;
 import com.example.bluegit.model.Order;
 import com.example.bluegit.model.Product;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class BuyerOrdersActivity extends AppCompatActivity {
+public class OrdersBuyActivity extends AppCompatActivity {
     ArrayList<Order> orders = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AndroidThreeTen.init(this);
-        setContentView(R.layout.activity_buyer_orders);
+        setContentView(R.layout.activity_orders_buy);
 
         Product p = new Product("Pink dress with Strawberry on it", 100000,
                 "https://cdn.shopify.com/s/files/1/0011/9783/4252/products/20_375a8763-f5d7-4184-a352-4523ef713733.jpg?v=1576267132");
@@ -44,7 +42,7 @@ public class BuyerOrdersActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         RecyclerView recyclerView = findViewById(R.id.buyerOrders);
-        BuyerOrderAdapter adapter = new BuyerOrderAdapter(orders, this);
+        OrderBuyAdapter adapter = new OrderBuyAdapter(orders, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

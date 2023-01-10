@@ -6,12 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
-import com.example.bluegit.adapters.BuyerOrderAdapter;
 import com.example.bluegit.adapters.MessageAdapter;
 import com.example.bluegit.model.Message;
 import com.jakewharton.threetenabp.AndroidThreeTen;
-
-import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;

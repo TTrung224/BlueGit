@@ -6,12 +6,12 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class OrderDetailActivity extends AppCompatActivity {
+public class OrderBuyDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_detail);
+        setContentView(R.layout.activity_order_buy_detail);
         TextView oldPrice = findViewById(R.id.totalPriceBeforeDiscount);
         oldPrice.setPaintFlags(oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
     }
