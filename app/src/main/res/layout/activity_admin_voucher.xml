@@ -152,7 +152,7 @@
             app:srcCompat="@drawable/ic_baseline_add_24" />
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/removeInputVoucher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"

@@ -1,7 +1,6 @@
 package com.example.bluegit.model;
 
 import org.threeten.bp.LocalDateTime;
-
 import java.util.ArrayList;
 
 public class Order {
