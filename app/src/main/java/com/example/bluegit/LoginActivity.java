@@ -2,6 +2,7 @@ package com.example.bluegit;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -19,13 +20,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bluegit.model.User;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Objects;
@@ -33,10 +44,16 @@ import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    public int SIGN_UP_REQUEST = 100;
+    public int GOOGLE_SIGN_UP_REQUEST = 101;
+    private final int GOOGLE_INTENT_REQUEST = 103;
+
     EditText tEmail;
     EditText tPassword;
-    FirebaseUser currentUser;
+    public FirebaseAuth mAuth;
+    public FirebaseUser currentUser;
+    private FireStoreManager fireStoreManager;
+    GoogleApiClient googleApiClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,22 +71,36 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        fireStoreManager = new FireStoreManager(this);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, 1, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Log.d("DEBUGGING", connectionResult.getErrorMessage());
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         tPassword.setText("");
+        currentUser = null;
         currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Log.d("User", FirebaseAuth.getInstance().getCurrentUser().getUid());
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
     }
 
     public void onRegisterClick(View view) {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-        startActivityForResult(intent, 100);
+        startActivityForResult(intent, SIGN_UP_REQUEST);
     }
 
     public void onLoginClick(View view) {
@@ -90,9 +121,38 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100){
-            if(resultCode == RESULT_OK){
+        if(resultCode == RESULT_OK){
+            if(requestCode == SIGN_UP_REQUEST){
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            }
+            if(requestCode == GOOGLE_INTENT_REQUEST) {
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                if(result.isSuccess()){
+                    GoogleSignInAccount account = result.getSignInAccount();
+                    String token = account.getIdToken();
+                    String id = account.getId();
+                    String name = account.getDisplayName();
+                    String email = account.getEmail();
+                    Uri profileImage = account.getPhotoUrl();
+
+                    AuthCredential credential = GoogleAuthProvider.getCredential(token, null);
+
+                    mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                if(task.getResult().getAdditionalUserInfo().isNewUser()){
+                                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                                    User user = new User(currentUser.getUid(), name, email, "", profileImage);
+                                    fireStoreManager.addNewUser(user);
+                                }
+
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            }
+                        }
+                    });
+
+                }
             }
         }
     }
@@ -120,5 +180,18 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        googleApiClient.stopAutoManage(this);
+        googleApiClient.disconnect();
+    }
+
+    public void onContinueGoogleClick(View view) {
+
+        Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(intent, GOOGLE_INTENT_REQUEST);
     }
 }

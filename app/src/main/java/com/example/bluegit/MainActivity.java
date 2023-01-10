@@ -1,5 +1,6 @@
 package com.example.bluegit;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -15,8 +16,18 @@ import android.widget.Toast;
 import com.example.bluegit.adapters.ProductDisplayAdapter;
 import com.example.bluegit.model.Product;
 import com.example.bluegit.model.User;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,29 +42,38 @@ public class MainActivity extends AppCompatActivity {
 
 
     ArrayList<Product> products = new ArrayList<>();
-    FirebaseAuth firebaseAuth;
     ImageView profilePic;
-    User user;
+    GoogleSignInOptions gso;
+    GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        firebaseAuth = FirebaseAuth.getInstance();
         profilePic = findViewById(R.id.main_profile_pic);
 
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        googleApiClient=new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+                .build();
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
         if(currentUser != null){
-            user = new User(currentUser.getUid(), currentUser.getDisplayName(), currentUser.getEmail(), currentUser.getPhotoUrl());
-            String welcomeMessage = "WELCOME! " + user.getDisplayName();
-            Toast.makeText(this, welcomeMessage, Toast.LENGTH_SHORT).show();
+            String welcomeMessage = "WELCOME! " + currentUser.getDisplayName();
+            Picasso.get()
+                    .load(currentUser.getPhotoUrl())
+                    .into(profilePic);
+            Toast.makeText(MainActivity.this, welcomeMessage, Toast.LENGTH_SHORT).show();
         }else{
             finish();
         }
-
-        Picasso.get()
-                .load(user.getProfileImageSrc())
-                .into(profilePic);
 
         Product p1 = new Product("Very Nice Hat", 10000, "https://i.imgur.com/vve6kCY.jpeg");
         Product p2 = new Product("Green T-Shirt", 50000, "https://i.imgur.com/M8lSriJ.jpeg");
@@ -67,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(firebaseAuth.getCurrentUser() == null){
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
             finish();
         }
 
@@ -77,8 +97,18 @@ public class MainActivity extends AppCompatActivity {
         productDisplay.setLayoutManager(new GridLayoutManager(this, 2));
     }
 
+
     public void onSignOutClick(View view) {
-        firebaseAuth.signOut();
+        FirebaseAuth.getInstance().signOut();
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                if(status.isSuccess()){
+                    googleApiClient.disconnect();
+                    finish();
+                }
+            }
+        });
         finish();
     }
 

@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "437266577661-6gg4p3g5skp9nkegqiq2bcbvgsvjsfqe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bluegit",
+            "certificate_hash": "5c5f88034f50faac40fdf1dcb9c7267d7873173a"
+          }
+        },
+        {
           "client_id": "437266577661-b4a78ee4390f45nk4rht9dqdqu469tag.apps.googleusercontent.com",
           "client_type": 3
         }

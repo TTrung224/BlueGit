@@ -21,10 +21,11 @@ public class User {
     }
 
     // User
-    public User(String id, String displayName, String email, Uri profileImageSrc) {
+    public User(String id, String displayName, String email, String phoneNumber, Uri profileImageSrc) {
         this.id = id;
         this.displayName = displayName;
         this.email = email;
+        this.phoneNumber = phoneNumber;
         this.profileImageSrc = profileImageSrc;
     }
 
