@@ -1,14 +1,28 @@
 package com.example.bluegit.model;
 
+import android.net.Uri;
+
 public class Product {
     private String productName;
     private float productPrice;
-    private String imageSource;
+    private Uri imageSource;
+    private String description;
+    private String specification;
+    private int quantity;
+    private boolean disabled = false;
+    private String sellerId;
 
-    public Product(String productName, float productPrice, String imageSource) {
+    public Product() {}
+
+    public Product(String productName, String description, String specification,
+                   float productPrice, Uri imageSource, int quantity, String sellerId) {
         this.productName = productName;
+        this.description = description;
+        this.specification = specification;
         this.productPrice = productPrice;
         this.imageSource = imageSource;
+        this.quantity = quantity;
+        this.sellerId = sellerId;
     }
 
     public String getProductName() {
@@ -19,6 +33,22 @@ public class Product {
         this.productName = productName;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getSpecification() {
+        return specification;
+    }
+
+    public void setSpecification(String specification) {
+        this.specification = specification;
+    }
+
     public float getProductPrice() {
         return productPrice;
     }
@@ -27,11 +57,35 @@ public class Product {
         this.productPrice = productPrice;
     }
 
-    public String getImageSource() {
+    public Uri getImageSource() {
         return imageSource;
     }
 
-    public void setImageSource(String imageSource) {
+    public void setImageSource(Uri imageSource) {
         this.imageSource = imageSource;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
     }
 }

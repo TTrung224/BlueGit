@@ -75,13 +75,13 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        Product p1 = new Product("Very Nice Hat", 10000, "https://i.imgur.com/vve6kCY.jpeg");
-        Product p2 = new Product("Green T-Shirt", 50000, "https://i.imgur.com/M8lSriJ.jpeg");
-
-        products.add(p1);
-        products.add(p2);
-        products.add(new Product("Pink dress with Strawberry on it", 100000, "https://cdn.shopify.com/s/files/1/0011/9783/4252/products/20_375a8763-f5d7-4184-a352-4523ef713733.jpg?v=1576267132"));
-        products.add(new Product("It's a box of strawberries", 80000, "https://www.shutterstock.com/image-photo/box-strawberries-260nw-733675327.jpg"));
+//        Product p1 = new Product("Very Nice Hat", 10000, "https://i.imgur.com/vve6kCY.jpeg");
+//        Product p2 = new Product("Green T-Shirt", 50000, "https://i.imgur.com/M8lSriJ.jpeg");
+//
+//        products.add(p1);
+//        products.add(p2);
+//        products.add(new Product("Pink dress with Strawberry on it", 100000, "https://cdn.shopify.com/s/files/1/0011/9783/4252/products/20_375a8763-f5d7-4184-a352-4523ef713733.jpg?v=1576267132"));
+//        products.add(new Product("It's a box of strawberries", 80000, "https://www.shutterstock.com/image-photo/box-strawberries-260nw-733675327.jpg"));
     }
 
     @Override
@@ -180,5 +180,11 @@ public class MainActivity extends AppCompatActivity {
                 case NAV_TO_ACCOUNT: toAccount(); break;
             }
         }
+    }
+
+    public void testChat(View view) {
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("otherUserId", "S7WS1f6aEDUXQ3337rqeqYmnhZW2");
+        startActivity(intent);
     }
 }

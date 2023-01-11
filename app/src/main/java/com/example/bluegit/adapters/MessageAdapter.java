@@ -35,15 +35,15 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
         ReceiverMsgHolder(View itemView) {
             super(itemView);
-            message = (TextView) itemView.findViewById(R.id.receiverMsg);
+            message = (TextView) itemView.findViewById(R.id.Msg);
             dateTime = (TextView) itemView.findViewById(R.id.sentDateTime);
         }
 
         void bind(Message messageObj) {
-            message.setText(messageObj.message);
+            message.setText(messageObj.getMessage());
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd - HH:mm");
-            dateTime.setText(messageObj.sentTime.format(formatter));
+            dateTime.setText(messageObj.getSentTime().format(formatter));
         }
     }
 
@@ -52,15 +52,15 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
         SenderMsgHolder(View itemView) {
             super(itemView);
-            message = (TextView) itemView.findViewById(R.id.senderMsg);
+            message = (TextView) itemView.findViewById(R.id.Msg);
             dateTime = (TextView) itemView.findViewById(R.id.sentDateTime);
         }
 
         void bind(Message messageObj) {
-            message.setText(messageObj.message);
+            message.setText(messageObj.getMessage());
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd - HH:mm");
-            dateTime.setText(messageObj.sentTime.format(formatter));
+            dateTime.setText(messageObj.getSentTime().format(formatter));
         }
     }
 
@@ -68,7 +68,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         Message message = (Message) messageList.get(position);
 
-        if (message.fromId.equals(currentUserId)) {
+        if (message.getFromId().equals(currentUserId)) {
             return VIEW_TYPE_MESSAGE_SENDER;
         } else {
             return VIEW_TYPE_MESSAGE_RECEIVER;
