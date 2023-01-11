@@ -1,12 +1,10 @@
-package com.example.bluegit.model;
+package com.example.bluegit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.bluegit.R;
-
-public class AdminAccount extends AppCompatActivity {
+public class AdminAccountActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -215,7 +215,7 @@
                 android:backgroundTint="@color/white">
 
                 <EditText
-                    android:id="@+id/productConfigurationAdd"
+                    android:id="@+id/productSpecificationAdd"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:background="@null"
@@ -239,9 +239,11 @@
                 android:layout_marginEnd="120dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/shape_button_main_color"
+                android:onClick="submit"
                 android:text="Add Product"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
+
         </RelativeLayout>
     </ScrollView>
 

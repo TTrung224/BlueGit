@@ -130,24 +130,43 @@ public class LoginActivity extends AppCompatActivity {
                 if(result.isSuccess()){
                     GoogleSignInAccount account = result.getSignInAccount();
                     String token = account.getIdToken();
-                    String id = account.getId();
                     String name = account.getDisplayName();
                     String email = account.getEmail();
-                    Uri profileImage = account.getPhotoUrl();
+                    String profileImage = RegisterActivity.DEFAULT_PIC_SRC;
+                    if(account.getPhotoUrl() != null){
+                        profileImage = account.getPhotoUrl().toString();
+                    }
+
+
 
                     AuthCredential credential = GoogleAuthProvider.getCredential(token, null);
 
+                    String finalProfileImage = profileImage;
                     mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
                                 if(task.getResult().getAdditionalUserInfo().isNewUser()){
                                     FirebaseUser currentUser = mAuth.getCurrentUser();
-                                    User user = new User(currentUser.getUid(), name, email, "", profileImage);
-                                    fireStoreManager.addNewUser(user);
-                                }
 
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    User user = new User(currentUser.getUid(), name, email, "", finalProfileImage);
+                                    fireStoreManager.addNewUser(user, new AddUserDataCallBack() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Toast.makeText(LoginActivity.this, "Register Complete", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        }
+
+                                        @Override
+                                        public void onFailure(Exception e) {
+                                            Toast.makeText(LoginActivity.this, "Unable to register to database", Toast.LENGTH_SHORT).show();
+                                            currentUser.delete();
+                                            mAuth.signOut();
+                                        }
+                                    });
+                                } else {
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                }
                             }
                         }
                     });
