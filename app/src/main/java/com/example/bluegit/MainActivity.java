@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.bluegit.adapters.ProductDisplayAdapter;
+import com.example.bluegit.adapters.RecyclerViewOnClickListener;
 import com.example.bluegit.model.Product;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -34,14 +35,6 @@ public class MainActivity extends AppCompatActivity {
     public static final int NAV_TO_HOME = 3;
     public static final int NAV_TO_CART = 4;
     public static final int NAV_TO_ACCOUNT = 5;
-
-    //Admin
-    public static final int NAV_TO_VOUCHER = 6;
-    public static final int NAV_TO_MANAGE_ACCOUNT = 7;
-    public static final int NAV_TO_MANAGE_PRODUCT = 8;
-    public static final int NAV_TO_ADMIN_HOME = 9;
-
-
 
     ImageView profilePic;
     FireStoreManager fireStoreManager;
@@ -90,11 +83,20 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView productDisplay = findViewById(R.id.items_display);
 
+
         fireStoreManager.getAllProducts(new GetProductsCallBack() {
             @Override
             public void onSuccess(ArrayList<Product> result) {
                 productDisplay.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-                ProductDisplayAdapter adapter = new ProductDisplayAdapter(result, MainActivity.this);
+                ProductDisplayAdapter adapter = new ProductDisplayAdapter(result, MainActivity.this, new RecyclerViewOnClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Product product = result.get(position);
+                        Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+                        intent.putExtra("productId", product.getProductId());
+                        startActivity(intent);
+                    }
+                });
                 productDisplay.setAdapter(adapter);
             }
 
@@ -164,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 100);
     }
 
+
     public void toCart() {
         Intent intent = new Intent(this, CartActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -176,33 +179,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 100);
     }
 
-//    public void toVoucher(){
-//        Intent intent = new Intent(this,AdminVoucherActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//        startActivityForResult(intent, 100);
-//    }
-//
-//    public void toManageAccount(){
-//        Intent intent = new Intent(this, AdminAccountActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//        startActivityForResult(intent,100);
-//    }
-//
-//    public void toManageProduct(){
-//        Intent intent = new Intent(this, AdminProductActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//        startActivityForResult(intent,100);
-//    }
-//
-//    public void toAdminHome(){
-//        Intent intent = new Intent(this, AdminActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//        startActivityForResult(intent, 100);
-//    }
-
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -212,10 +188,6 @@ public class MainActivity extends AppCompatActivity {
                 case NAV_TO_ORDERS: toOrders(); break;
                 case NAV_TO_CART: toCart(); break;
                 case NAV_TO_ACCOUNT: toAccount(); break;
-//                case NAV_TO_ADMIN_HOME: toAdminHome(); break;
-//                case NAV_TO_MANAGE_ACCOUNT: toManageAccount(); break;
-//                case NAV_TO_MANAGE_PRODUCT: toManageProduct(); break;
-//                case NAV_TO_VOUCHER: toVoucher(); break;
             }
         }
     }
