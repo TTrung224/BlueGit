@@ -43,7 +43,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
             message.setText(messageObj.getMessage());
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd - HH:mm");
-            dateTime.setText(messageObj.getSentTime().format(formatter));
+            dateTime.setText(messageObj.getSentTime().toString());
         }
     }
 
@@ -60,7 +60,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
             message.setText(messageObj.getMessage());
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd - HH:mm");
-            dateTime.setText(messageObj.getSentTime().format(formatter));
+            dateTime.setText(messageObj.getSentTime().toString());
         }
     }
 

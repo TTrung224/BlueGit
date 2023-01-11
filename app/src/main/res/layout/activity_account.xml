@@ -7,7 +7,7 @@
     tools:context=".AccountActivity">
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/deleteItemBtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_weight="0"

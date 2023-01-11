@@ -5,7 +5,7 @@ import android.net.Uri;
 public class Product {
     private String productName;
     private float productPrice;
-    private Uri imageSource;
+    private String imageSource;
     private String description;
     private String specification;
     private int quantity;
@@ -15,7 +15,7 @@ public class Product {
     public Product() {}
 
     public Product(String productName, String description, String specification,
-                   float productPrice, Uri imageSource, int quantity, String sellerId) {
+                   float productPrice, String imageSource, int quantity, String sellerId) {
         this.productName = productName;
         this.description = description;
         this.specification = specification;
@@ -56,12 +56,10 @@ public class Product {
     public void setProductPrice(float productPrice) {
         this.productPrice = productPrice;
     }
-
-    public Uri getImageSource() {
-        return imageSource;
+    public String getImageSource() {
+        return this.imageSource;
     }
-
-    public void setImageSource(Uri imageSource) {
+    public void setImageSource(String imageSource) {
         this.imageSource = imageSource;
     }
 

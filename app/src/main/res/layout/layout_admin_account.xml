@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/adminAccountDelete"
         android:layout_width="117dp"
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
@@ -19,11 +19,11 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintStart_toEndOf="@+id/adminAccountAddress"
+        app:layout_constraintTop_toBottomOf="@+id/adminAccountPhone" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/adminAccountPhone"
         android:layout_width="107dp"
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
@@ -32,24 +32,24 @@
         android:layout_marginTop="16dp"
         android:text="10k"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintStart_toEndOf="@+id/adminAccountName"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/adminAccountAddress"
         android:layout_width="107dp"
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="13dp"
         android:layout_marginTop="17dp"
-        android:text="khoi shop"
+        android:text="hcm sity"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintStart_toEndOf="@+id/adminAccountImage"
+        app:layout_constraintTop_toBottomOf="@+id/adminAccountName" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/adminAccountName"
         android:layout_width="103dp"
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
@@ -61,7 +61,7 @@
         tools:layout_editor_absoluteX="140dp" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/adminAccountImage"
         android:layout_width="127dp"
         android:layout_height="93dp"
         android:layout_alignParentTop="true"

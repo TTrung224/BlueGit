@@ -14,7 +14,7 @@ public class ProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
-        TextView oldPrice = findViewById(R.id.oldPrice);
+        TextView oldPrice = findViewById(R.id.itemPrice);
         oldPrice.setPaintFlags(oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
     }
