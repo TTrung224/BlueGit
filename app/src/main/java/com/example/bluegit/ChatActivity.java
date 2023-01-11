@@ -1,7 +1,10 @@
 package com.example.bluegit;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +29,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -36,6 +40,8 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -57,6 +63,7 @@ public class ChatActivity extends AppCompatActivity {
     String meId;
     String otherId;
     FirestoreRecyclerAdapter adapter;
+    private MutableLiveData<FirestoreRecyclerAdapter> adapterLiveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +75,8 @@ public class ChatActivity extends AppCompatActivity {
         otherId = getIntent().getStringExtra("otherUserId");
         docId = meId + "_" + otherId;
         docId2 = otherId + "_" + meId;
+
+        adapterLiveData = new MutableLiveData<>();
 
 //        Check if chat existed
         db = FirebaseFirestore.getInstance();
@@ -92,23 +101,73 @@ public class ChatActivity extends AppCompatActivity {
                    finish();
                }
            }
-        });
+        }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            Query query = chatRef.collection("messages").orderBy("sentTime").limit(50);
+            FirestoreRecyclerOptions<Message> options = new FirestoreRecyclerOptions.Builder<Message>()
+                    .setQuery(query, Message.class)
+                    .build();
 
-//        RecyclerView recyclerView = findViewById(R.id.chatRecyclerView);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            adapter = new FirestoreRecyclerAdapter<Message, MsgHolder>(options) {
+
+                private static final int VIEW_TYPE_MESSAGE_SENDER = 1;
+                private static final int VIEW_TYPE_MESSAGE_RECEIVER = 2;
+
+                @Override
+                public void onBindViewHolder(MsgHolder holder, int position, Message model) {
+                    holder.bind(model);
+                }
+
+                @NonNull
+                @Override
+                public MsgHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    View view;
+
+                    if (viewType == VIEW_TYPE_MESSAGE_SENDER) {
+                        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_sender_message, parent, false);
+                        return new MsgHolder(view);
+                    } else if (viewType == VIEW_TYPE_MESSAGE_RECEIVER) {
+                        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_receiver_message, parent, false);
+                        return new MsgHolder(view);
+                    }
+
+                    return null;
+                }
+
+                @Override
+                public int getItemViewType(int position) {
+                    Message message = getItem(position);
+
+                    if (message.getFromId().equals(meId)) {
+                        return VIEW_TYPE_MESSAGE_SENDER;
+                    } else {
+                        return VIEW_TYPE_MESSAGE_RECEIVER;
+                    }
+                }
+            };
+        }
+    }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            RecyclerView recyclerView = findViewById(R.id.chatRecyclerView);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+            adapter.startListening();
+        }
+    });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-//        adapter.startListening();
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        adapterLiveData.observe(this, adapter-> adapterLiveData.getValue().startListening());
+//    }
 
     @Override
     protected void onStop() {
         super.onStop();
-//        adapter.stopListening();
+        adapter.stopListening();
     }
 
     public void sendMsg(View view) {
@@ -119,10 +178,7 @@ public class ChatActivity extends AppCompatActivity {
             String msgStr = messageInput.getText().toString();
             Message msg = new Message(msgStr, meId, otherId);
 
-            Map<String, Object> nestedData = new HashMap<>();
-            nestedData.put(messageId, msg);
-
-            chatRef.collection("messages").document(messageId).set(nestedData)
+            chatRef.collection("messages").document(messageId).set(msg)
                     .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -131,6 +187,7 @@ public class ChatActivity extends AppCompatActivity {
                         ;
                     }
                 });
+            messageInput.setText("");
         }
     }
 
@@ -160,6 +217,14 @@ public class ChatActivity extends AppCompatActivity {
             super(itemView);
             message = (TextView) itemView.findViewById(R.id.Msg);
             dateTime = (TextView) itemView.findViewById(R.id.sentDateTime);
+        }
+
+        void bind(Message messageObj) {
+            message.setText(messageObj.getMessage());
+
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd - HH:mm");
+            DateFormat formatter = new SimpleDateFormat("MMM dd - HH:mm");
+            dateTime.setText(formatter.format(messageObj.getSentTime().toDate()));
         }
     }
 }

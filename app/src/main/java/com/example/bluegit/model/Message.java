@@ -1,13 +1,16 @@
 package com.example.bluegit.model;
 
+import com.google.firebase.Timestamp;
+
 import org.threeten.bp.LocalDateTime;
+
 
 import java.util.Map;
 import java.util.Objects;
 
 public class Message {
     private String message;
-    private LocalDateTime sentTime;
+    private Timestamp sentTime;
 
     // TODO: id or object
 //    public Account from;
@@ -30,7 +33,7 @@ public class Message {
 
     public Message(String message, String fromId, String toId) {
         this.message = message;
-        this.sentTime = LocalDateTime.now();
+        this.sentTime = Timestamp.now();
         this.fromId = fromId;
         this.toId = toId;
     }
@@ -47,11 +50,11 @@ public class Message {
         this.message = message;
     }
 
-    public LocalDateTime getSentTime() {
+    public Timestamp getSentTime() {
         return sentTime;
     }
 
-    public void setSentTime(LocalDateTime sentTime) {
+    public void setSentTime(Timestamp sentTime) {
         this.sentTime = sentTime;
     }
 
