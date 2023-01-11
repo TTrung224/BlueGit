@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AdminProductActivity">
+    android:orientation="vertical"
+    tools:context=".AdminActivity">
 
-    <ImageView
-        android:id="@+id/ordersBackBtn5"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="7dp"
-        android:outlineProvider="none"
-        android:paddingStart="15dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginLeft="70dp"
+            app:srcCompat="@drawable/bluegit_logo" />
+
+        <Button
+            android:id="@+id/adminSignOutBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="SIGN OUT" />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/textView14"
-        android:layout_width="266dp"
-        android:layout_height="36dp"
-        android:layout_below="@+id/ordersBackBtn5"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="137dp"
-        android:text="Product list:"
-        android:textColor="@color/black"
-        android:textSize="30sp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/adminProductList"
-        android:layout_width="match_parent"
+        android:id="@+id/adminDisplay"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView14"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="5dp" />
+        android:layout_marginStart="150dp"
+        android:text="ADMIN"
+        android:textColor="#000000"
+        android:textSize="34sp"
+        android:textStyle="bold" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_weight="1"
+        android:layout_marginTop="304dp"
+        android:layout_marginBottom="0dp"
         android:background="@color/main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
                 android:text="Voucher"
-                android:textColor="#FAFAFA"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/businessNavLine"
@@ -87,7 +87,6 @@
                 android:id="@+id/businessNavLine"
                 android:layout_width="0dp"
                 android:layout_height="4dp"
-                android:background="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -110,7 +109,6 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="2dp"
-                android:tint="#7BFA4B"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -122,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
                 android:text="Products"
-                android:textColor="#7BFA4B"
+                android:textColor="#FFFFFF"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/orderNavLine"
@@ -133,7 +131,7 @@
                 android:id="@+id/orderNavLine"
                 android:layout_width="0dp"
                 android:layout_height="4dp"
-                android:background="#7BFA4B"
+                android:background="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -155,6 +153,7 @@
                 android:id="@+id/homeNavImg"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:tint="#7BFA4B"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -166,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
                 android:text="Home"
-                android:textColor="@color/white"
+                android:textColor="#7BFA4B"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/homeNavLine"
@@ -177,7 +176,7 @@
                 android:id="@+id/homeNavLine"
                 android:layout_width="0dp"
                 android:layout_height="4dp"
-                android:background="@null"
+                android:background="#7BFA4B"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -255,7 +254,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
                 android:text="Account"
-                android:textColor="#FFFFFF"
+                android:textColor="#F8F8F8"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/accountNavLine"
@@ -273,5 +272,4 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</RelativeLayout>
+</LinearLayout>
