@@ -36,7 +36,7 @@ public class AdminProductActivity extends AppCompatActivity {
 
     public void toVoucher(){
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("navTo", MainActivity.NAV_TO_VOUCHER);
+        intent.putExtra("navTo", AdminActivity.NAV_TO_VOUCHER);
         setResult(RESULT_OK, intent);
         finish();
         overridePendingTransition(0, 0);
@@ -44,7 +44,7 @@ public class AdminProductActivity extends AppCompatActivity {
 
     public void toManageAccount(){
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("navTo", MainActivity.NAV_TO_MANAGE_ACCOUNT);
+        intent.putExtra("navTo", AdminActivity.NAV_TO_MANAGE_ACCOUNT);
         setResult(RESULT_OK, intent);
         finish();
         overridePendingTransition(0, 0);
