@@ -40,7 +40,7 @@ import java.io.ByteArrayOutputStream;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    public String DEFAULT_PIC_SRC = "https://firebasestorage.googleapis.com/v0/b/bluegit-c8e08.appspot.com/o/user.png?alt=media&token=53098173-427e-4a05-beb6-d1c62ba9df6f";
+    public static String DEFAULT_PIC_SRC = "https://firebasestorage.googleapis.com/v0/b/bluegit-c8e08.appspot.com/o/user.png?alt=media&token=53098173-427e-4a05-beb6-d1c62ba9df6f";
 
     EditText tUserName;
     EditText tEmail;
@@ -111,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if(task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             String id = user.getUid();
-                            User userDat = new User(id, name, email, phone, Uri.parse(DEFAULT_PIC_SRC));
+                            User userDat = new User(id, name, email, phone, DEFAULT_PIC_SRC);
                             storageReference = storage.getReference();
                             StorageReference pictureRef = storageReference.child("/users/" + user.getUid() + "/profilePicture.png/");
 
@@ -129,21 +129,34 @@ public class RegisterActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Uri> task) {
                                             if(task.isSuccessful()){
-                                                userDat.setProfileImageSrc(task.getResult());
+                                                userDat.setProfileImageSrc(task.getResult().toString());
                                             }
 
                                             user.updateProfile(new UserProfileChangeRequest.Builder()
                                                     .setDisplayName(userDat.getDisplayName())
-                                                    .setPhotoUri(userDat.getProfileImageSrc())
+                                                    .setPhotoUri(Uri.parse(userDat.getProfileImageSrc()))
                                                     .build()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     progressBar.setVisibility(View.GONE);
-                                                    fireStoreManager.addNewUser(userDat);
-                                                    Toast.makeText(RegisterActivity.this, "Register Complete", Toast.LENGTH_SHORT).show();
-                                                    Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-                                                    setResult(RESULT_OK, i);
-                                                    finish();
+                                                    fireStoreManager.addNewUser(userDat, new AddUserDataCallBack() {
+                                                        @Override
+                                                        public void onSuccess() {
+                                                            Toast.makeText(RegisterActivity.this, "Register Complete", Toast.LENGTH_SHORT).show();
+                                                            Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                                                            setResult(RESULT_OK, i);
+                                                            finish();
+                                                        }
+                                                        @Override
+                                                        public void onFailure(Exception e) {
+                                                            Toast.makeText(RegisterActivity.this, "Unable to register to database.", Toast.LENGTH_SHORT).show();
+                                                            Log.d("DBException", e.getLocalizedMessage());
+                                                            pictureRef.delete();
+                                                            user.delete();
+                                                            mAuth.signOut();
+                                                        }
+                                                    });
+
                                                 }
                                             });
                                         }

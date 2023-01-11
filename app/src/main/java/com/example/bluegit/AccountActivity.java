@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.bluegit.model.Account;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
@@ -23,7 +22,6 @@ public class AccountActivity extends AppCompatActivity {
     EditText phoneNumberEdit;
     EditText addressNew;
     Button updateBtn;
-    Account account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +49,6 @@ public class AccountActivity extends AppCompatActivity {
 
     }
     public void update(){
-        account.setName(nameTV.getText().toString());
-        account.setName(nameEdit.getText().toString());
-        account.setAge(Integer.parseInt(ageEdit.getText().toString()));
-        account.setPhone(phoneNumberEdit.getText().toString());
-        account.setAddress(addressNew.getText().toString());
 
 //        updateAccountDb(account);
     }

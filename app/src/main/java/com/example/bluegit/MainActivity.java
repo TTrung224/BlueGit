@@ -41,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int NAV_TO_ACCOUNT = 5;
 
 
-    ArrayList<Product> products = new ArrayList<>();
     ImageView profilePic;
+    FireStoreManager fireStoreManager;
+
     GoogleSignInOptions gso;
     GoogleApiClient googleApiClient;
 
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         profilePic = findViewById(R.id.main_profile_pic);
+        fireStoreManager = new FireStoreManager(this);
 
         gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -92,14 +94,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         RecyclerView productDisplay = findViewById(R.id.items_display);
-        ProductDisplayAdapter adapter = new ProductDisplayAdapter(products, this);
-        productDisplay.setAdapter(adapter);
-        productDisplay.setLayoutManager(new GridLayoutManager(this, 2));
+
+        fireStoreManager.getAllProducts(new GetAllProductsCallBack() {
+            @Override
+            public void onSuccess(ArrayList<Product> result) {
+                productDisplay.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                ProductDisplayAdapter adapter = new ProductDisplayAdapter(result, MainActivity.this);
+                productDisplay.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d("GetAllProductException", e.getMessage());
+            }
+        });
+
     }
 
 
     public void onSignOutClick(View view) {
         FirebaseAuth.getInstance().signOut();
+
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
@@ -109,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         finish();
     }
 

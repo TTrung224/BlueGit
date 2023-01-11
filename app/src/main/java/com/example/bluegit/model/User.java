@@ -10,7 +10,7 @@ public class User {
     // User
     private String id;
     private String displayName;
-    private Uri profileImageSrc;
+    private String profileImageSrc;
     private String email;
     private String phoneNumber;
 
@@ -21,7 +21,7 @@ public class User {
     }
 
     // User
-    public User(String id, String displayName, String email, String phoneNumber, Uri profileImageSrc) {
+    public User(String id, String displayName, String email, String phoneNumber, String profileImageSrc) {
         this.id = id;
         this.displayName = displayName;
         this.email = email;
@@ -63,11 +63,11 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public Uri getProfileImageSrc() {
+    public String getProfileImageSrc() {
         return profileImageSrc;
     }
 
-    public void setProfileImageSrc(Uri profileImageSrc) {
+    public void setProfileImageSrc(String profileImageSrc) {
         this.profileImageSrc = profileImageSrc;
     }
 }
