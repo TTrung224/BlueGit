@@ -205,7 +205,7 @@ public class ChatActivity extends AppCompatActivity {
         meRef.collection("chatWith").document(otherId).set(meChat);
 
         Map<String, DocumentReference> otherChat = new HashMap<>();
-        otherChat.put(otherId, chatRef);
+        otherChat.put(meId, chatRef);
         otherRef.collection("chatWith").document(otherId).set(otherChat);
     }
 
