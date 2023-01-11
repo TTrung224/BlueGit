@@ -60,7 +60,7 @@
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <TextView
-        android:id="@+id/oldPrice"
+        android:id="@+id/itemPrice"
         android:layout_width="wrap_content"
         android:layout_height="41dp"
         android:layout_below="@+id/itemName"
@@ -88,7 +88,7 @@
         app:srcCompat="@drawable/minus_icon" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/deleteItemBtn"
         android:layout_width="31dp"
         android:layout_height="23dp"
         android:layout_alignParentTop="true"

@@ -1,6 +1,5 @@
 package com.example.bluegit;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,9 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.bluegit.controllers.ProductController;
+import com.example.bluegit.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.StorageReference;
 
 public class AddProductActivity extends AppCompatActivity {
     EditText name;
@@ -25,11 +23,14 @@ public class AddProductActivity extends AppCompatActivity {
     EditText quantity;
     Uri imgUri;
 
+    FireStoreManager fireStoreManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
 
+        fireStoreManager = new FireStoreManager(this);
         name = findViewById(R.id.productNameAdd);
         description = findViewById(R.id.productDescriptionAdd);
         specification = findViewById(R.id.productSpecificationAdd);
@@ -59,8 +60,6 @@ public class AddProductActivity extends AppCompatActivity {
 
 
     public void submit(View view) {
-        ProductController productController = new ProductController();
-
         String nameStr = name.getText().toString();
         String descriptionStr = description.getText().toString();
         String specificationStr = specification.getText().toString();
@@ -74,11 +73,22 @@ public class AddProductActivity extends AppCompatActivity {
                 && !quantity.getText().toString().equals("")
                 && !price.getText().toString().equals("")
                 && imgUri != null) {
-            boolean status = productController.addProduct(nameStr, descriptionStr, specificationStr,
-                    priceFloat, imgUri, quantityInt, sellerId);
-            if(!status){
-                Toast.makeText(this, "fail to add prduct", Toast.LENGTH_SHORT).show();
-            }
+
+            Product product = new Product(nameStr, descriptionStr, specificationStr,
+                    priceFloat, imgUri.toString(), quantityInt, sellerId);
+
+            fireStoreManager.addProduct(product, new AddProductCallBack() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(AddProductActivity.this, "Successfully list your product!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Toast.makeText(AddProductActivity.this, "Unable to list your product", Toast.LENGTH_SHORT).show();
+                    Log.d("AddProductException", e.getMessage());
+                }
+            });
         }
 
     }
