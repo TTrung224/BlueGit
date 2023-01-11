@@ -35,6 +35,7 @@
         app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/adminAccountList"
         android:layout_width="417dp"
         android:layout_height="536dp"
         android:layout_below="@+id/textView14"
