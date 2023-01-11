@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void testChat(View view) {
         Intent intent = new Intent(this, ChatActivity.class);
-        intent.putExtra("otherUserId", "S7WS1f6aEDUXQ3337rqeqYmnhZW2");
+        intent.putExtra("otherUserId", "ksvCCu0bbvYP5JEfvp34oIiLREd2");
         startActivity(intent);
     }
 }

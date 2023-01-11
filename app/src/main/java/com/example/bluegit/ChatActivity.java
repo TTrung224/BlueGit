@@ -206,7 +206,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Map<String, DocumentReference> otherChat = new HashMap<>();
         otherChat.put(otherId, chatRef);
-        otherRef.collection("chatWith").document(otherId).set(meChat);
+        otherRef.collection("chatWith").document(otherId).set(otherChat);
     }
 
     private class MsgHolder extends RecyclerView.ViewHolder {
