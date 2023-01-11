@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.bluegit.adapters.ProductDisplayAdapter;
+import com.example.bluegit.adapters.RecyclerViewOnClickListener;
 import com.example.bluegit.model.Product;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -90,11 +91,20 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView productDisplay = findViewById(R.id.items_display);
 
+
         fireStoreManager.getAllProducts(new GetProductsCallBack() {
             @Override
             public void onSuccess(ArrayList<Product> result) {
                 productDisplay.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-                ProductDisplayAdapter adapter = new ProductDisplayAdapter(result, MainActivity.this);
+                ProductDisplayAdapter adapter = new ProductDisplayAdapter(result, MainActivity.this, new RecyclerViewOnClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Product product = result.get(position);
+                        Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+                        intent.putExtra("productId", product.getProductId());
+                        startActivity(intent);
+                    }
+                });
                 productDisplay.setAdapter(adapter);
             }
 

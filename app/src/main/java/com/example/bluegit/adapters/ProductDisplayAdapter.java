@@ -20,12 +20,14 @@ import java.util.Locale;
 
 public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAdapter.ViewHolder>{
 
+    private RecyclerViewOnClickListener recyclerViewOnClickListener;
     private ArrayList<Product> products;
     private LayoutInflater inflater;
 
-    public ProductDisplayAdapter(ArrayList<Product> products, Context context) {
+    public ProductDisplayAdapter(ArrayList<Product> products, Context context, RecyclerViewOnClickListener recyclerViewOnClickListener) {
         this.products = products;
         this.inflater = LayoutInflater.from(context);
+        this.recyclerViewOnClickListener = recyclerViewOnClickListener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -33,12 +35,24 @@ public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAd
         public TextView productName;
         public TextView productPrice;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, RecyclerViewOnClickListener recyclerViewOnClickListener) {
             super(itemView);
 
             productImage = itemView.findViewById(R.id.display_product_image);
             productName = itemView.findViewById(R.id.display_product_name);
             productPrice = itemView.findViewById(R.id.display_product_price);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (recyclerViewOnClickListener != null) {
+                        int pos = getAdapterPosition();
+                        if(pos != RecyclerView.NO_POSITION){
+                            recyclerViewOnClickListener.onItemClick(pos);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -46,7 +60,7 @@ public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.layout_item_display, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, recyclerViewOnClickListener);
     }
 
     @Override
@@ -62,6 +76,5 @@ public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAd
     public int getItemCount() {
         return products.size();
     }
-
 
 }
