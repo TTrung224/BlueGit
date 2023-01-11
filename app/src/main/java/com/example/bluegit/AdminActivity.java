@@ -35,7 +35,7 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        fireStoreManager = new FireStoreManager(this);
+        fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
 
         gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
