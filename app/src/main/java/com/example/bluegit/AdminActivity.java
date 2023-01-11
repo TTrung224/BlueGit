@@ -58,6 +58,7 @@ public class AdminActivity extends AppCompatActivity {
         }
     }
 
+
     public void signOutClick(){
         FirebaseAuth.getInstance().signOut();
 

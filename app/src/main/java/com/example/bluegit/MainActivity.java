@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 100);
     }
 
+
     public void toCart() {
         Intent intent = new Intent(this, CartActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
