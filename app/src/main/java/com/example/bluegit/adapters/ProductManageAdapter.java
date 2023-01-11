@@ -18,35 +18,21 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAdapter.ViewHolder>{
+public class ProductManageAdapter extends RecyclerView.Adapter<ProductManageAdapter.ViewHolder>{
 
     private ArrayList<Product> products;
     private LayoutInflater inflater;
 
-    public ProductDisplayAdapter(ArrayList<Product> products, Context context) {
+    public ProductManageAdapter(ArrayList<Product> products, Context ctx) {
         this.products = products;
-        this.inflater = LayoutInflater.from(context);
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        public ImageView productImage;
-        public TextView productName;
-        public TextView productPrice;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            productImage = itemView.findViewById(R.id.display_product_image);
-            productName = itemView.findViewById(R.id.display_product_name);
-            productPrice = itemView.findViewById(R.id.display_product_price);
-        }
+        this.inflater = LayoutInflater.from(ctx);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.layout_item_display, parent, false);
-        return new ViewHolder(view);
+        View view = inflater.inflate(R.layout.layout_product_manage, parent, false);
+        return new ProductManageAdapter.ViewHolder(view);
     }
 
     @Override
@@ -55,7 +41,8 @@ public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAd
         holder.productName.setText(products.get(position).getProductName());
         NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         String price = nf.format(products.get(position).getProductPrice());
-        holder.productPrice.setText(price);
+        holder.productPrice.setText("PRICE: " + price);
+        holder.productCount.setText("QUANTITY: " + String.valueOf(products.get(position).getQuantity()));
     }
 
     @Override
@@ -63,5 +50,19 @@ public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAd
         return products.size();
     }
 
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        public ImageView productImage;
+        public TextView productName;
+        public TextView productPrice;
+        public TextView productCount;
 
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            productImage = itemView.findViewById(R.id.display_product_image);
+            productName = itemView.findViewById(R.id.display_product_name);
+            productPrice = itemView.findViewById(R.id.display_product_price);
+            productCount = itemView.findViewById(R.id.display_product_count);
+        }
+    }
 }

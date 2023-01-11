@@ -22,4 +22,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="string_placeholder">PLACEHOLDER</string>
     <string name="item_image_placeholder">Item image</string>
+    <string name="product_manage_header">Product Manage</string>
+    <string name="add_product_button">List An Item</string>
+    <string name="empty_user_product">Wow, so empty... \nAdd an item now and make some profit!</string>
 </resources>

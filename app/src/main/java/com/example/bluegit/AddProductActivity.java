@@ -3,17 +3,24 @@ package com.example.bluegit;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bluegit.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.UUID;
 
 public class AddProductActivity extends AppCompatActivity {
     EditText name;
@@ -22,6 +29,8 @@ public class AddProductActivity extends AppCompatActivity {
     EditText price;
     EditText quantity;
     Uri imgUri;
+    Button productCreate;
+    ProgressBar progressBar;
 
     FireStoreManager fireStoreManager;
 
@@ -30,7 +39,9 @@ public class AddProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
 
-        fireStoreManager = new FireStoreManager(this);
+        productCreate = findViewById(R.id.productCreateButton);
+        progressBar = findViewById(R.id.progress_add_product);
+        fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
         name = findViewById(R.id.productNameAdd);
         description = findViewById(R.id.productDescriptionAdd);
         specification = findViewById(R.id.productSpecificationAdd);
@@ -60,12 +71,16 @@ public class AddProductActivity extends AppCompatActivity {
 
 
     public void submit(View view) {
+        productCreate.setEnabled(false);
+        productCreate.setAlpha(0.5f);
+        progressBar.setVisibility(View.VISIBLE);
+
         String nameStr = name.getText().toString();
         String descriptionStr = description.getText().toString();
         String specificationStr = specification.getText().toString();
         int quantityInt = Integer.parseInt(quantity.getText().toString());
         float priceFloat = Float.parseFloat(price.getText().toString());
-        String sellerId = FirebaseAuth.getInstance().getUid();
+        DocumentReference sellerId = FirebaseFirestore.getInstance().document("users/"+FirebaseAuth.getInstance().getUid());
 
         if(!nameStr.equals("")
                 && !descriptionStr.equals("")
@@ -74,18 +89,23 @@ public class AddProductActivity extends AppCompatActivity {
                 && !price.getText().toString().equals("")
                 && imgUri != null) {
 
-            Product product = new Product(nameStr, descriptionStr, specificationStr,
+            Product product = new Product(UUID.randomUUID().toString(),nameStr, descriptionStr, specificationStr,
                     priceFloat, imgUri.toString(), quantityInt, sellerId);
 
             fireStoreManager.addProduct(product, new AddProductCallBack() {
                 @Override
                 public void onSuccess() {
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(AddProductActivity.this, "Successfully list your product!", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
 
                 @Override
                 public void onFailure(Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    productCreate.setAlpha(1f);
                     Toast.makeText(AddProductActivity.this, "Unable to list your product", Toast.LENGTH_SHORT).show();
+                    productCreate.setEnabled(true);
                     Log.d("AddProductException", e.getMessage());
                 }
             });

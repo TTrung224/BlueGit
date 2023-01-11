@@ -28,21 +28,64 @@
         android:layout_below="@+id/backBtn"
         android:layout_alignParentStart="true"
         android:layout_marginStart="16dp"
-        android:text="Product Manage"
+        android:text="@string/product_manage_header"
         android:textColor="#000000"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/backBtn" />
 
+    <Button
+        android:id="@+id/product_manager_add_product"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/add_product_button"
+        android:elevation="10dp"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:background="@drawable/round_box_blue"
+        android:layout_marginTop="120dp"
+        android:onClick="addProduct"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/dark_blue"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintTop_toBottomOf="@id/product_manager_add_product"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/product_manager_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="10dp"
+        android:padding="5dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ordersHeader3" />
+        app:layout_constraintTop_toBottomOf="@+id/product_manager_add_product" />
+
+    <TextView
+        android:id="@+id/empty_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:text="@string/empty_user_product"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@id/product_manager_recyclerview"
+        app:layout_constraintEnd_toEndOf="@id/product_manager_recyclerview"
+        app:layout_constraintTop_toTopOf="@id/product_manager_recyclerview"
+        app:layout_constraintBottom_toBottomOf="@id/product_manager_recyclerview"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
