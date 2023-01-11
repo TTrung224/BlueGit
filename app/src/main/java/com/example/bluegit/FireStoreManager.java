@@ -4,7 +4,6 @@ package com.example.bluegit;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -14,6 +13,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,16 +25,20 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class FireStoreManager {
+    private FirebaseUser currentUser;
     private final FirebaseFirestore db;
     private final Context ctx;
 
-    public FireStoreManager(Context ctx) {
+    public FireStoreManager(Context ctx, FirebaseUser currentUser) {
         this.ctx = ctx;
-        db = FirebaseFirestore.getInstance();
+        this.db = FirebaseFirestore.getInstance();
+        this.currentUser = currentUser;
     }
 
     public void addNewUser(User user, AddUserDataCallBack callBack){
@@ -56,7 +61,7 @@ public class FireStoreManager {
 
     }
 
-    public void getUser(String uID, GetUserDataCallBack callBack){
+    public void getUserById(String uID, GetUserDataCallBack callBack){
         CollectionReference dbUsers = db.collection("users");
         User user = new User();
 
@@ -76,12 +81,31 @@ public class FireStoreManager {
         });
     }
 
-    public void addProduct(Product product, AddProductCallBack callBack){
-        CollectionReference dbProducts = db.collection("products");
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference riversRef = storageReference.child("users/"+product.getSellerId()+"/productsImg/"+
-                UUID.randomUUID().toString() + ".png");
+    public void getCurrentUser(GetUserDataCallBack callBack){
+        CollectionReference dbUsers = db.collection("users");
+        User user = new User();
 
+        dbUsers.document(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()){
+                        User user = doc.toObject(User.class);
+                        callBack.onSuccess(user);
+                    }
+                }else {
+                    callBack.onFailure(task.getException());
+                }
+            }
+        });
+    }
+
+    public void addProduct(Product product, AddProductCallBack callBack){
+        DocumentReference dbProducts = db.collection("products").document(product.getProductId());
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference riversRef = storageReference.child("users/"+product.getSellerId().getId()+"/productsImg/"+
+                product.getProductId() + ".png");
 
         // Register observers to listen for when the download is done or if it fails
         UploadTask uploadTask = riversRef.putFile(Uri.parse(product.getImageSource()));
@@ -94,19 +118,20 @@ public class FireStoreManager {
                         if(task.isSuccessful()){
                             Uri img = task.getResult();
                             Log.d("debugging", "url: "+ img);
+                            product.setImageSource(img.toString());
 
-                            dbProducts.add(product)
-                                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                                            if(task.isSuccessful()){
-                                                callBack.onSuccess();
-                                            }else{
-                                                riversRef.delete();
-                                                callBack.onFailure(task.getException());
-                                            }
-                                        }
-                                    });
+                            dbProducts.set(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        callBack.onSuccess();
+                                    }else{
+                                        riversRef.delete();
+                                        callBack.onFailure(task.getException());
+                                    }
+                                }
+                            });
+
                         }else {
                             callBack.onFailure(task.getException());
                         }
@@ -117,7 +142,49 @@ public class FireStoreManager {
 
     }
 
-    public void getAllProducts(GetAllProductsCallBack callBack) {
+    public void getProductById(String id, GetProductCallBack callBack){
+        DocumentReference dbProduct = db.collection("products").document(id);
+        dbProduct.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    try{
+                        Product product = task.getResult().toObject(Product.class);
+                        callBack.onSuccess(product);
+                    } catch (Exception e){
+                        callBack.onFailure(e);
+                    }
+                } else {
+                    callBack.onFailure(task.getException());
+                }
+            }
+        });
+    }
+
+    public void getUserProducts(GetProductsCallBack callBack){
+        CollectionReference dbProducts = db.collection("products");
+        dbProducts.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    ArrayList<Product> products = new ArrayList<>();
+                    try{
+                        for(QueryDocumentSnapshot snapshot : task.getResult()){
+                            Product product = snapshot.toObject(Product.class);
+                            if(product.getSellerId().getId().equals(currentUser.getUid()) && !product.isDisabled()){
+                                products.add(product);
+                            }
+                        }
+                        callBack.onSuccess(products);
+                    }catch (Exception e){
+                        callBack.onFailure(e);
+                    }
+                }else {callBack.onFailure(task.getException());}
+            }
+        });
+    }
+
+    public void getAllProducts(GetProductsCallBack callBack) {
         CollectionReference dbProducts = db.collection("products");
         dbProducts.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -127,15 +194,14 @@ public class FireStoreManager {
                     try{
                         for(QueryDocumentSnapshot snapshots : task.getResult()){
                             Product product = snapshots.toObject(Product.class);
-                            if(!product.isDisabled()){
+                            if(!product.isDisabled() && !product.getSellerId().getId().equals(currentUser.getUid())){
                                 products.add(product);
                             }
                         }
+                        callBack.onSuccess(products);
                     }catch (Exception e){
                         callBack.onFailure(e);
                     }
-
-                    callBack.onSuccess(products);
                 }else {
                     callBack.onFailure(task.getException());
                 }
@@ -146,8 +212,13 @@ public class FireStoreManager {
     }
 }
 
-interface GetAllProductsCallBack {
+interface GetProductsCallBack {
     void onSuccess(ArrayList<Product> result);
+    void onFailure(Exception e);
+}
+
+interface GetProductCallBack{
+    void onSuccess(Product product);
     void onFailure(Exception e);
 }
 

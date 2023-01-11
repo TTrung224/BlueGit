@@ -15,19 +15,14 @@ import android.widget.Toast;
 
 import com.example.bluegit.adapters.ProductDisplayAdapter;
 import com.example.bluegit.model.Product;
-import com.example.bluegit.model.User;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -59,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         profilePic = findViewById(R.id.main_profile_pic);
-        fireStoreManager = new FireStoreManager(this);
+        fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
 
         gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -84,13 +79,6 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-//        Product p1 = new Product("Very Nice Hat", 10000, "https://i.imgur.com/vve6kCY.jpeg");
-//        Product p2 = new Product("Green T-Shirt", 50000, "https://i.imgur.com/M8lSriJ.jpeg");
-//
-//        products.add(p1);
-//        products.add(p2);
-//        products.add(new Product("Pink dress with Strawberry on it", 100000, "https://cdn.shopify.com/s/files/1/0011/9783/4252/products/20_375a8763-f5d7-4184-a352-4523ef713733.jpg?v=1576267132"));
-//        products.add(new Product("It's a box of strawberries", 80000, "https://www.shutterstock.com/image-photo/box-strawberries-260nw-733675327.jpg"));
     }
 
     @Override
@@ -102,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView productDisplay = findViewById(R.id.items_display);
 
-        fireStoreManager.getAllProducts(new GetAllProductsCallBack() {
+        fireStoreManager.getAllProducts(new GetProductsCallBack() {
             @Override
             public void onSuccess(ArrayList<Product> result) {
                 productDisplay.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
@@ -176,10 +164,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 100);
     }
 
-    public void refresh() {
-        this.recreate();
-    }
-
     public void toCart() {
         Intent intent = new Intent(this, CartActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -192,29 +176,29 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 100);
     }
 
-    public void toVoucher(){
-        Intent intent = new Intent(this,AdminVoucherActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivityForResult(intent, 100);
-    }
-
-    public void toManageAccount(){
-        Intent intent = new Intent(this, AdminAccountActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivityForResult(intent,100);
-    }
-
-    public void toManageProduct(){
-        Intent intent = new Intent(this, AdminProductActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivityForResult(intent,100);
-    }
-
-    public void toAdminHome(){
-        Intent intent = new Intent(this, AdminActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivityForResult(intent, 100);
-    }
+//    public void toVoucher(){
+//        Intent intent = new Intent(this,AdminVoucherActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        startActivityForResult(intent, 100);
+//    }
+//
+//    public void toManageAccount(){
+//        Intent intent = new Intent(this, AdminAccountActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        startActivityForResult(intent,100);
+//    }
+//
+//    public void toManageProduct(){
+//        Intent intent = new Intent(this, AdminProductActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        startActivityForResult(intent,100);
+//    }
+//
+//    public void toAdminHome(){
+//        Intent intent = new Intent(this, AdminActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        startActivityForResult(intent, 100);
+//    }
 
 
 
@@ -228,17 +212,17 @@ public class MainActivity extends AppCompatActivity {
                 case NAV_TO_ORDERS: toOrders(); break;
                 case NAV_TO_CART: toCart(); break;
                 case NAV_TO_ACCOUNT: toAccount(); break;
-                case NAV_TO_ADMIN_HOME: toAdminHome(); break;
-                case NAV_TO_MANAGE_ACCOUNT: toManageAccount(); break;
-                case NAV_TO_MANAGE_PRODUCT: toManageProduct(); break;
-                case NAV_TO_VOUCHER: toVoucher(); break;
+//                case NAV_TO_ADMIN_HOME: toAdminHome(); break;
+//                case NAV_TO_MANAGE_ACCOUNT: toManageAccount(); break;
+//                case NAV_TO_MANAGE_PRODUCT: toManageProduct(); break;
+//                case NAV_TO_VOUCHER: toVoucher(); break;
             }
         }
     }
 
     public void testChat(View view) {
         Intent intent = new Intent(this, ChatActivity.class);
-        intent.putExtra("otherUserId", "ksvCCu0bbvYP5JEfvp34oIiLREd2");
+        intent.putExtra("otherUserId", "TncOqL0OPdesMbXbHW0ZCtTEbs63");
         startActivity(intent);
     }
 }

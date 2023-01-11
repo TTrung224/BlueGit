@@ -2,7 +2,10 @@ package com.example.bluegit.model;
 
 import android.net.Uri;
 
+import com.google.firebase.firestore.DocumentReference;
+
 public class Product {
+    private String productId;
     private String productName;
     private float productPrice;
     private String imageSource;
@@ -10,12 +13,13 @@ public class Product {
     private String specification;
     private int quantity;
     private boolean disabled = false;
-    private String sellerId;
+    private DocumentReference sellerId;
 
     public Product() {}
 
-    public Product(String productName, String description, String specification,
-                   float productPrice, String imageSource, int quantity, String sellerId) {
+    public Product(String id, String productName, String description, String specification,
+                   float productPrice, String imageSource, int quantity, DocumentReference sellerId) {
+        this.productId = id;
         this.productName = productName;
         this.description = description;
         this.specification = specification;
@@ -23,6 +27,14 @@ public class Product {
         this.imageSource = imageSource;
         this.quantity = quantity;
         this.sellerId = sellerId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {
@@ -79,11 +91,11 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public String getSellerId() {
+    public DocumentReference getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(String sellerId) {
+    public void setSellerId(DocumentReference sellerId) {
         this.sellerId = sellerId;
     }
 }

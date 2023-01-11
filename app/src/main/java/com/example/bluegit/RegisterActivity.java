@@ -60,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         mAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
-        fireStoreManager = new FireStoreManager(this);
+        fireStoreManager = new FireStoreManager(this, mAuth.getCurrentUser());
 
         tUserName = findViewById(R.id.register_name);
         tEmail = findViewById(R.id.register_email);

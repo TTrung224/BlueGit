@@ -2,36 +2,58 @@ package com.example.bluegit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
+import com.example.bluegit.adapters.ProductManageAdapter;
+import com.example.bluegit.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ProductManageActivity extends AppCompatActivity {
     private String uId;
     Intent navIntent;
 
+    FireStoreManager fireStoreManager;
+    TextView emptyMessage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_manage);
+        fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
+        emptyMessage = findViewById(R.id.empty_message);
 
         navIntent = new Intent(this, MainActivity.class);
-        uId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        RecyclerView productDisplay = findViewById(R.id.items_display);
-//        ProductDisplayAdapter adapter = new ProductDisplayAdapter(products, this);
-//        productDisplay.setAdapter(adapter);
-//        productDisplay.setLayoutManager(new GridLayoutManager(this, 2));
+        RecyclerView productDisplay = findViewById(R.id.product_manager_recyclerview);
+        fireStoreManager.getUserProducts(new GetProductsCallBack() {
+            @Override
+            public void onSuccess(ArrayList<Product> result) {
+                if(result.size() > 0){
+                    emptyMessage.setVisibility(View.GONE);
+                    ProductManageAdapter adapter = new ProductManageAdapter(result, ProductManageActivity.this);
+                    productDisplay.setAdapter(adapter);
+                    productDisplay.setLayoutManager(new LinearLayoutManager(ProductManageActivity.this));
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d("GetUserProductException", e.getLocalizedMessage());
+            }
+        });
     }
 
     public void goBack(View view) {
@@ -68,5 +90,10 @@ public class ProductManageActivity extends AppCompatActivity {
         setResult(RESULT_OK, navIntent);
         finish();
         overridePendingTransition(0, 0);
+    }
+
+    public void addProduct(View view) {
+        Intent intent = new Intent(ProductManageActivity.this, AddProductActivity.class);
+        startActivity(intent);
     }
 }

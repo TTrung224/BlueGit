@@ -111,8 +111,7 @@
                 android:layout_marginTop="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/product" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/orderNavTxt"
@@ -153,11 +152,11 @@
                 android:id="@+id/homeNavImg"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:tint="#7BFA4B"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/home" />
+                app:srcCompat="@drawable/home"
+                app:tint="#7BFA4B" />
 
             <TextView
                 android:id="@+id/homeNavTxt"
