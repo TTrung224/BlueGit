@@ -2,10 +2,12 @@ package com.example.bluegit;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -21,7 +23,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.app.ActivityCompat;
 
 import com.example.bluegit.model.User;
@@ -50,9 +54,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public int SIGN_UP_REQUEST = 100;
     private final int GOOGLE_INTENT_REQUEST = 103;
-    private String[] permissionArrays = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
+    private final String[] permissionArrays = {
+            Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.READ_MEDIA_IMAGES,
             Manifest.permission.INTERNET};
 
     EditText tEmail;
@@ -156,7 +160,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
 
-
                     AuthCredential credential = GoogleAuthProvider.getCredential(token, null);
 
                     String finalProfileImage = profileImage;
@@ -241,17 +244,32 @@ public class LoginActivity extends AppCompatActivity {
         if(requestCode == 99){
             if(grantResults.length > 0){
                 for(int result : grantResults){
+
                     if(result != PackageManager.PERMISSION_GRANTED){
                         new AlertDialog.Builder(this)
-                                .setTitle("Permission Denied")
-                                        .setMessage("The app cannot work properly without these permissions.")
-                                                .show();
-                        finish();
+                                .setTitle("Permissions Denied")
+                                .setMessage("Following permissions are required for the application to work\n\n" +
+                                        "INTERNET ACCESS\nIMAGE_ACCESS")
+                                .setPositiveButton("Understood", new DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+
+                                })
+                                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        finish();
+                                    }
+                                })
+                                .show();
                     }
                 }
-            }else {
-                finish();
             }
+        }else {
+            finish();
         }
     }
 }

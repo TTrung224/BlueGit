@@ -29,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -98,6 +99,8 @@ public class FireStoreManager {
                     if(doc.exists()){
                         User user = doc.toObject(User.class);
                         callBack.onSuccess(user);
+                    }else {
+                        callBack.onFailure(new NoUserInDatabaseException("No User In Database   "));
                     }
                 }else {
                     callBack.onFailure(task.getException());
@@ -371,10 +374,20 @@ public class FireStoreManager {
         void onSuccess();
         void onFailure(Exception e);
     }
+
+    public interface UpdateProductCallBack{
+        void onSuccess();
+        void onFailure(Exception e);
+    }
+
+
+}
+
+class NoUserInDatabaseException extends Exception{
+    public NoUserInDatabaseException(String messageError){
+        super(messageError);
+    }
 }
 
 
-interface UpdateProductCallBack{
-    void onSuccess();
-    void onFailure(Exception e);
-}
+

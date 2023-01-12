@@ -16,7 +16,7 @@ public class User {
     private String profileImageSrc;
     private String email;
     private String phoneNumber;
-    private float balance;
+    private int balance;
     private ArrayList<DocumentReference> orderRef;
 
 
@@ -33,6 +33,21 @@ public class User {
         this.orderRef = new ArrayList<>();
     }
 
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public ArrayList<DocumentReference> getOrderRef() {
+        return orderRef;
+    }
+
+    public void setOrderRef(ArrayList<DocumentReference> orderRef) {
+        this.orderRef = orderRef;
+    }
 
     public String getId() {
         return id;

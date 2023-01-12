@@ -97,7 +97,12 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception e) {
-                    Log.d("GetCurrentUserEx", e.getLocalizedMessage());
+                    Log.d("GetCurrentUserEx", e.getMessage());
+                    if(e instanceof NoUserInDatabaseException){
+                        currentUser.delete();
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(MainActivity.this, "User is not in database, please re-create account", Toast.LENGTH_SHORT).show();
+                    }
                     finish();
                 }
             });
