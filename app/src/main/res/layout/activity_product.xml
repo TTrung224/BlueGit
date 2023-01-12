@@ -160,6 +160,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="5"
             android:background="@drawable/shape_button_main_color"
+            android:onClick="addCartHandler"
             android:text="Add to Cart"
             android:textColor="@color/white"
             android:textSize="24sp" />

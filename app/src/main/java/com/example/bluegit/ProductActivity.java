@@ -14,10 +14,14 @@ import android.widget.TextView;
 
 import com.example.bluegit.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class ProductActivity extends AppCompatActivity {
 
@@ -26,7 +30,13 @@ public class ProductActivity extends AppCompatActivity {
     TextView tPrice;
     TextView tDescription;
     TextView tSpec;
-    FireStoreManager fireStoreManager;
+    TextView productQuantity;
+    FirebaseFirestore db;
+    DocumentReference docRef;
+    String productId;
+
+    Map<String, String> products = new HashMap<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +51,7 @@ public class ProductActivity extends AppCompatActivity {
         tPrice = findViewById(R.id.productPrice);
         tDescription = findViewById(R.id.productDescContent);
         tSpec = findViewById(R.id.productSpec);
+        productQuantity = findViewById(R.id.quantity);
 
         Intent intent = getIntent();
         String productId = intent.getStringExtra("productId");
@@ -83,4 +94,13 @@ public class ProductActivity extends AppCompatActivity {
     public void onBackButtonClick(View view) {
         finish();
     }
+
+    public void addCartHandler(){
+        String quantity = productQuantity.getText().toString();
+        products.put(productId,quantity);
+
+
+
+    }
+
 }

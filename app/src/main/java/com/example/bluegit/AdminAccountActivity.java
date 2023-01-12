@@ -9,6 +9,7 @@ import android.accounts.Account;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.bluegit.adapters.AdminAccountAdapter;
 import com.example.bluegit.adapters.AdminProductAdapter;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class AdminAccountActivity extends AppCompatActivity {
         // TODO: retrieve and process data here
 
         RecyclerView recyclerView = findViewById(R.id.adminAccountList);
-        AdminProductAdapter adapter = new AdminProductAdapter(accounts, this);
+        AdminAccountAdapter adapter = new AdminAccountAdapter(accounts, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

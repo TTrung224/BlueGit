@@ -57,7 +57,9 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
         holder.productName.setText(products.get(position).getProductName());
         String price = products.get(position).getProductPrice() + " đ";
         holder.productPrice.setText(price);
-//        holder.productOwner.setText(products.get(position).getsellerId());
+        String sellerId = products.get(position).getSellerId().toString();
+        holder.productOwner.setText(sellerId);
+
     }
 
 

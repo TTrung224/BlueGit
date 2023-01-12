@@ -1,6 +1,6 @@
 package com.example.bluegit.adapters;
 
-import android.accounts.Account;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bluegit.R;
+import com.example.bluegit.model.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,11 +21,11 @@ import java.util.ArrayList;
 
 
 public class AdminAccountAdapter  extends RecyclerView.Adapter<AdminAccountAdapter.ViewHolder>{
-    private ArrayList<Account> accounts;
+    private ArrayList<User> users;
     private LayoutInflater inflater;
 
-    public AdminAccountAdapter(ArrayList<Account> accounts, Context context) {
-        this.accounts = accounts;
+    public AdminAccountAdapter(ArrayList<User> users, Context context) {
+        this.users = users;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -55,16 +56,16 @@ public class AdminAccountAdapter  extends RecyclerView.Adapter<AdminAccountAdapt
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        Picasso.get().load(accounts.get(position).getImageSource()).into(holder.accountImage);
-//        holder.accountName.setText(accounts.get(position).getAccountName());
-//        holder.accountPhone.setText(accounts.get(position).getAccountPhone());
-//        holder.accountAddress.setText(products.get(position).getAccountAddress());
+        Picasso.get().load(users.get(position).getProfileImageSrc()).into(holder.accountImage);
+        holder.accountName.setText(users.get(position).getDisplayName());
+        holder.accountPhone.setText(users.get(position).getPhoneNumber());
+
     }
 
 
 
     @Override
     public int getItemCount() {
-        return accounts.size();
+        return users.size();
     }
 }
