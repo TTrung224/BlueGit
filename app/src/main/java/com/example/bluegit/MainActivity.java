@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     ImageView profilePic;
     FireStoreManager fireStoreManager;
     ProgressBar progressBar;
+    EditText tSearchBar;
+    ImageButton searchBtn;
+    RecyclerView productDisplay;
 
     GoogleSignInOptions gso;
     GoogleApiClient googleApiClient;
@@ -51,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         profilePic = findViewById(R.id.main_profile_pic);
         progressBar = findViewById(R.id.display_progress);
+        tSearchBar = findViewById(R.id.search_bar);
+        searchBtn = findViewById(R.id.search_button);
+        productDisplay = findViewById(R.id.items_display);
         fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
 
         gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -96,9 +104,6 @@ public class MainActivity extends AppCompatActivity {
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             finish();
         }
-
-        RecyclerView productDisplay = findViewById(R.id.items_display);
-
 
         fireStoreManager.getAllProducts(new FireStoreManager.GetProductsCallBack() {
             @Override
@@ -214,5 +219,35 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("otherUserId", "TncOqL0OPdesMbXbHW0ZCtTEbs63");
         startActivity(intent);
+    }
+
+    public void startSearch(View view) {
+        String searchString = tSearchBar.getText().toString();
+        progressBar.setVisibility(View.VISIBLE);
+
+        fireStoreManager.getProductsFromString(searchString, new FireStoreManager.GetProductsCallBack() {
+            @Override
+            public void onSuccess(ArrayList<Product> result) {
+                progressBar.setVisibility(View.GONE);
+                productDisplay.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                ProductDisplayAdapter adapter = new ProductDisplayAdapter(result, MainActivity.this, new RecyclerViewOnClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Product product = result.get(position);
+                        Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+                        intent.putExtra("productId", product.getProductId());
+                        startActivity(intent);
+                    }
+                });
+                productDisplay.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                progressBar.setVisibility(View.GONE);
+                Log.d("GetStringProductException", e.getMessage());
+            }
+        });
+
     }
 }

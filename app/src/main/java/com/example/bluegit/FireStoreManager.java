@@ -30,6 +30,7 @@ import com.google.firebase.storage.UploadTask;
 import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -101,6 +102,40 @@ public class FireStoreManager {
                 }else {
                     callBack.onFailure(task.getException());
                 }
+            }
+        });
+    }
+
+    public void getProductsFromString(String searchStr, GetProductsCallBack callBack){
+        CollectionReference dbProducts = db.collection("products");
+        String[] searchWords = searchStr.toLowerCase().trim().split(" ");
+        dbProducts.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    ArrayList<Product> products = new ArrayList<>();
+                    try{
+                        for(QueryDocumentSnapshot snapshot : task.getResult()){
+                            Product product = snapshot.toObject(Product.class);
+                            if(!product.isDisabled() && !product.getSellerId().getId().equals(currentUser.getUid())){
+                                if(searchWords.length > 0){
+                                    for(String word : searchWords){
+                                        if(product.getProductName().toLowerCase().contains(word)){
+                                            products.add(product);
+                                            break;
+                                        }
+                                    }
+                                }else {
+                                    products.add(product);
+                                }
+
+                            }
+                        }
+                        callBack.onSuccess(products);
+                    }catch (Exception e){
+                        callBack.onFailure(e);
+                    }
+                }else {callBack.onFailure(task.getException());}
             }
         });
     }
@@ -223,8 +258,8 @@ public class FireStoreManager {
                     try{
                         for(QueryDocumentSnapshot snapshots : task.getResult()){
                             Product product = snapshots.toObject(Product.class);
-                            if(cart.containsKey(product.getProductId())){
-                                result.put(product,  ((Long)cart.get(product.getProductId())).intValue());
+                            if(cart.containsKey(product.getProductId()) && !product.isDisabled() && product.getQuantity() > 0){
+                                result.put(product, ((Long)cart.get(product.getProductId())).intValue() );
                             }
                         }
                         callBack.onSuccess(result);

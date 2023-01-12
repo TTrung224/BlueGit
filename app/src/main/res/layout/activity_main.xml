@@ -54,14 +54,17 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <EditText
+                android:id="@+id/search_bar"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="8"
                 android:layout_marginHorizontal="10dp"/>
             <ImageButton
+                android:id="@+id/search_button"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/selector_search_button"
+                android:onClick="startSearch"
                 android:src="@drawable/ic_baseline_search_24"
                 app:tint="@color/white" />
         </LinearLayout>
@@ -72,6 +75,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:indeterminate="true"
+        android:elevation="20dp"
         app:layout_constraintStart_toStartOf="@id/items_display"
         app:layout_constraintEnd_toEndOf="@id/items_display"
         app:layout_constraintTop_toTopOf="@id/items_display"
