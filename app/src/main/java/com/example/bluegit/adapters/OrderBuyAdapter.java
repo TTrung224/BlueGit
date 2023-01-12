@@ -15,19 +15,20 @@ import com.example.bluegit.model.Order;
 
 import org.threeten.bp.format.DateTimeFormatter;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHolder> {
-    private ArrayList<Order> orders;
-    private LayoutInflater inflater;
+    private final ArrayList<Order> orders;
+    private final LayoutInflater inflater;
 
     public OrderBuyAdapter(ArrayList<Order> order, Context context) {
         this.orders = order;
         this.inflater = LayoutInflater.from(context);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView orderId;
         public TextView quantity;
         public TextView orderPrice;
@@ -48,7 +49,7 @@ public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHo
     @Override
     public OrderBuyAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.layout_order_buy, parent, false);
-        return new OrderBuyAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -56,11 +57,11 @@ public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHo
         String orderId = "Order "+orders.get(position).getId();
         holder.orderId.setText(orderId);
 
-        String quantity = Integer.toString(orders.get(position).getTotalProductQuantity());
+        String quantity = Integer.toString(orders.get(position).getProductQuantity());
         holder.quantity.setText(quantity);
 
-        int price = Math.round(orders.get(position).getTotalPrice());
-        String formattedPrice = String.format(Locale.US, "%,d", price) + "₫";
+        String formattedPrice = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"))
+                .format(orders.get(position).getTotalPrice());
         holder.orderPrice.setText(formattedPrice);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

@@ -2,7 +2,10 @@ package com.example.bluegit.model;
 
 import android.net.Uri;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Exclude;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
@@ -13,24 +16,39 @@ public class User {
     private String profileImageSrc;
     private String email;
     private String phoneNumber;
+    private int balance;
+    private ArrayList<DocumentReference> orderRef;
 
-    @Exclude
-    private ArrayList<Product> products;
 
     public User() {
     }
 
-    // User
     public User(String id, String displayName, String email, String phoneNumber, String profileImageSrc) {
         this.id = id;
         this.displayName = displayName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.profileImageSrc = profileImageSrc;
+        this.balance = 1000000;
+        this.orderRef = new ArrayList<>();
     }
 
+    public int getBalance() {
+        return balance;
+    }
 
-    // User
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public ArrayList<DocumentReference> getOrderRef() {
+        return orderRef;
+    }
+
+    public void setOrderRef(ArrayList<DocumentReference> orderRef) {
+        this.orderRef = orderRef;
+    }
+
     public String getId() {
         return id;
     }

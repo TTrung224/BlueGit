@@ -1,5 +1,7 @@
 package com.example.bluegit.model;
 
+import com.google.firebase.firestore.DocumentReference;
+
 import org.threeten.bp.LocalDateTime;
 import java.util.ArrayList;
 
@@ -7,41 +9,25 @@ public class Order {
     private String id;
     private ArrayList<Product> products;
     private ArrayList<Integer> amount;
-    private float totalPrice;
     private String voucher;
+    private String address;
+    private String status;
     private LocalDateTime createdDate;
-    private String status; // preparing delivering received
-    private int totalProductQuantity;
 
     // TODO: reconsider data type
-    private String customerId;
-    private String sellerId;
+    private DocumentReference customerId;
+    private DocumentReference sellerId;
 
     public Order(String id, ArrayList<Product> products, ArrayList<Integer> amount,
-                 String voucher, String customerId, String sellerId) {
+                 String voucher, DocumentReference customerId, DocumentReference sellerId) {
         this.id = id;
         this.products = products;
         this.amount = amount;
         this.voucher = voucher;
         this.customerId = customerId;
+        this.status = "pending";
         this.sellerId = sellerId;
 
-        this.status = "preparing";
-
-        this.createdDate = LocalDateTime.now();
-
-        float price = 0;
-        for(int i = 0; i < products.size(); i++){
-            price += products.get(i).getProductPrice()*amount.get(i);
-        }
-        this.totalPrice = price;
-
-
-        int quantity = 0;
-        for(int i: amount){
-            quantity += i;
-        }
-        this.totalProductQuantity = quantity;
     }
 
     public ArrayList<Product> getProducts() {
@@ -52,28 +38,20 @@ public class Order {
         this.products = products;
     }
 
-    public ArrayList<Integer> getAmount() {
-        return amount;
+    public DocumentReference getCustomerId() {
+        return customerId;
     }
 
-    public void setAmount(ArrayList<Integer> amount) {
-        this.amount = amount;
+    public void setCustomerId(DocumentReference customerId) {
+        this.customerId = customerId;
     }
 
-    public int getTotalProductQuantity() {
-        return totalProductQuantity;
+    public DocumentReference getSellerId() {
+        return sellerId;
     }
 
-    public void setTotalProductQuantity(int totalProductQuantity) {
-        this.totalProductQuantity = totalProductQuantity;
-    }
-
-    public float getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(float totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setSellerId(DocumentReference sellerId) {
+        this.sellerId = sellerId;
     }
 
     public String getVoucher() {
@@ -92,6 +70,22 @@ public class Order {
         this.createdDate = createdDate;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -100,28 +94,24 @@ public class Order {
         this.status = status;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public int getTotalPrice(){
+        int total = 0;
+        for(Product product : products){
+            total += product.getProductPrice();
+        }
+        return total;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public ArrayList<Integer> getAmount() {
+        return amount;
     }
 
-    public String getSellerId() {
-        return sellerId;
+    public void setAmount(ArrayList<Integer> amount) {
+        this.amount = amount;
     }
 
-    public void setSellerId(String sellerId) {
-        this.sellerId = sellerId;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public int getProductQuantity(){
+        return products.size();
     }
 }
 

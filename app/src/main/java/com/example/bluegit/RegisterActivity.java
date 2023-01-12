@@ -139,7 +139,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     progressBar.setVisibility(View.GONE);
-                                                    fireStoreManager.addNewUser(userDat, new AddUserDataCallBack() {
+                                                    fireStoreManager.addNewUser(userDat, new FireStoreManager.AddUserDataCallBack() {
                                                         @Override
                                                         public void onSuccess() {
                                                             Toast.makeText(RegisterActivity.this, "Register Complete", Toast.LENGTH_SHORT).show();

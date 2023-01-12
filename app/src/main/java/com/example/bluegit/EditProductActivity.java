@@ -59,7 +59,7 @@ public class EditProductActivity extends AppCompatActivity {
         productIdStr = intent.getStringExtra("productId");
         Log.d("TESTING", productIdStr);
 
-        fireStoreManager.getProductById(productIdStr, new GetProductCallBack() {
+        fireStoreManager.getProductById(productIdStr, new FireStoreManager.GetProductCallBack() {
             @Override
             public void onSuccess(Product product) {
 
@@ -99,7 +99,7 @@ public class EditProductActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         String newImageSource = selectedImg.toString();
         String newName = addName.getText().toString();
-        float newPrice =parseFloat(addPrice.getText().toString()) ;
+        int newPrice = Integer.parseInt(addPrice.getText().toString()) ;
         int newQuantity = Integer.parseInt(addQuantity.getText().toString()) ;
         String newDescription = addDescription.getText().toString();
         String newSpecification = addSpecification.getText().toString();
@@ -121,7 +121,7 @@ public class EditProductActivity extends AppCompatActivity {
             addSpecification.setError("Please enter your new specification.");
             addSpecification.requestFocus();
         }
-        fireStoreManager.addProduct(productNew, new AddProductCallBack() {
+        fireStoreManager.addProduct(productNew, new FireStoreManager.AddProductCallBack() {
             @Override
             public void onSuccess() {
                 progressBar.setVisibility(View.GONE);

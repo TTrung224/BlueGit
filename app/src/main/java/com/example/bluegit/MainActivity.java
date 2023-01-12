@@ -9,13 +9,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bluegit.adapters.ProductDisplayAdapter;
 import com.example.bluegit.adapters.RecyclerViewOnClickListener;
 import com.example.bluegit.model.Product;
+import com.example.bluegit.model.User;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -38,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView profilePic;
     FireStoreManager fireStoreManager;
+    ProgressBar progressBar;
+    EditText tSearchBar;
+    ImageButton searchBtn;
+    RecyclerView productDisplay;
 
     GoogleSignInOptions gso;
     GoogleApiClient googleApiClient;
@@ -47,7 +57,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         profilePic = findViewById(R.id.main_profile_pic);
+        progressBar = findViewById(R.id.display_progress);
+        tSearchBar = findViewById(R.id.search_bar);
+        searchBtn = findViewById(R.id.search_button);
+        productDisplay = findViewById(R.id.items_display);
         fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
+
+        tSearchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                startSearch(v);
+                return true;
+            }
+        });
 
         gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -63,11 +85,28 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if(currentUser != null){
-            String welcomeMessage = "WELCOME! " + currentUser.getDisplayName();
-            Picasso.get()
-                    .load(currentUser.getPhotoUrl())
-                    .into(profilePic);
-            Toast.makeText(MainActivity.this, welcomeMessage, Toast.LENGTH_SHORT).show();
+            fireStoreManager.getCurrentUser(new FireStoreManager.GetUserDataCallBack() {
+                @Override
+                public void onSuccess(User result) {
+                    String welcomeMessage = "WELCOME! " + result.getDisplayName();
+                    Picasso.get()
+                            .load(result.getProfileImageSrc())
+                            .into(profilePic);
+                    Toast.makeText(MainActivity.this, welcomeMessage, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d("GetCurrentUserEx", e.getMessage());
+                    if(e instanceof NoUserInDatabaseException){
+                        currentUser.delete();
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(MainActivity.this, "User is not in database, please re-create account", Toast.LENGTH_SHORT).show();
+                    }
+                    finish();
+                }
+            });
+
         }else{
             finish();
         }
@@ -81,12 +120,10 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        RecyclerView productDisplay = findViewById(R.id.items_display);
-
-
-        fireStoreManager.getAllProducts(new GetProductsCallBack() {
+        fireStoreManager.getAllProducts(new FireStoreManager.GetProductsCallBack() {
             @Override
             public void onSuccess(ArrayList<Product> result) {
+                progressBar.setVisibility(View.GONE);
                 productDisplay.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
                 ProductDisplayAdapter adapter = new ProductDisplayAdapter(result, MainActivity.this, new RecyclerViewOnClickListener() {
                     @Override
@@ -102,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception e) {
+                progressBar.setVisibility(View.GONE);
                 Log.d("GetAllProductException", e.getMessage());
             }
         });
@@ -196,5 +234,35 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("otherUserId", "TncOqL0OPdesMbXbHW0ZCtTEbs63");
         startActivity(intent);
+    }
+
+    public void startSearch(View view) {
+        String searchString = tSearchBar.getText().toString();
+        progressBar.setVisibility(View.VISIBLE);
+
+        fireStoreManager.getProductsFromString(searchString, new FireStoreManager.GetProductsCallBack() {
+            @Override
+            public void onSuccess(ArrayList<Product> result) {
+                progressBar.setVisibility(View.GONE);
+                productDisplay.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                ProductDisplayAdapter adapter = new ProductDisplayAdapter(result, MainActivity.this, new RecyclerViewOnClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Product product = result.get(position);
+                        Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+                        intent.putExtra("productId", product.getProductId());
+                        startActivity(intent);
+                    }
+                });
+                productDisplay.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                progressBar.setVisibility(View.GONE);
+                Log.d("GetStringProductException", e.getMessage());
+            }
+        });
+
     }
 }

@@ -1,8 +1,13 @@
 package com.example.bluegit;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -18,7 +23,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.core.app.ActivityCompat;
 
 import com.example.bluegit.model.User;
 import com.google.android.gms.auth.api.Auth;
@@ -45,11 +53,15 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity {
 
     public int SIGN_UP_REQUEST = 100;
-    public int GOOGLE_SIGN_UP_REQUEST = 101;
     private final int GOOGLE_INTENT_REQUEST = 103;
+    private final String[] permissionArrays = {
+            Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.READ_MEDIA_IMAGES,
+            Manifest.permission.INTERNET};
 
     EditText tEmail;
     EditText tPassword;
+    Button googleLoginBtn;
     public FirebaseAuth mAuth;
     public FirebaseUser currentUser;
     private FireStoreManager fireStoreManager;
@@ -60,8 +72,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        if((ActivityCompat.checkSelfPermission(this, permissionArrays[0]) != PackageManager.PERMISSION_GRANTED) ||
+                (ActivityCompat.checkSelfPermission(this, permissionArrays[1]) != PackageManager.PERMISSION_GRANTED) ||
+                (ActivityCompat.checkSelfPermission(this, permissionArrays[2]) != PackageManager.PERMISSION_GRANTED)){
+            ActivityCompat.requestPermissions(this, permissionArrays, 99);
+        }
+
         tEmail = findViewById(R.id.login_email);
         tPassword = findViewById(R.id.login_password);
+        googleLoginBtn = findViewById(R.id.google_login);
 
         TextView signUpText = findViewById(R.id.sign_up);
         String signUpTextTemp = signUpText.getText().toString();
@@ -121,6 +140,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_CANCELED){
+            if(requestCode == GOOGLE_INTENT_REQUEST) {googleLoginBtn.setEnabled(true);}
+        }
         if(resultCode == RESULT_OK){
             if(requestCode == SIGN_UP_REQUEST){
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -138,7 +160,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
 
-
                     AuthCredential credential = GoogleAuthProvider.getCredential(token, null);
 
                     String finalProfileImage = profileImage;
@@ -150,21 +171,24 @@ public class LoginActivity extends AppCompatActivity {
                                     FirebaseUser currentUser = mAuth.getCurrentUser();
 
                                     User user = new User(currentUser.getUid(), name, email, "", finalProfileImage);
-                                    fireStoreManager.addNewUser(user, new AddUserDataCallBack() {
+                                    fireStoreManager.addNewUser(user, new FireStoreManager.AddUserDataCallBack() {
                                         @Override
                                         public void onSuccess() {
                                             Toast.makeText(LoginActivity.this, "Register Complete", Toast.LENGTH_SHORT).show();
+                                            googleLoginBtn.setEnabled(true);
                                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                         }
 
                                         @Override
                                         public void onFailure(Exception e) {
                                             Toast.makeText(LoginActivity.this, "Unable to register to database", Toast.LENGTH_SHORT).show();
+                                            googleLoginBtn.setEnabled(true);
                                             currentUser.delete();
                                             mAuth.signOut();
                                         }
                                     });
                                 } else {
+                                    googleLoginBtn.setEnabled(true);
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 }
                             }
@@ -209,8 +233,43 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onContinueGoogleClick(View view) {
-
+        googleLoginBtn.setEnabled(false);
         Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(intent, GOOGLE_INTENT_REQUEST);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == 99){
+            if(grantResults.length > 0){
+                for(int result : grantResults){
+
+                    if(result != PackageManager.PERMISSION_GRANTED){
+                        new AlertDialog.Builder(this)
+                                .setTitle("Permissions Denied")
+                                .setMessage("Following permissions are required for the application to work\n\n" +
+                                        "INTERNET ACCESS\nIMAGE_ACCESS")
+                                .setPositiveButton("Understood", new DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+
+                                })
+                                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        finish();
+                                    }
+                                })
+                                .show();
+                    }
+                }
+            }
+        }else {
+            finish();
+        }
     }
 }

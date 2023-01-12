@@ -39,7 +39,7 @@
         android:layout_weight="1"
         android:background="@null"
         android:gravity="center"
-        android:inputType="numberSigned"
+        android:enabled="false"
         android:text="1"
         android:textAlignment="center"
         android:textColor="@color/black"
