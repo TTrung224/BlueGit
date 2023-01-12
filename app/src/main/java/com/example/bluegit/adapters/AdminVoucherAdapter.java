@@ -23,7 +23,7 @@ public class AdminVoucherAdapter extends RecyclerView.Adapter<AdminVoucherAdapte
     public AdminVoucherAdapter(RecyclerViewOnClickListener recyclerViewOnClickListener, ArrayList<Voucher> vouchers, Context context, LayoutInflater layoutInflater) {
         this.recyclerViewOnClickListener = recyclerViewOnClickListener;
         this.vouchers = vouchers;
-        this.layoutInflater = layoutInflater;
+        this.layoutInflater = LayoutInflater.from(context);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
