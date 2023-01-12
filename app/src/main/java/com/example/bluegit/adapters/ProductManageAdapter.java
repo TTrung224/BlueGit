@@ -22,17 +22,19 @@ public class ProductManageAdapter extends RecyclerView.Adapter<ProductManageAdap
 
     private ArrayList<Product> products;
     private LayoutInflater inflater;
+    private static RecyclerViewOnClickListener recyclerViewOnClickListener;
 
-    public ProductManageAdapter(ArrayList<Product> products, Context ctx) {
+    public ProductManageAdapter(ArrayList<Product> products, Context ctx,RecyclerViewOnClickListener recyclerViewOnClickListener) {
         this.products = products;
         this.inflater = LayoutInflater.from(ctx);
+        this.recyclerViewOnClickListener = recyclerViewOnClickListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.layout_product_manage, parent, false);
-        return new ProductManageAdapter.ViewHolder(view);
+        return new ProductManageAdapter.ViewHolder(view,recyclerViewOnClickListener);
     }
 
     @Override
@@ -56,13 +58,26 @@ public class ProductManageAdapter extends RecyclerView.Adapter<ProductManageAdap
         public TextView productPrice;
         public TextView productCount;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, RecyclerViewOnClickListener recyclerViewOnClickListener) {
             super(itemView);
 
             productImage = itemView.findViewById(R.id.display_product_image);
             productName = itemView.findViewById(R.id.display_product_name);
             productPrice = itemView.findViewById(R.id.display_product_price);
             productCount = itemView.findViewById(R.id.display_product_count);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (recyclerViewOnClickListener != null) {
+                        int pos = getAdapterPosition();
+                        if(pos != RecyclerView.NO_POSITION){
+                            recyclerViewOnClickListener.onItemClick(pos);
+                        }
+                    }
+                }
+            });
         }
     }
+
 }
