@@ -236,3 +236,7 @@ interface AddProductCallBack {
     void onSuccess();
     void onFailure(Exception e);
 }
+interface UpdateProductCallBack{
+    void onSuccess();
+    void onFailure(Exception e);
+}

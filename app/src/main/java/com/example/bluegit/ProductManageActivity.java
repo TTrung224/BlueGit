@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.bluegit.adapters.ProductManageAdapter;
+import com.example.bluegit.adapters.RecyclerViewOnClickListener;
 import com.example.bluegit.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -43,7 +44,16 @@ public class ProductManageActivity extends AppCompatActivity {
             public void onSuccess(ArrayList<Product> result) {
                 if(result.size() > 0){
                     emptyMessage.setVisibility(View.GONE);
-                    ProductManageAdapter adapter = new ProductManageAdapter(result, ProductManageActivity.this);
+                    ProductManageAdapter adapter = new ProductManageAdapter(result, ProductManageActivity.this, new RecyclerViewOnClickListener(){
+                        @Override
+                        public void onItemClick(int position) {
+                            Product product = result.get(position);
+                            Log.d("TESTING", product.getProductId());
+                            Intent intent = new Intent(ProductManageActivity.this, EditProductActivity.class);
+                            intent.putExtra("productId", product.getProductId());
+                            startActivity(intent);
+                    }});
+
                     productDisplay.setAdapter(adapter);
                     productDisplay.setLayoutManager(new LinearLayoutManager(ProductManageActivity.this));
                 }
