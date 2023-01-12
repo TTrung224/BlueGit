@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -71,15 +72,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        googleApiClient=new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, 1, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Log.d("DEBUGGING", connectionResult.getErrorMessage());
+                    }
                 })
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -145,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
 
     public void onSignOutClick(View view) {
         FirebaseAuth.getInstance().signOut();
