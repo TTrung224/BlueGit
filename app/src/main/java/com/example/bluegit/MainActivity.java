@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bluegit.adapters.ProductDisplayAdapter;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView profilePic;
     FireStoreManager fireStoreManager;
+    ProgressBar progressBar;
 
     GoogleSignInOptions gso;
     GoogleApiClient googleApiClient;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         profilePic = findViewById(R.id.main_profile_pic);
+        progressBar = findViewById(R.id.display_progress);
         fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
 
         gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -100,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         fireStoreManager.getAllProducts(new FireStoreManager.GetProductsCallBack() {
             @Override
             public void onSuccess(ArrayList<Product> result) {
+                progressBar.setVisibility(View.GONE);
                 productDisplay.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
                 ProductDisplayAdapter adapter = new ProductDisplayAdapter(result, MainActivity.this, new RecyclerViewOnClickListener() {
                     @Override
@@ -115,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception e) {
+                progressBar.setVisibility(View.GONE);
                 Log.d("GetAllProductException", e.getMessage());
             }
         });

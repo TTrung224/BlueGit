@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bluegit.adapters.AdminProductAdapter;
@@ -24,12 +25,14 @@ import java.util.Objects;
 public class CartActivity extends AppCompatActivity {
     private ArrayList<Product> products = new ArrayList<>();
     FireStoreManager fireStoreManager;
+    TextView emptyMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
+        emptyMessage = findViewById(R.id.empty_message);
 
     }
     @Override
@@ -44,9 +47,14 @@ public class CartActivity extends AppCompatActivity {
                     public void onSuccess(Map<Product, Integer> result) {
                         ArrayList<Product> products = new ArrayList<>();
                         ArrayList<Integer> amounts = new ArrayList<>();
+
                         for(Map.Entry<Product, Integer> entry : result.entrySet()){
                             products.add(entry.getKey());
                             amounts.add(entry.getValue());
+                        }
+
+                        if(products.size() > 0){
+                            emptyMessage.setVisibility(View.GONE);
                         }
                         RecyclerView recyclerView = findViewById(R.id.itemList);
                         CartAdapter adapter = new CartAdapter(products, amounts, CartActivity.this);

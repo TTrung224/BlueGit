@@ -1,6 +1,9 @@
 package com.example.bluegit;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.bluegit.model.User;
 import com.google.android.gms.auth.api.Auth;
@@ -45,8 +49,11 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity {
 
     public int SIGN_UP_REQUEST = 100;
-    public int GOOGLE_SIGN_UP_REQUEST = 101;
     private final int GOOGLE_INTENT_REQUEST = 103;
+    private String[] permissionArrays = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.INTERNET};
 
     EditText tEmail;
     EditText tPassword;
@@ -60,6 +67,12 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if((ActivityCompat.checkSelfPermission(this, permissionArrays[0]) != PackageManager.PERMISSION_GRANTED) ||
+                (ActivityCompat.checkSelfPermission(this, permissionArrays[1]) != PackageManager.PERMISSION_GRANTED) ||
+                (ActivityCompat.checkSelfPermission(this, permissionArrays[2]) != PackageManager.PERMISSION_GRANTED)){
+            ActivityCompat.requestPermissions(this, permissionArrays, 99);
+        }
 
         tEmail = findViewById(R.id.login_email);
         tPassword = findViewById(R.id.login_password);
@@ -220,5 +233,25 @@ public class LoginActivity extends AppCompatActivity {
         googleLoginBtn.setEnabled(false);
         Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(intent, GOOGLE_INTENT_REQUEST);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == 99){
+            if(grantResults.length > 0){
+                for(int result : grantResults){
+                    if(result != PackageManager.PERMISSION_GRANTED){
+                        new AlertDialog.Builder(this)
+                                .setTitle("Permission Denied")
+                                        .setMessage("The app cannot work properly without these permissions.")
+                                                .show();
+                        finish();
+                    }
+                }
+            }else {
+                finish();
+            }
+        }
     }
 }

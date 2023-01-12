@@ -37,6 +37,47 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/search_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="10dp"
+        app:cardCornerRadius="360dp"
+        android:paddingHorizontal="10dp"
+        app:cardElevation="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardView">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:layout_marginHorizontal="10dp"/>
+            <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/selector_search_button"
+                android:src="@drawable/ic_baseline_search_24"
+                app:tint="@color/white" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:id="@+id/display_progress"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:indeterminate="true"
+        app:layout_constraintStart_toStartOf="@id/items_display"
+        app:layout_constraintEnd_toEndOf="@id/items_display"
+        app:layout_constraintTop_toTopOf="@id/items_display"
+        app:layout_constraintBottom_toBottomOf="@id/items_display"
+        android:indeterminateTint="@color/main"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/items_display"
         android:layout_width="0dp"
@@ -48,7 +89,7 @@
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toBottomOf="@+id/search_bar_layout" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
