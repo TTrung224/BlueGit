@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class AdminActivity extends AppCompatActivity {
     public static final int NAV_TO_MANAGE_ACCOUNT = 2;
     public static final int NAV_TO_MANAGE_PRODUCT = 3;
     public static final int NAV_TO_ADMIN_HOME = 4;
+    public static final int NAV_TO_MANAGE_ORDERS = 5;
 
     FireStoreManager fireStoreManager;
 
@@ -34,6 +36,7 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+
 
         fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
 
@@ -59,7 +62,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
 
-    public void signOutClick(){
+    public void signOutClick(View view){
         FirebaseAuth.getInstance().signOut();
 
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
@@ -73,6 +76,34 @@ public class AdminActivity extends AppCompatActivity {
         });
         finish();
     }
+    public void refresh(View view) {
+        this.recreate();
+    }
+
+    public void toVoucher(View view){
+        Intent intent = new Intent(this,AdminVoucherActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, 100);
+    }
+
+    public void toManageAccount(View view){
+        Intent intent = new Intent(this, AdminAccountActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent,100);
+    }
+
+    public void toManageProduct(View view){
+        Intent intent = new Intent(this, AdminProductActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent,100);
+    }
+
+    public void toManageOrders(View view){
+        Intent intent = new Intent(this, AdminOrdersActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent,100);
+    }
+
     public void toVoucher(){
         Intent intent = new Intent(this,AdminVoucherActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -91,18 +122,18 @@ public class AdminActivity extends AppCompatActivity {
         startActivityForResult(intent,100);
     }
 
-    public void toAdminHome(){
-        Intent intent = new Intent(this, AdminActivity.class);
+    public void toManageOrders(){
+        Intent intent = new Intent(this, AdminOrdersActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivityForResult(intent, 100);
+        startActivityForResult(intent,100);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
             switch (Integer.parseInt(data.getExtras().get("navTo").toString())) {
-                case NAV_TO_ADMIN_HOME:
-                    toAdminHome();
+                case NAV_TO_MANAGE_ORDERS:
+                    toManageOrders();
                     break;
                 case NAV_TO_MANAGE_ACCOUNT:
                     toManageAccount();

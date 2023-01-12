@@ -7,11 +7,12 @@
     tools:context=".AdminProductActivity">
 
     <ImageView
-        android:id="@+id/ordersBackBtn5"
+        android:id="@+id/productBackBtn5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
         android:layout_marginTop="7dp"
+        android:onClick="adminGoBack"
         android:outlineProvider="none"
         android:paddingStart="15dp"
         android:paddingTop="5dp"
@@ -22,7 +23,7 @@
         android:id="@+id/textView14"
         android:layout_width="266dp"
         android:layout_height="36dp"
-        android:layout_below="@+id/ordersBackBtn5"
+        android:layout_below="@+id/productBackBtn5"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="137dp"
@@ -54,15 +55,15 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
-            android:onClick="toBusiness"
+            android:onClick="toVoucher"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/orderNav"
+            app:layout_constraintEnd_toStartOf="@+id/productNav"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
             <ImageView
-                android:id="@+id/businessNavImg"
+                android:id="@+id/voucherNavImg"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +72,7 @@
                 app:srcCompat="@drawable/voucher" />
 
             <TextView
-                android:id="@+id/businessNavTxt"
+                android:id="@+id/voucherNavTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
@@ -79,12 +80,12 @@
                 android:textColor="#FAFAFA"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/businessNavLine"
+                app:layout_constraintBottom_toTopOf="@+id/voucherNavLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <View
-                android:id="@+id/businessNavLine"
+                android:id="@+id/voucherNavLine"
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:background="@null"
@@ -94,11 +95,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/orderNav"
+            android:id="@+id/productNav"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
-            android:onClick="toOrders"
+            android:onClick="refresh"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/homeNav"
             app:layout_constraintStart_toEndOf="@+id/voucherNav"
@@ -106,17 +107,18 @@
             app:layout_constraintVertical_bias="0.0">
 
             <ImageView
-                android:id="@+id/OrderNavImg"
+                android:id="@+id/productNavImg"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/product"
                 app:tint="#7BFA4B" />
 
             <TextView
-                android:id="@+id/orderNavTxt"
+                android:id="@+id/productNavTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
@@ -124,12 +126,12 @@
                 android:textColor="#7BFA4B"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/orderNavLine"
+                app:layout_constraintBottom_toTopOf="@+id/productNavLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <View
-                android:id="@+id/orderNavLine"
+                android:id="@+id/productNavLine"
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:background="#7BFA4B"
@@ -145,8 +147,8 @@
             android:background="@color/main"
             android:onClick="toHome"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/cartNav"
-            app:layout_constraintStart_toEndOf="@+id/orderNav"
+            app:layout_constraintEnd_toStartOf="@+id/ordersNav"
+            app:layout_constraintStart_toEndOf="@+id/productNav"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
@@ -183,11 +185,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cartNav"
+            android:id="@+id/ordersNav"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
-            android:onClick="toCart"
+            android:onClick="toManageOrder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/accountNav"
             app:layout_constraintStart_toEndOf="@+id/homeNav"
@@ -195,29 +197,29 @@
             app:layout_constraintVertical_bias="0.0">
 
             <ImageView
-                android:id="@+id/cartNavImg"
+                android:id="@+id/orderNavImg"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/shopping_cart" />
+                app:srcCompat="@drawable/order_bool_descending_variant" />
 
             <TextView
-                android:id="@+id/cartNavTxt"
+                android:id="@+id/orderNavTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
-                android:text="Cart"
+                android:text="Orders"
                 android:textColor="#FFFFFF"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/cartNavLine"
+                app:layout_constraintBottom_toTopOf="@+id/orderNavLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <View
-                android:id="@+id/cartNavLine"
+                android:id="@+id/orderNavLine"
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:background="@null"
@@ -231,10 +233,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
-            android:onClick="refresh"
+            android:onClick="toManageAccount"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cartNav"
+            app:layout_constraintStart_toEndOf="@+id/ordersNav"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 

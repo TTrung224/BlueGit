@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:onClick="returnBack"
     android:orientation="vertical"
     tools:context=".AdminVoucherActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <ImageButton
@@ -18,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:onClick="returnBack"
             android:paddingStart="15dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
@@ -46,103 +47,9 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/voucherSubHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="15dp"
-        android:text="View overall your voucher below" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/shape_order_list_item"
-        android:paddingStart="15dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
-
-        <TextView
-            android:id="@+id/voucherID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Voucher 12345"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/expireDateLabel"
-            tools:layout_editor_absoluteX="15dp" />
-
-        <TextView
-            android:id="@+id/voucherNameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:text="Name:" />
-
-        <TextView
-            android:id="@+id/voucherName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="25dp"
-            android:text="DISCOUNT20"
-            android:textColor="#000000" />
-
-        <TextView
-            android:id="@+id/expireDateLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="75dp"
-            android:text="Expire:" />
-
-        <TextView
-            android:id="@+id/expireDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="75dp"
-            android:text="24/12/2022"
-            android:textColor="#040404" />
-
-        <TextView
-            android:id="@+id/discountLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="Discount:" />
-
-        <TextView
-            android:id="@+id/discount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="65dp"
-            android:layout_marginTop="50dp"
-            android:text="20%"
-            android:textColor="#000000" />
-
-        <TextView
-            android:id="@+id/quantityLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="50dp"
-            android:text="Quantity:" />
-
-        <TextView
-            android:id="@+id/quantityVoucher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="180dp"
-            android:layout_marginTop="50dp"
-            android:text="5"
-            android:textColor="#000000" />
-
-    </RelativeLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
@@ -167,17 +74,14 @@
             android:paddingBottom="5dp"
             app:srcCompat="@drawable/ic_baseline_add_24" />
 
-        <ImageButton
-            android:id="@+id/removeInputVoucher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:onClick="removeClick"
-            android:padding="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            app:srcCompat="@drawable/minus_icon" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/voucherSubHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="15dp"
+        android:text="View overall your voucher below" />
 
     <LinearLayout
         android:id="@+id/inputVoucher"
@@ -186,7 +90,7 @@
         android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/addVoucherName"
@@ -237,24 +141,22 @@
         android:layout_marginBottom="0dp"
         android:layout_weight="1"
         android:background="@color/main"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/voucherNav"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
-            android:onClick="toBusiness"
+            android:onClick="refresh"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/orderNav"
+            app:layout_constraintEnd_toStartOf="@+id/productNav"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
             <ImageView
-                android:id="@+id/businessNavImg"
+                android:id="@+id/voucherNavImg"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -264,7 +166,7 @@
                 app:tint="#7BFA4B" />
 
             <TextView
-                android:id="@+id/businessNavTxt"
+                android:id="@+id/voucherNavTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
@@ -272,12 +174,12 @@
                 android:textColor="#7BFA4B"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/businessNavLine"
+                app:layout_constraintBottom_toTopOf="@+id/voucherNavLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <View
-                android:id="@+id/businessNavLine"
+                android:id="@+id/voucherNavLine"
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:background="#7BFA4B"
@@ -287,11 +189,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/orderNav"
+            android:id="@+id/productNav"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
-            android:onClick="toOrders"
+            android:onClick="toManageProduct"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/homeNav"
             app:layout_constraintStart_toEndOf="@+id/voucherNav"
@@ -299,16 +201,17 @@
             app:layout_constraintVertical_bias="0.0">
 
             <ImageView
-                android:id="@+id/OrderNavImg"
+                android:id="@+id/productNavImg"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/product" />
 
             <TextView
-                android:id="@+id/orderNavTxt"
+                android:id="@+id/productNavTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
@@ -316,12 +219,12 @@
                 android:textColor="#FFFFFF"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/orderNavLine"
+                app:layout_constraintBottom_toTopOf="@+id/productNavLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <View
-                android:id="@+id/orderNavLine"
+                android:id="@+id/productNavLine"
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:background="@null"
@@ -337,8 +240,8 @@
             android:background="@color/main"
             android:onClick="toHome"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/cartNav"
-            app:layout_constraintStart_toEndOf="@+id/orderNav"
+            app:layout_constraintEnd_toStartOf="@+id/ordersNav"
+            app:layout_constraintStart_toEndOf="@+id/productNav"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
@@ -375,11 +278,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cartNav"
+            android:id="@+id/ordersNav"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
-            android:onClick="toCart"
+            android:onClick="toManageOrder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/accountNav"
             app:layout_constraintStart_toEndOf="@+id/homeNav"
@@ -387,29 +290,29 @@
             app:layout_constraintVertical_bias="0.0">
 
             <ImageView
-                android:id="@+id/cartNavImg"
+                android:id="@+id/orderNavImg"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/shopping_cart" />
+                app:srcCompat="@drawable/order_bool_descending_variant" />
 
             <TextView
-                android:id="@+id/cartNavTxt"
+                android:id="@+id/orderNavTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
-                android:text="Cart"
+                android:text="Orders"
                 android:textColor="#FFFFFF"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/cartNavLine"
+                app:layout_constraintBottom_toTopOf="@+id/orderNavLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <View
-                android:id="@+id/cartNavLine"
+                android:id="@+id/orderNavLine"
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:background="@null"
@@ -423,10 +326,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/main"
-            android:onClick="refresh"
+            android:onClick="toManageAccount"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cartNav"
+            app:layout_constraintStart_toEndOf="@+id/ordersNav"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 

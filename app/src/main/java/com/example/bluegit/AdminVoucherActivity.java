@@ -5,14 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-
+import android.widget.TextView;
 
 
 public class AdminVoucherActivity extends AppCompatActivity {
-    ImageButton addNewVoucher,removeInputVoucher;
+    ImageButton addNewVoucher;
     LinearLayout inputNewVoucher;
+    Intent navIntent;
+    TextView voucherID;
+    EditText addNameVoucher, addDiscountVoucher, addQuantityVoucher, addExpireDateVoucher;
+    Button submitVoucher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,38 +26,46 @@ public class AdminVoucherActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_voucher);
         addNewVoucher = (ImageButton) findViewById(R.id.addNewVoucher);
         inputNewVoucher = (LinearLayout) findViewById(R.id.inputVoucher);
-        removeInputVoucher = (ImageButton) findViewById(R.id.removeInputVoucher);
+        addNameVoucher = (EditText) findViewById(R.id.addVoucherName);
+        addDiscountVoucher = (EditText) findViewById(R.id.addDiscountVoucher);
+        addQuantityVoucher = (EditText) findViewById(R.id.addQuantityVoucher);
+        addExpireDateVoucher = (EditText) findViewById(R.id.addExpireDateVoucher);
+        submitVoucher = (Button) findViewById(R.id.submitVoucher);
+        voucherID = (TextView) findViewById(R.id.voucherID);
+
+        navIntent = new Intent(this, AdminActivity.class);
+
     }
 
-    public void addClick(View v){
+    public void addClick(View view){
         inputNewVoucher.setVisibility(View.VISIBLE);
     }
 
-    public void removeClick(View v){
-        inputNewVoucher.setVisibility(View.INVISIBLE);
-    }
-
-    public void returnBack(View v){
+    public void returnBack(View view){
         setResult(RESULT_OK);
         finish();
     }
 
-    public void toAdminProduct(){
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("navTo", AdminActivity.NAV_TO_MANAGE_PRODUCT);
-        setResult(RESULT_OK, intent);
+    public void toManageProduct(View view){
+        navIntent.putExtra("navTo", AdminActivity.NAV_TO_MANAGE_PRODUCT);
+        setResult(RESULT_OK, navIntent);
+        finish();
+        overridePendingTransition(0, 0);
+    }
+    public void toManageOrder(View view){
+        navIntent.putExtra("navTo", AdminActivity.NAV_TO_MANAGE_ORDERS);
+        setResult(RESULT_OK, navIntent);
         finish();
         overridePendingTransition(0, 0);
     }
 
-    public void toManageAccount(){
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("navTo", AdminActivity.NAV_TO_MANAGE_ACCOUNT);
-        setResult(RESULT_OK, intent);
+    public void toManageAccount(View view){
+        navIntent.putExtra("navTo", AdminActivity.NAV_TO_MANAGE_ACCOUNT);
+        setResult(RESULT_OK, navIntent);
         finish();
         overridePendingTransition(0, 0);
     }
-    public void toHome(){
+    public void toHome(View view){
         setResult(RESULT_OK);
         finish();
         overridePendingTransition(0, 0);
