@@ -24,19 +24,12 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(context)
-                .addApi(Auth.GOOGLE_SIGN_IN_API)
-                .build();
 
         if(intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")){
             ConnectivityManager connMgr = context.getSystemService(ConnectivityManager.class);
             android.net.NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
             if(!networkInfo.isConnected()){
-                if(mGoogleApiClient.isConnected()){
-                    Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                    mGoogleApiClient.disconnect();
-                }
                 FirebaseAuth.getInstance().signOut();
             }
         }
