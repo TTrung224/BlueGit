@@ -11,11 +11,12 @@ import android.view.View;
 
 import com.example.bluegit.adapters.AdminAccountAdapter;
 import com.example.bluegit.adapters.AdminProductAdapter;
+import com.example.bluegit.model.User;
 
 import java.util.ArrayList;
 
 public class AdminAccountActivity extends AppCompatActivity {
-    private ArrayList<Account> accounts;
+    private ArrayList<User> users;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +29,7 @@ public class AdminAccountActivity extends AppCompatActivity {
         // TODO: retrieve and process data here
 
         RecyclerView recyclerView = findViewById(R.id.adminAccountList);
-        AdminAccountAdapter adapter = new AdminAccountAdapter(accounts, this);
+        AdminAccountAdapter adapter = new AdminAccountAdapter(users, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

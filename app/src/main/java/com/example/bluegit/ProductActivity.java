@@ -22,6 +22,7 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 public class ProductActivity extends AppCompatActivity {
 
@@ -34,6 +35,7 @@ public class ProductActivity extends AppCompatActivity {
     FirebaseFirestore db;
     DocumentReference docRef;
     String productId;
+    String userId;
 
     Map<String, String> products = new HashMap<>();
 
@@ -52,6 +54,7 @@ public class ProductActivity extends AppCompatActivity {
         tDescription = findViewById(R.id.productDescContent);
         tSpec = findViewById(R.id.productSpec);
         productQuantity = findViewById(R.id.quantity);
+        userId = FirebaseAuth.getInstance().getUid();
 
         Intent intent = getIntent();
         String productId = intent.getStringExtra("productId");
@@ -95,12 +98,16 @@ public class ProductActivity extends AppCompatActivity {
         finish();
     }
 
-    public void addCartHandler(){
+    public void addCartHandler(View view){
         String quantity = productQuantity.getText().toString();
         products.put(productId,quantity);
-
+        docRef = FirebaseFirestore.getInstance().
+                collection("users").document(userId);
+        docRef.set(products);
 
 
     }
+
+
 
 }
