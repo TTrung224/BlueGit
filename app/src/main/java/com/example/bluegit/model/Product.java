@@ -15,21 +15,6 @@ public class Product {
     private boolean disabled = false;
     private DocumentReference sellerId;
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productId='" + productId + '\'' +
-                ", productName='" + productName + '\'' +
-                ", productPrice=" + productPrice +
-                ", imageSource='" + imageSource + '\'' +
-                ", description='" + description + '\'' +
-                ", specification='" + specification + '\'' +
-                ", quantity=" + quantity +
-                ", disabled=" + disabled +
-                ", sellerId=" + sellerId +
-                '}';
-    }
-
     public Product() {}
 
     public Product(String id, String productName, String description, String specification,
