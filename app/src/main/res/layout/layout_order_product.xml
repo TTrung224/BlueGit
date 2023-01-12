@@ -20,7 +20,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/car" />
+            app:srcCompat="@drawable/weebly_image_sample" />
 
     </androidx.cardview.widget.CardView>
 
@@ -32,7 +32,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="90dp"
         android:layout_marginTop="6dp"
-        android:text="$20"
+        android:text="Price"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
@@ -59,7 +59,7 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/shape_item_list_product_quantity"
         android:gravity="center"
-        android:text="X3"
+        android:text="x3"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp" />

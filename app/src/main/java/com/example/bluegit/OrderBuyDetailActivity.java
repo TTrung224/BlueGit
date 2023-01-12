@@ -8,9 +8,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.bluegit.adapters.OrderBuyAdapter;
 import com.example.bluegit.adapters.OrderProductAdapter;
-import com.example.bluegit.model.Order;
 import com.example.bluegit.model.Product;
 
 import java.util.ArrayList;
@@ -22,7 +20,7 @@ public class OrderBuyDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_buy_detail);
+        setContentView(R.layout.activity_order_detail);
         TextView oldPrice = findViewById(R.id.totalPriceBeforeDiscount);
         oldPrice.setPaintFlags(oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
     }

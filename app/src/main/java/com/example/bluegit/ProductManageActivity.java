@@ -39,7 +39,7 @@ public class ProductManageActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         RecyclerView productDisplay = findViewById(R.id.product_manager_recyclerview);
-        fireStoreManager.getUserProducts(new GetProductsCallBack() {
+        fireStoreManager.getUserProducts(new FireStoreManager.GetProductsCallBack() {
             @Override
             public void onSuccess(ArrayList<Product> result) {
                 if(result.size() > 0){

@@ -7,6 +7,8 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.UUID;
 
 public class AddProductActivity extends AppCompatActivity {
@@ -79,7 +83,7 @@ public class AddProductActivity extends AppCompatActivity {
         String descriptionStr = description.getText().toString();
         String specificationStr = specification.getText().toString();
         int quantityInt = Integer.parseInt(quantity.getText().toString());
-        float priceFloat = Float.parseFloat(price.getText().toString());
+        int priceFloat = Integer.parseInt(price.getText().toString());
         DocumentReference sellerId = FirebaseFirestore.getInstance().document("users/"+FirebaseAuth.getInstance().getUid());
 
         if(!nameStr.equals("")
@@ -92,7 +96,7 @@ public class AddProductActivity extends AppCompatActivity {
             Product product = new Product(UUID.randomUUID().toString(),nameStr, descriptionStr, specificationStr,
                     priceFloat, imgUri.toString(), quantityInt, sellerId);
 
-            fireStoreManager.addProduct(product, new AddProductCallBack() {
+            fireStoreManager.addProduct(product, new FireStoreManager.AddProductCallBack() {
                 @Override
                 public void onSuccess() {
                     progressBar.setVisibility(View.GONE);

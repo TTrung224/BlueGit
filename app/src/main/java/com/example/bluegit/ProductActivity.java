@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bluegit.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,7 +23,6 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 
 public class ProductActivity extends AppCompatActivity {
 
@@ -31,13 +31,13 @@ public class ProductActivity extends AppCompatActivity {
     TextView tPrice;
     TextView tDescription;
     TextView tSpec;
-    TextView productQuantity;
+    TextView productQuantityEdit;
+    TextView tStock;
     FirebaseFirestore db;
     DocumentReference docRef;
     String productId;
-    String userId;
 
-    Map<String, String> products = new HashMap<>();
+    Map<String, Integer> product = new HashMap<>();
 
 
     @Override
@@ -53,12 +53,12 @@ public class ProductActivity extends AppCompatActivity {
         tPrice = findViewById(R.id.productPrice);
         tDescription = findViewById(R.id.productDescContent);
         tSpec = findViewById(R.id.productSpec);
-        productQuantity = findViewById(R.id.quantity);
-        userId = FirebaseAuth.getInstance().getUid();
+        productQuantityEdit = findViewById(R.id.quantity);
+        tStock = findViewById(R.id.productQuantity);
 
         Intent intent = getIntent();
-        String productId = intent.getStringExtra("productId");
-        fireStoreManager.getProductById(productId, new GetProductCallBack() {
+        productId = intent.getStringExtra("productId");
+        fireStoreManager.getProductById(productId, new FireStoreManager.GetProductCallBack() {
             @Override
             public void onSuccess(Product product) {
                 Picasso.get().load(Uri.parse(product.getImageSource())).into(iImage);
@@ -68,6 +68,7 @@ public class ProductActivity extends AppCompatActivity {
                 tPrice.setText(price);
                 tDescription.setText(product.getDescription());
                 tSpec.setText(product.getSpecification());
+                tStock.setText(String.valueOf(product.getQuantity()));
             }
 
             @Override
@@ -80,18 +81,22 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     public void minusQuantity(View view) {
-        EditText quantityTextEdit = (EditText) findViewById(R.id.quantity);
+        EditText quantityTextEdit = findViewById(R.id.quantity);
         int quantity = Integer.parseInt(quantityTextEdit.getText().toString());
         if(quantity > 1){
             quantity--;
-            quantityTextEdit.setText(Integer.toString(quantity));
+            quantityTextEdit.setText(String.valueOf(quantity));
         }
     }
 
     public void bonusQuantity(View view) {
-        EditText quantityTextEdit = (EditText) findViewById(R.id.quantity);
-        int quantity = Integer.parseInt(quantityTextEdit.getText().toString()) + 1;
-        quantityTextEdit.setText(Integer.toString(quantity));
+        EditText quantityTextEdit = findViewById(R.id.quantity);
+        int maxQuant = Integer.parseInt(tStock.getText().toString());
+        int quantity = Integer.parseInt(quantityTextEdit.getText().toString());
+        if (quantity < maxQuant){
+            quantity ++;
+            quantityTextEdit.setText(String.valueOf(quantity));
+        }
     }
 
     public void onBackButtonClick(View view) {
@@ -99,15 +104,35 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     public void addCartHandler(View view){
-        String quantity = productQuantity.getText().toString();
-        products.put(productId,quantity);
-        docRef = FirebaseFirestore.getInstance().
-                collection("users").document(userId);
-        docRef.set(products);
+        int quantity = Integer.parseInt(productQuantityEdit.getText().toString());
 
+        EditText quantityTextEdit = findViewById(R.id.quantity);
+        int maxQuant = Integer.parseInt(tStock.getText().toString());
+        if(quantity > maxQuant){
+            Toast.makeText(this, "Don't have enough item in stock", Toast.LENGTH_SHORT).show();
+            productQuantityEdit.setText(String.valueOf(maxQuant));
+            return;
+        } else if(quantity < 1){
+            Toast.makeText(this, "Please enter a valid quantity", Toast.LENGTH_SHORT).show();
+            productQuantityEdit.setText("1");
+            return;
+        }
+        productQuantityEdit.setEnabled(false);
 
+        product.put(productId, quantity);
+        FireStoreManager fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
+        fireStoreManager.addToCart(product, new FireStoreManager.CartCallBack() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(ProductActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(ProductActivity.this, "Unable to add item", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
-
-
-
 }

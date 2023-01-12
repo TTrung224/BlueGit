@@ -7,7 +7,7 @@ import com.google.firebase.firestore.DocumentReference;
 public class Product {
     private String productId;
     private String productName;
-    private float productPrice;
+    private int productPrice;
     private String imageSource;
     private String description;
     private String specification;
@@ -18,7 +18,7 @@ public class Product {
     public Product() {}
 
     public Product(String id, String productName, String description, String specification,
-                   float productPrice, String imageSource, int quantity, DocumentReference sellerId) {
+                   int productPrice, String imageSource, int quantity, DocumentReference sellerId) {
         this.productId = id;
         this.productName = productName;
         this.description = description;
@@ -61,11 +61,11 @@ public class Product {
         this.specification = specification;
     }
 
-    public float getProductPrice() {
+    public int getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(float productPrice) {
+    public void setProductPrice(int productPrice) {
         this.productPrice = productPrice;
     }
     public String getImageSource() {

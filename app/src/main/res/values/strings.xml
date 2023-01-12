@@ -25,4 +25,5 @@
     <string name="product_manage_header">Product Manage</string>
     <string name="add_product_button">List An Item</string>
     <string name="empty_user_product">Wow, so empty... \nAdd an item now and make some profit!</string>
+    <string name="sold_orders">Sold Orders</string>
 </resources>

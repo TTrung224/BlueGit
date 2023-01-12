@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText tEmail;
     EditText tPassword;
+    Button googleLoginBtn;
     public FirebaseAuth mAuth;
     public FirebaseUser currentUser;
     private FireStoreManager fireStoreManager;
@@ -62,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
 
         tEmail = findViewById(R.id.login_email);
         tPassword = findViewById(R.id.login_password);
+        googleLoginBtn = findViewById(R.id.google_login);
 
         TextView signUpText = findViewById(R.id.sign_up);
         String signUpTextTemp = signUpText.getText().toString();
@@ -121,6 +123,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_CANCELED){
+            if(requestCode == GOOGLE_INTENT_REQUEST) {googleLoginBtn.setEnabled(true);}
+        }
         if(resultCode == RESULT_OK){
             if(requestCode == SIGN_UP_REQUEST){
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -150,21 +155,24 @@ public class LoginActivity extends AppCompatActivity {
                                     FirebaseUser currentUser = mAuth.getCurrentUser();
 
                                     User user = new User(currentUser.getUid(), name, email, "", finalProfileImage);
-                                    fireStoreManager.addNewUser(user, new AddUserDataCallBack() {
+                                    fireStoreManager.addNewUser(user, new FireStoreManager.AddUserDataCallBack() {
                                         @Override
                                         public void onSuccess() {
                                             Toast.makeText(LoginActivity.this, "Register Complete", Toast.LENGTH_SHORT).show();
+                                            googleLoginBtn.setEnabled(true);
                                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                         }
 
                                         @Override
                                         public void onFailure(Exception e) {
                                             Toast.makeText(LoginActivity.this, "Unable to register to database", Toast.LENGTH_SHORT).show();
+                                            googleLoginBtn.setEnabled(true);
                                             currentUser.delete();
                                             mAuth.signOut();
                                         }
                                     });
                                 } else {
+                                    googleLoginBtn.setEnabled(true);
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 }
                             }
@@ -209,7 +217,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onContinueGoogleClick(View view) {
-
+        googleLoginBtn.setEnabled(false);
         Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(intent, GOOGLE_INTENT_REQUEST);
     }
