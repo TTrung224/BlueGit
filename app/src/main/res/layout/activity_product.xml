@@ -16,7 +16,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="347dp"
+        android:layout_height="285dp"
         android:layout_below="@+id/productImg"
         android:layout_marginTop="-20dp"
         android:layout_marginBottom="0dp"
@@ -64,7 +64,7 @@
                 android:text="Stock"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/productQuantity"
@@ -77,6 +77,7 @@
                 android:text="@string/string_placeholder"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/descriptionTitle"
                 android:layout_width="377dp"
@@ -191,17 +192,34 @@
 
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/productBackBtn"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
+    <ImageView
+        android:id="@+id/backBtn4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="11dp"
+        android:layout_marginStart="7dp"
         android:layout_marginTop="7dp"
         android:background="@drawable/shape_circle_button"
         android:onClick="onBackButtonClick"
-        android:paddingStart="14dp"
+        android:outlineProvider="none"
+        android:paddingStart="18dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
+
+    <ImageButton
+        android:id="@+id/chatBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="7dp"
+        android:background="@drawable/shape_circle_button"
+        android:onClick="chatWithSeller"
+        app:srcCompat="@drawable/chat_circle_dots" />
 
 </RelativeLayout>

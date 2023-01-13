@@ -2,6 +2,8 @@ package com.example.bluegit;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.util.Log;
 
@@ -27,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import org.checkerframework.checker.units.qual.A;
 
 import java.io.FileNotFoundException;
@@ -64,7 +67,63 @@ public class FireStoreManager {
                         callBack.onFailure(e);
                     }
         });
+    }
 
+    public void updateUser(User user, Uri img, UpdateUserDataCallBack callBack) {
+        CollectionReference dbUsers = db.collection("users");
+
+        if (img != null) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            StorageReference pictureRef = storageReference.child("/users/" + user.getId() + "/profilePicture.png/");
+
+            UploadTask uploadTask = pictureRef.putFile(img);
+            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        pictureRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.isSuccessful()) {
+                                    user.setProfileImageSrc(task.getResult().toString());
+                                    dbUsers.document(user.getId()).set(user)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                callBack.onSuccess();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                callBack.onFailure(e);
+                                            }
+                                        });
+                                } else {
+                                    callBack.onFailure(task.getException());
+                                }
+                            }
+                        });
+                    } else {
+                        callBack.onFailure(task.getException());
+                    }
+                }
+            });
+        } else {
+            dbUsers.document(user.getId()).set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        callBack.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callBack.onFailure(e);
+                    }
+                });
+        }
     }
 
     public void getUserById(String uID, GetUserDataCallBack callBack){
@@ -370,17 +429,15 @@ public class FireStoreManager {
         void onFailure(Exception e);
     }
 
+    interface UpdateUserDataCallBack{
+        void onSuccess();
+        void onFailure(Exception e);
+    }
+
     public interface AddProductCallBack {
         void onSuccess();
         void onFailure(Exception e);
     }
-
-    public interface UpdateProductCallBack{
-        void onSuccess();
-        void onFailure(Exception e);
-    }
-
-
 }
 
 class NoUserInDatabaseException extends Exception{

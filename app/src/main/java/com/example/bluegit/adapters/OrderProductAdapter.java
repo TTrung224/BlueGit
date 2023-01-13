@@ -11,13 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bluegit.R;
-import com.example.bluegit.model.Order;
 import com.example.bluegit.model.Product;
 import com.squareup.picasso.Picasso;
 
-import org.threeten.bp.format.DateTimeFormatter;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -39,7 +35,7 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            img = itemView.findViewById(R.id.orderProductImg);
+            img = itemView.findViewById(R.id.profileImg);
             price = itemView.findViewById(R.id.itemListProductPrice);
             quantity = itemView.findViewById(R.id.itemListProductQuantity);
         }

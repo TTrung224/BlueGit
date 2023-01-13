@@ -8,6 +8,7 @@ import com.google.firebase.firestore.Exclude;
 import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     // User
@@ -16,6 +17,7 @@ public class User {
     private String profileImageSrc;
     private String email;
     private String phoneNumber;
+    private List<String> address;
     private int balance;
     private ArrayList<DocumentReference> orderRef;
 
@@ -87,5 +89,13 @@ public class User {
 
     public void setProfileImageSrc(String profileImageSrc) {
         this.profileImageSrc = profileImageSrc;
+    }
+
+    public List<String> getAddress() {
+        return address;
+    }
+
+    public void setAddress(List<String> address) {
+        this.address = address;
     }
 }

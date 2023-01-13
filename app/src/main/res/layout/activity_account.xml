@@ -4,24 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="visible"
     tools:context=".AccountActivity">
 
-    <ImageButton
-        android:id="@+id/deleteItemBtn"
+    <ImageView
+        android:id="@+id/backBtn3"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_weight="0"
-        android:background="@color/white"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="7dp"
         android:onClick="goBack"
+        android:outlineProvider="none"
         android:paddingStart="15dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
 
     <TextView
         android:id="@+id/profileTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="165dp"
         android:paddingStart="15dp"
         android:paddingTop="5dp"
@@ -29,27 +36,29 @@
         android:text="Profile"
         android:textAlignment="center"
         android:textColor="#000000"
-        android:textSize="20sp"
+        android:textSize="40sp"
         android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
+        android:layout_below="@+id/profileTextView"
+        android:layout_centerHorizontal="false"
+        android:layout_marginTop="0dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/orderProductImg"
+            android:id="@+id/profileImg"
             android:layout_width="141dp"
             android:layout_height="142dp"
-            android:layout_marginStart="141dp"
-            android:layout_marginEnd="142dp"
+            android:onClick="editImg"
             android:src="@drawable/bullymaguire"
+            app:civ_border_color="#0074D8"
+            app:civ_border_width="3dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:civ_border_width="3dp"
-            app:civ_border_color="#0074D8"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/nameTextView"
@@ -63,13 +72,12 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderProductImg" />
+            app:layout_constraintTop_toBottomOf="@+id/profileImg" />
 
         <EditText
             android:id="@+id/nameEditText"
             android:layout_width="361dp"
             android:layout_height="44dp"
-            android:layout_marginStart="23dp"
             android:layout_marginTop="6dp"
             android:background="@drawable/text_box_round"
             android:ems="10"
@@ -80,25 +88,9 @@
             app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
 
         <EditText
-            android:id="@+id/ageEditText"
-            android:layout_width="361dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/text_box_round"
-            android:ems="10"
-            android:hint="Age"
-            android:inputType="numberSigned|textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
-
-        <EditText
             android:id="@+id/phoneEditText"
             android:layout_width="361dp"
             android:layout_height="44dp"
-            android:layout_marginStart="23dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/text_box_round"
             android:ems="10"
@@ -113,10 +105,9 @@
             android:id="@+id/shippingAddressTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
-            android:text="Shipping Address"
+            android:text="Shipping Information"
             android:textColor="#B9B9C3"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -125,23 +116,22 @@
             android:id="@+id/shippingAddressSpin"
             android:layout_width="361dp"
             android:layout_height="46dp"
-            android:layout_marginStart="23dp"
             android:background="@drawable/text_box_round"
+            android:spinnerMode="dropdown"
             app:layout_constraintBottom_toTopOf="@+id/addNewAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/phoneEditText" />
 
-        <EditText
+        <Button
             android:id="@+id/addNewAddress"
             android:layout_width="361dp"
             android:layout_height="44dp"
-            android:layout_marginStart="23dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/text_box_round"
             android:ems="10"
-            android:hint="Add New Address"
-            android:inputType="textPersonName"
+            android:onClick="addAddress"
+            android:text="Add new address"
             app:layout_constraintBottom_toTopOf="@+id/updateBtn"
             app:layout_constraintEnd_toEndOf="@id/phoneEditText"
             app:layout_constraintHorizontal_bias="0.0"
@@ -156,7 +146,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="40dp"
             android:background="@drawable/submit_box_round"
-            android:onClick="update"
+            android:onClick="updateAccount"
             android:text="Update"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
@@ -165,6 +155,151 @@
             app:layout_constraintTop_toBottomOf="@+id/addNewAddress" />
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="488dp"
+        android:layout_marginEnd="100dp"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/addShippingInfoForm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="86dp"
+        android:background="@drawable/shape_order_list_item"
+        android:onClick="addAddress"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="8dp"
+            android:text="New Shipping Information"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@null"
+            android:onClick="closeForm"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/close_outline" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="16dp"
+            android:text="Receiver name:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <EditText
+            android:id="@+id/receiverName"
+            android:layout_width="220dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/text_box_round"
+            android:backgroundTint="@color/light_grey"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="8dp"
+            android:text="Receiver phone:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/receiverName" />
+
+        <EditText
+            android:id="@+id/receiverPhone"
+            android:layout_width="220dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/text_box_round"
+            android:backgroundTint="@color/light_grey"
+            android:ems="10"
+            android:inputType="phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="8dp"
+            android:text="Shipping Address:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/receiverPhone" />
+
+        <EditText
+            android:id="@+id/address"
+            android:layout_width="220dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/text_box_round"
+            android:backgroundTint="@color/light_grey"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/shape_button_main_color"
+            android:onClick="submitAdd"
+            android:text="Add"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.416"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
@@ -373,11 +508,11 @@
                 android:layout_width="34dp"
                 android:layout_height="34dp"
                 android:layout_marginTop="4dp"
-                android:tint="#7BFA4B"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/account" />
+                app:srcCompat="@drawable/account"
+                app:tint="#7BFA4B" />
 
             <TextView
                 android:id="@+id/accountNavTxt"

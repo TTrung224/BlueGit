@@ -36,6 +36,7 @@ public class ProductActivity extends AppCompatActivity {
     FirebaseFirestore db;
     DocumentReference docRef;
     String productId;
+    String sellerId;
 
     Map<String, Integer> product = new HashMap<>();
 
@@ -69,6 +70,7 @@ public class ProductActivity extends AppCompatActivity {
                 tDescription.setText(product.getDescription());
                 tSpec.setText(product.getSpecification());
                 tStock.setText(String.valueOf(product.getQuantity()));
+                sellerId = product.getSellerId().getId();
             }
 
             @Override
@@ -134,5 +136,11 @@ public class ProductActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public void chatWithSeller(View view) {
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("otherUserId", sellerId);
+        startActivity(intent);
     }
 }

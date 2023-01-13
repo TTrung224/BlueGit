@@ -34,6 +34,4 @@
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/Msg"
         app:layout_constraintEnd_toStartOf="@+id/Msg" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

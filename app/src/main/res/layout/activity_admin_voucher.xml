@@ -90,39 +90,59 @@
         android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <EditText
             android:id="@+id/addVoucherName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/text_box_round"
             android:ems="10"
             android:hint="Voucher Name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp" />
 
         <EditText
             android:id="@+id/addDiscountVoucher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/text_box_round"
             android:ems="10"
             android:hint="Discount"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp" />
 
         <EditText
             android:id="@+id/addQuantityVoucher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/text_box_round"
             android:ems="10"
             android:hint="Quantity"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp" />
 
         <EditText
             android:id="@+id/addExpireDateVoucher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/text_box_round"
             android:ems="10"
             android:hint="Expire Date"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp" />
 
         <Button
             android:id="@+id/submitVoucher"
