@@ -5,14 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,21 +23,12 @@ import com.example.bluegit.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class AccountActivity extends AppCompatActivity{
@@ -77,7 +65,7 @@ public class AccountActivity extends AppCompatActivity{
         nameTV = (TextView) findViewById(R.id.nameTextView);
         nameEdit = (EditText) findViewById(R.id.nameEditText);
         phoneNumberEdit = (EditText) findViewById(R.id.phoneEditText);
-        profileImgView = (ImageView) findViewById(R.id.profileImg);
+        profileImgView = (ImageView) findViewById(R.id.otherImg);
 
         updateBtn = (Button) findViewById(R.id.updateBtn);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);

@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/main_profile_pic"
+            android:id="@+id/otherImg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -37,7 +37,7 @@
         app:layout_constraintBottom_toBottomOf="@id/cardView"
         app:layout_constraintStart_toEndOf="@id/cardView">
         <TextView
-            android:id="@+id/user_name"
+            android:id="@+id/sellerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="1"
@@ -52,44 +52,34 @@
     </LinearLayout>
 
 
-
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:onClick="onSignOutClick"
-        android:text="Sign Out"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/search_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="15dp"
         android:layout_marginHorizontal="10dp"
-        app:cardCornerRadius="360dp"
+        android:layout_marginTop="15dp"
         android:paddingHorizontal="10dp"
+        app:cardCornerRadius="360dp"
         app:cardElevation="10dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardView">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <EditText
                 android:id="@+id/search_bar"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
                 android:layout_weight="8"
-                android:lines="1"
-                android:inputType="text"
                 android:imeOptions="actionSearch"
-                android:layout_marginHorizontal="10dp"/>
+                android:inputType="text"
+                android:lines="1" />
+
             <ImageButton
                 android:id="@+id/search_button"
                 android:layout_width="60dp"
@@ -359,5 +349,38 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/round_box_blue"
+        android:backgroundTint="@color/main"
+        android:onClick="onSignOutClick"
+        android:paddingStart="4dp"
+        android:paddingEnd="0dp"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/search_bar_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/sign_out_2" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_box_blue"
+        android:backgroundTint="@color/main"
+        android:onClick="onChatsClick"
+        android:paddingStart="2dp"
+        android:paddingEnd="0dp"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/search_bar_layout"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.517"
+        app:srcCompat="@drawable/chat_circle_dots" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

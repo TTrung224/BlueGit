@@ -30,18 +30,38 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:elevation="10dp"
+            app:cardCornerRadius="360dp"
+            app:layout_constraintStart_toEndOf="@+id/backBtn"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/otherImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_profile_picture" />
+
+        </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/otherName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/backBtn"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
             android:text="[User name]"
             android:textColor="#000000"
-            android:textSize="30sp"
-            app:layout_constraintStart_toEndOf="@+id/backBtn"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

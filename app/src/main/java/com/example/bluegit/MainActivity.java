@@ -62,10 +62,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        profilePic = findViewById(R.id.main_profile_pic);
+        profilePic = findViewById(R.id.otherImg);
         progressBar = findViewById(R.id.display_progress);
         tSearchBar = findViewById(R.id.search_bar);
-        tUserName = findViewById(R.id.user_name);
+        tUserName = findViewById(R.id.sellerName);
         tUserBalance = findViewById(R.id.user_balance);
         searchBtn = findViewById(R.id.search_button);
         productDisplay = findViewById(R.id.items_display);
@@ -173,6 +173,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void onChatsClick(View view) {
+        Intent intent = new Intent(this, ChatListActivity.class);
+        startActivity(intent);
+    }
+
     public void toBusiness(View view) {
         Intent intent = new Intent(this, ProductManageActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -238,12 +243,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-//    public void testChat(View view) {
-//        Intent intent = new Intent(this, ChatActivity.class);
-//        intent.putExtra("otherUserId", "TncOqL0OPdesMbXbHW0ZCtTEbs63");
-//        startActivity(intent);
-//    }
 
     public void startSearch(View view) {
         String searchString = tSearchBar.getText().toString();

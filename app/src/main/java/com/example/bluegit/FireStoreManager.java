@@ -10,6 +10,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.bluegit.model.Message;
 import com.example.bluegit.model.Order;
 import com.example.bluegit.model.Product;
 import com.example.bluegit.model.User;
@@ -26,11 +27,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.Transaction;
 import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -42,7 +46,9 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class FireStoreManager {
@@ -92,7 +98,12 @@ public class FireStoreManager {
                             public void onComplete(@NonNull Task<Uri> task) {
                                 if (task.isSuccessful()) {
                                     user.setProfileImageSrc(task.getResult().toString());
-                                    dbUsers.document(user.getId()).set(user)
+                                    Map<String, Object> data = new HashMap<>();
+                                    data.put("displayName", user.getDisplayName());
+                                    data.put("phoneNumber", user.getPhoneNumber());
+                                    data.put("profileImageSrc", user.getProfileImageSrc());
+
+                                    dbUsers.document(user.getId()).update(data)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
@@ -528,6 +539,91 @@ public class FireStoreManager {
         });
     }
 
+    public void getChatWithOfAUser(getChatWithOfAUserCallBack callBack){
+        CollectionReference dbUserChatWith = db.collection("users")
+                .document(currentUser.getUid())
+                .collection("chatWith");
+        dbUserChatWith.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                    ArrayList<DocumentReference> chatRefList = new ArrayList<>();
+
+                    for(DocumentSnapshot document: documents){
+                        chatRefList.add(document.getDocumentReference(document.getId()));
+                    }
+                    callBack.onSuccess(chatRefList);
+                } else {
+                    callBack.onFailure(task.getException());
+                }
+            }
+        });
+    }
+
+    public void getDataForChatAdapter(ArrayList<DocumentReference> chatRefList, getDataForChatAdapterCallBack callBack){
+        CollectionReference userRef = db.collection("users");
+
+        db.runTransaction(new Transaction.Function<Map<User, Message>>() {
+
+            @NonNull
+            @Override
+            public Map<User, Message> apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                Map<User, Message> data = new HashMap<>();
+                int index = 0;
+                for(DocumentReference chatRef: chatRefList){
+                    DocumentSnapshot documentSnapshot = transaction.get(chatRef);
+
+                    String m1Id = Objects.requireNonNull(documentSnapshot.get("m1")).toString();
+                    String m2Id = Objects.requireNonNull(documentSnapshot.get("m2")).toString();
+                    String otherId = (currentUser.getUid().equals(m1Id))? m2Id : m1Id;
+
+                    Message msg;
+                    if(documentSnapshot.get("lastMsg") != null){
+                        DocumentReference msgRef = (DocumentReference) documentSnapshot.get("lastMsg");
+                        msg = transaction.get(msgRef).toObject(Message.class);
+                    } else {
+                        continue;
+                    }
+                    User user = transaction.get(userRef.document(otherId)).toObject(User.class);
+                    data.put(user, msg);
+                }
+
+                return data;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Map<User, Message>>() {
+            @Override
+            public void onSuccess(Map<User, Message> userMessageMap) {
+                callBack.onSuccess(userMessageMap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callBack.onFailure(e);
+            }
+        });
+    }
+
+//    public void getLastMessageOfChat(DocumentReference chatRef,getLastMessageOfChatCallBack callBack) {
+//        Query query = chatRef.collection("messages")
+//                .orderBy("sentTime", Query.Direction.DESCENDING)
+//                .limit(1);
+//        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if(task.isSuccessful()){
+//                    Message message = task.getResult().getDocuments().get(0).toObject(Message.class);
+//                    callBack.onSuccess(message);
+//                } else {
+//                    callBack.onFailure(task.getException());
+//                }
+//            }
+//        });
+//    }
+
+    public void getDataForChatAdapter(){
+
+    }
     public interface AddOrdersCallBack{
         void onSuccess();
         void onFailure(Exception e);
@@ -575,6 +671,21 @@ public class FireStoreManager {
 
     public interface AddProductCallBack {
         void onSuccess();
+        void onFailure(Exception e);
+    }
+
+    public interface getChatWithOfAUserCallBack{
+        void onSuccess(ArrayList<DocumentReference> chatRefList);
+        void onFailure(Exception e);
+    }
+
+    public interface getLastMessageOfChatCallBack{
+        void onSuccess(Message message);
+        void onFailure(Exception e);
+    }
+
+    public interface getDataForChatAdapterCallBack{
+        void onSuccess(Map<User, Message> data);
         void onFailure(Exception e);
     }
 }

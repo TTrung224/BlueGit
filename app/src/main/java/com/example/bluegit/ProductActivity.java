@@ -3,7 +3,6 @@ package com.example.bluegit;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bluegit.model.Product;
+import com.example.bluegit.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,10 +33,14 @@ public class ProductActivity extends AppCompatActivity {
     TextView tSpec;
     TextView productQuantityEdit;
     TextView tStock;
+    TextView tSellerName;
+    ImageView iSellerImg;
+
     FirebaseFirestore db;
     DocumentReference docRef;
     String productId;
     String sellerId;
+
 
     Map<String, Integer> product = new HashMap<>();
 
@@ -56,6 +60,8 @@ public class ProductActivity extends AppCompatActivity {
         tSpec = findViewById(R.id.productSpec);
         productQuantityEdit = findViewById(R.id.quantity);
         tStock = findViewById(R.id.productQuantity);
+        tSellerName = findViewById(R.id.sellerName);
+        iSellerImg = findViewById(R.id.otherImg);
 
         Intent intent = getIntent();
         productId = intent.getStringExtra("productId");
@@ -71,10 +77,25 @@ public class ProductActivity extends AppCompatActivity {
                 tSpec.setText(product.getSpecification());
                 tStock.setText(String.valueOf(product.getQuantity()));
                 sellerId = product.getSellerId().getId();
+                fireStoreManager.getUserById(sellerId, new FireStoreManager.GetUserDataCallBack() {
+                    @Override
+                    public void onSuccess(User result) {
+                        tSellerName.setText(result.getDisplayName());
+                        Picasso.get().load(Uri.parse(result.getProfileImageSrc())).into(iSellerImg);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(ProductActivity.this, "Fail to load product, please try again", Toast.LENGTH_SHORT).show();
+                        Log.d("GetUserByIdProductActivity", e.getLocalizedMessage());
+                        finish();
+                    }
+                });
             }
 
             @Override
             public void onFailure(Exception e) {
+                Toast.makeText(ProductActivity.this, "Fail to load product, please try again", Toast.LENGTH_SHORT).show();
                 Log.d("GetProductByIdProductActivity", e.getLocalizedMessage());
                 finish();
             }

@@ -5,12 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,7 +77,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            productImage = itemView.findViewById(R.id.profileImg);
+            productImage = itemView.findViewById(R.id.otherImg);
             productName = itemView.findViewById(R.id.itemName);
             productPrice = itemView.findViewById(R.id.itemPrice);
             productDeleteItemBtn = itemView.findViewById(R.id.deleteItemBtn);

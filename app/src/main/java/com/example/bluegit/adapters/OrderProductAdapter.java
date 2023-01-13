@@ -35,8 +35,8 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            img = itemView.findViewById(R.id.profileImg);
-            price = itemView.findViewById(R.id.itemListProductPrice);
+            img = itemView.findViewById(R.id.otherImg);
+            price = itemView.findViewById(R.id.lastMsg);
             quantity = itemView.findViewById(R.id.itemListProductQuantity);
         }
     }

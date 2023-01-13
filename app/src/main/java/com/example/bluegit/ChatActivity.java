@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.accounts.Account;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.jakewharton.threetenabp.AndroidThreeTen;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -73,6 +76,9 @@ public class ChatActivity extends AppCompatActivity {
             public void onSuccess(User otherUser) {
                 TextView otherNameTextView = findViewById(R.id.otherName);
                 otherNameTextView.setText(otherUser.getDisplayName());
+                ImageView otherImg = findViewById(R.id.otherImg);
+                Picasso.get().load(Uri.parse(otherUser.getProfileImageSrc())).into(otherImg);
+
             }
 
             @Override
@@ -133,13 +139,22 @@ public class ChatActivity extends AppCompatActivity {
             String msgStr = messageInput.getText().toString();
             Message msg = new Message(msgStr, meId, otherId);
 
+            DocumentReference msgRef = chatRef.collection("messages").document(messageId);
+
             chatRef.collection("messages").document(messageId).set(msg)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("lastMsg", msgRef);
+                            chatRef.update(data);
+                        }
+                    })
                     .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(ChatActivity.this,
                                 "Error, message can not send", Toast.LENGTH_SHORT).show();
-                        ;
                     }
                 });
             messageInput.setText("");
