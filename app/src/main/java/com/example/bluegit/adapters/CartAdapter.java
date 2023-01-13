@@ -29,14 +29,36 @@ import java.util.Map;
 
 
 public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
-    private final ArrayList<Product> products;
-    private final ArrayList<Integer> productCounts;
+    public TextView showTotal;
+    public int totalPrice;
+    public final ArrayList<Product> products;
+    public final ArrayList<Integer> productCounts;
     private final LayoutInflater inflater;
 
     public CartAdapter(ArrayList<Product> products, ArrayList<Integer> productCounts, Context context) {
         this.products = products;
         this.inflater = LayoutInflater.from(context);
         this.productCounts = productCounts;
+    }
+
+    public CartAdapter(ArrayList<Product> products, ArrayList<Integer> productCounts, Context context, TextView showTotal) {
+        this.products = products;
+        this.inflater = LayoutInflater.from(context);
+        this.productCounts = productCounts;
+        this.showTotal = showTotal;
+
+    }
+
+    public void showTotalPrice(){
+        int total = 0;
+        for(int i = 0; i < getItemCount(); i++){
+            total += products.get(i).getProductPrice() * productCounts.get(i);
+        }
+        this.totalPrice = total;
+        if(showTotal != null){
+            NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+            showTotal.setText(nf.format(total));
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -79,6 +101,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
         String price = nf.format(products.get(position).getProductPrice());
         holder.productPrice.setText(price);
         holder.productQuantity.setText(String.valueOf(productCounts.get(position)));
+        showTotalPrice();
 
         holder.productDeleteItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +113,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
                         productCounts.remove(holder.getAdapterPosition());
                         notifyItemRemoved(holder.getAdapterPosition());
                         notifyItemRangeChanged(holder.getAdapterPosition(), products.size());
+                        showTotalPrice();
                     }
                     @Override
                     public void onFailure(Exception e) {
@@ -117,6 +141,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
                             temp--;
                             productCounts.set(holder.getAdapterPosition(), temp);
                             notifyItemChanged(holder.getAdapterPosition(), productCounts);
+                            showTotalPrice();
                         }
 
                         @Override
@@ -145,6 +170,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
                             temp++;
                             productCounts.set(holder.getAdapterPosition(), temp);
                             notifyItemChanged(holder.getAdapterPosition(), productCounts);
+                            showTotalPrice();
                         }
 
                         @Override

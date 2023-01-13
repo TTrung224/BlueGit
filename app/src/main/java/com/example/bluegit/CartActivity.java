@@ -1,5 +1,6 @@
 package com.example.bluegit;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,14 +19,18 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 public class CartActivity extends AppCompatActivity {
-    private ArrayList<Product> products = new ArrayList<>();
+
     FireStoreManager fireStoreManager;
+    NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     TextView emptyMessage;
+    TextView orderTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,7 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
         fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
         emptyMessage = findViewById(R.id.empty_message);
+        orderTotal = findViewById(R.id.order_total);
 
     }
     @Override
@@ -56,8 +62,9 @@ public class CartActivity extends AppCompatActivity {
                         if(products.size() > 0){
                             emptyMessage.setVisibility(View.GONE);
                         }
+
                         RecyclerView recyclerView = findViewById(R.id.itemList);
-                        CartAdapter adapter = new CartAdapter(products, amounts, CartActivity.this);
+                        CartAdapter adapter = new CartAdapter(products, amounts, CartActivity.this, orderTotal);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(CartActivity.this));
                     }

@@ -27,4 +27,5 @@
     <string name="empty_user_product">Wow, so empty… \nAdd an item now and make some profit!</string>
     <string name="sold_orders">Sold Orders</string>
     <string name="empty_cart">You don\'t have any item yet…\nGo do some shopping :D</string>
+    <string name="order">Order</string>
 </resources>

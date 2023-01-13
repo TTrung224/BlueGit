@@ -33,7 +33,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,10 +45,13 @@ public class MainActivity extends AppCompatActivity {
     public static final int NAV_TO_CART = 4;
     public static final int NAV_TO_ACCOUNT = 5;
 
+    NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     ImageView profilePic;
     FireStoreManager fireStoreManager;
     ProgressBar progressBar;
     EditText tSearchBar;
+    TextView tUserName;
+    TextView tUserBalance;
     ImageButton searchBtn;
     RecyclerView productDisplay;
 
@@ -60,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         profilePic = findViewById(R.id.main_profile_pic);
         progressBar = findViewById(R.id.display_progress);
         tSearchBar = findViewById(R.id.search_bar);
+        tUserName = findViewById(R.id.user_name);
+        tUserBalance = findViewById(R.id.user_balance);
         searchBtn = findViewById(R.id.search_button);
         productDisplay = findViewById(R.id.items_display);
         fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
@@ -90,17 +97,26 @@ public class MainActivity extends AppCompatActivity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser != null){
             fireStoreManager.getCurrentUser(new FireStoreManager.GetUserDataCallBack() {
                 @Override
                 public void onSuccess(User result) {
-                    String welcomeMessage = "WELCOME! " + result.getDisplayName();
+                    tUserName.setText(result.getDisplayName());
+                    tUserBalance.setText(nf.format(result.getBalance()));
                     Picasso.get()
                             .load(result.getProfileImageSrc())
                             .into(profilePic);
-                    Toast.makeText(MainActivity.this, welcomeMessage, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -114,17 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
             });
-
         }else{
-            finish();
-        }
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(FirebaseAuth.getInstance().getCurrentUser() == null){
             finish();
         }
 
@@ -237,11 +243,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void testChat(View view) {
-        Intent intent = new Intent(this, ChatActivity.class);
-        intent.putExtra("otherUserId", "TncOqL0OPdesMbXbHW0ZCtTEbs63");
-        startActivity(intent);
-    }
+//    public void testChat(View view) {
+//        Intent intent = new Intent(this, ChatActivity.class);
+//        intent.putExtra("otherUserId", "TncOqL0OPdesMbXbHW0ZCtTEbs63");
+//        startActivity(intent);
+//    }
 
     public void startSearch(View view) {
         String searchString = tSearchBar.getText().toString();

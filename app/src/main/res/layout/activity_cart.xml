@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="4dp"
+        android:layout_marginVertical="10dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -249,21 +249,32 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="140dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginEnd="140dp"
-                android:backgroundTint="@color/main"
-                android:text="Button"
-                android:textColor="@color/white"
+                android:orientation="horizontal"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
+                <TextView
+                    android:id="@+id/order_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="@color/dark_blue"
+                    android:layout_marginEnd="15dp"/>
+                <Button
+                    android:id="@+id/order_button"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_box_blue"
+                    android:elevation="10dp"
+                    android:text="@string/order"
+                    android:textColor="@color/white"/>
+
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
