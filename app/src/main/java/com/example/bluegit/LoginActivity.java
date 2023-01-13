@@ -74,11 +74,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
-        MyBroadcastReceiver broadcastReceiver = new MyBroadcastReceiver();
-        this.registerReceiver(broadcastReceiver, intentFilter);
-
-
         if((ActivityCompat.checkSelfPermission(this, permissionArrays[0]) != PackageManager.PERMISSION_GRANTED) ||
                 (ActivityCompat.checkSelfPermission(this, permissionArrays[1]) != PackageManager.PERMISSION_GRANTED) ||
                 (ActivityCompat.checkSelfPermission(this, permissionArrays[2]) != PackageManager.PERMISSION_GRANTED)){
@@ -138,13 +133,13 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     })
                     .show();
-        }
-
-        tPassword.setText("");
-        currentUser = null;
-        currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        }else{
+            tPassword.setText("");
+            currentUser = null;
+            currentUser = mAuth.getCurrentUser();
+            if(currentUser != null){
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            }
         }
     }
 

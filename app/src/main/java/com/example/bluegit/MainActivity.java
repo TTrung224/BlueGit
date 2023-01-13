@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
         productDisplay = findViewById(R.id.items_display);
         fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
 
+        IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        MyBroadcastReceiver broadcastReceiver = new MyBroadcastReceiver();
+        this.registerReceiver(broadcastReceiver, intentFilter);
+
         tSearchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

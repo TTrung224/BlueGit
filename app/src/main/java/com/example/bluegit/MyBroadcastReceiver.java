@@ -30,7 +30,9 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             android.net.NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
             if(!networkInfo.isConnected()){
-                FirebaseAuth.getInstance().signOut();
+                Intent i = new Intent(context, LoginActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
             }
         }
 
