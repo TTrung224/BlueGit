@@ -9,13 +9,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bluegit.adapters.AdminProductAdapter;
 import com.example.bluegit.adapters.CartAdapter;
 import com.example.bluegit.model.Product;
+import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.checkerframework.checker.units.qual.A;
 
@@ -31,6 +36,9 @@ public class CartActivity extends AppCompatActivity {
     NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     TextView emptyMessage;
     TextView orderTotal;
+    Button orderBtn;
+    ProgressBar orderProgress;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +47,8 @@ public class CartActivity extends AppCompatActivity {
         fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
         emptyMessage = findViewById(R.id.empty_message);
         orderTotal = findViewById(R.id.order_total);
+        orderBtn = findViewById(R.id.order_button);
+        orderProgress = findViewById(R.id.order_progress);
 
     }
     @Override
@@ -51,22 +61,53 @@ public class CartActivity extends AppCompatActivity {
                 fireStoreManager.getProductsFromCart(cartResult, new FireStoreManager.GetProductsFromCartCallBack() {
                     @Override
                     public void onSuccess(Map<Product, Integer> result) {
-                        ArrayList<Product> products = new ArrayList<>();
-                        ArrayList<Integer> amounts = new ArrayList<>();
-
-                        for(Map.Entry<Product, Integer> entry : result.entrySet()){
-                            products.add(entry.getKey());
-                            amounts.add(entry.getValue());
-                        }
-
-                        if(products.size() > 0){
+                        if(!result.isEmpty()){
                             emptyMessage.setVisibility(View.GONE);
                         }
 
                         RecyclerView recyclerView = findViewById(R.id.itemList);
-                        CartAdapter adapter = new CartAdapter(products, amounts, CartActivity.this, orderTotal);
+                        CartAdapter adapter = new CartAdapter(result, CartActivity.this, orderTotal);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(CartActivity.this));
+
+                        orderBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(adapter.getItemCount() < 1){
+                                    Toast.makeText(CartActivity.this, "No item in cart", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+
+                                v.setEnabled(false);
+                                v.setAlpha(0.5f);
+                                orderProgress.setVisibility(View.VISIBLE);
+                                fireStoreManager.addOrders(adapter.cartMap, new FireStoreManager.AddOrdersCallBack() {
+                                    @Override
+                                    public void onSuccess() {
+                                        fireStoreManager.emptyCart();
+                                        Toast.makeText(CartActivity.this, "Successfully create a new order", Toast.LENGTH_SHORT).show();
+                                        orderProgress.setVisibility(View.GONE);
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Exception e) {
+                                        v.setEnabled(true);
+                                        v.setAlpha(1f);
+                                        orderProgress.setVisibility(View.GONE);
+                                        if(e instanceof InsufficientBalanceException){
+                                            Toast.makeText(CartActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }else if(e instanceof OutOfStockException){
+                                            Toast.makeText(CartActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                        else{
+                                            Toast.makeText(CartActivity.this, "Unable to create order", Toast.LENGTH_SHORT).show();
+                                            Log.d("MakeOrderException", e.getMessage());
+                                        }
+                                    }
+                                });
+                            }
+                        });
                     }
                     @Override
                     public void onFailure(Exception e) {

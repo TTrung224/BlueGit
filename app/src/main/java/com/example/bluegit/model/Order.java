@@ -1,41 +1,44 @@
 package com.example.bluegit.model;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
-import org.threeten.bp.LocalDateTime;
 import java.util.ArrayList;
 
 public class Order {
     private String id;
-    private ArrayList<Product> products;
+    private ArrayList<String> productIDs;
     private ArrayList<Integer> amount;
     private String voucher;
     private String address;
     private String status;
-    private LocalDateTime createdDate;
+    private Timestamp createdDate;
+    private int totalPrice;
 
     // TODO: reconsider data type
     private DocumentReference customerId;
     private DocumentReference sellerId;
 
-    public Order(String id, ArrayList<Product> products, ArrayList<Integer> amount,
+    public Order(String id, ArrayList<String> products, ArrayList<Integer> amount, int totalPrice,
                  String voucher, DocumentReference customerId, DocumentReference sellerId) {
         this.id = id;
-        this.products = products;
+        this.productIDs = products;
         this.amount = amount;
+        this.totalPrice = totalPrice;
         this.voucher = voucher;
         this.customerId = customerId;
         this.status = "pending";
         this.sellerId = sellerId;
+        createdDate = Timestamp.now();
 
     }
 
-    public ArrayList<Product> getProducts() {
-        return products;
+    public ArrayList<String> getProductIDs() {
+        return productIDs;
     }
 
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
+    public void setProductIDs(ArrayList<String> productIDs) {
+        this.productIDs = productIDs;
     }
 
     public DocumentReference getCustomerId() {
@@ -62,11 +65,11 @@ public class Order {
         this.voucher = voucher;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public Timestamp getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -95,11 +98,11 @@ public class Order {
     }
 
     public int getTotalPrice(){
-        int total = 0;
-        for(Product product : products){
-            total += product.getProductPrice();
-        }
-        return total;
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public ArrayList<Integer> getAmount() {
@@ -111,7 +114,7 @@ public class Order {
     }
 
     public int getProductQuantity(){
-        return products.size();
+        return productIDs.size();
     }
 }
 

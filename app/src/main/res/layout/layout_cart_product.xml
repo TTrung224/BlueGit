@@ -9,7 +9,7 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/profileImg"
+        android:id="@+id/orderProductImg"
         android:layout_width="95dp"
         android:layout_height="85dp"
         android:layout_weight="1"
@@ -18,15 +18,17 @@
 
     <TextView
         android:id="@+id/itemName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="6dp"
         android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/profileImg"
+        android:layout_toEndOf="@+id/orderProductImg"
+        android:layout_toStartOf="@id/deleteItemBtn"
         android:text="dau tay"
+        android:lines="1"
         android:textColor="@color/black"
-        android:textSize="24sp" />
+        android:textSize="22sp" />
 
     <EditText
         android:id="@+id/quantity2"
@@ -61,15 +63,15 @@
 
     <TextView
         android:id="@+id/itemPrice"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="41dp"
         android:layout_below="@+id/itemName"
         android:layout_marginStart="6dp"
         android:layout_marginTop="7dp"
-        android:layout_toEndOf="@+id/profileImg"
-        android:gravity="center"
+        android:layout_toEndOf="@+id/orderProductImg"
+        android:layout_toStartOf="@id/increaseQuantityBtn3"
+        android:gravity="center_vertical"
         android:text=" price"
-        android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="16sp" />
 

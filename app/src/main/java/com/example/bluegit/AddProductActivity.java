@@ -116,4 +116,8 @@ public class AddProductActivity extends AppCompatActivity {
         }
 
     }
+
+    public void goBack(View view) {
+        finish();
+    }
 }

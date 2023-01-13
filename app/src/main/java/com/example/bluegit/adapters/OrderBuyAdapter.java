@@ -64,8 +64,7 @@ public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHo
                 .format(orders.get(position).getTotalPrice());
         holder.orderPrice.setText(formattedPrice);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        holder.createdDate.setText(orders.get(position).getCreatedDate().format(formatter));
+        holder.createdDate.setText(orders.get(position).getCreatedDate().toString());
 
         holder.orderStatus.setText(orders.get(position).getStatus());
     }

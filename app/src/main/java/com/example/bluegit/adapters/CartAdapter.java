@@ -31,8 +31,9 @@ import java.util.Map;
 public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
     public TextView showTotal;
     public int totalPrice;
-    public final ArrayList<Product> products;
-    public final ArrayList<Integer> productCounts;
+    public Map<Product, Integer> cartMap;
+    private final ArrayList<Product> products;
+    private final ArrayList<Integer> productCounts;
     private final LayoutInflater inflater;
 
     public CartAdapter(ArrayList<Product> products, ArrayList<Integer> productCounts, Context context) {
@@ -41,11 +42,16 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
         this.productCounts = productCounts;
     }
 
-    public CartAdapter(ArrayList<Product> products, ArrayList<Integer> productCounts, Context context, TextView showTotal) {
-        this.products = products;
+    public CartAdapter(Map<Product, Integer> cartMapV , Context context, TextView showTotal) {
         this.inflater = LayoutInflater.from(context);
-        this.productCounts = productCounts;
         this.showTotal = showTotal;
+        this.cartMap = cartMapV;
+        products = new ArrayList<>();
+        productCounts = new ArrayList<>();
+        for(Map.Entry<Product, Integer> entry : cartMap.entrySet()){
+            products.add(entry.getKey());
+            productCounts.add(entry.getValue());
+        }
 
     }
 
@@ -109,6 +115,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
                 fireStoreManager.deleteItemFromCart(products.get(holder.getAdapterPosition()).getProductId(), new FireStoreManager.CartCallBack() {
                     @Override
                     public void onSuccess() {
+                        cartMap.remove(products.get(holder.getAdapterPosition()));
                         products.remove(holder.getAdapterPosition());
                         productCounts.remove(holder.getAdapterPosition());
                         notifyItemRemoved(holder.getAdapterPosition());
@@ -140,6 +147,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
                             Integer temp = productCounts.get(holder.getAdapterPosition());
                             temp--;
                             productCounts.set(holder.getAdapterPosition(), temp);
+                            cartMap.put(products.get(holder.getAdapterPosition()), temp);
                             notifyItemChanged(holder.getAdapterPosition(), productCounts);
                             showTotalPrice();
                         }
@@ -169,6 +177,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
                             Integer temp = productCounts.get(holder.getAdapterPosition());
                             temp++;
                             productCounts.set(holder.getAdapterPosition(), temp);
+                            cartMap.put(products.get(holder.getAdapterPosition()), temp);
                             notifyItemChanged(holder.getAdapterPosition(), productCounts);
                             showTotalPrice();
                         }

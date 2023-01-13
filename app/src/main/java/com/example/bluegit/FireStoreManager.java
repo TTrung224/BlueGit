@@ -8,13 +8,16 @@ import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.example.bluegit.model.Order;
 import com.example.bluegit.model.Product;
 import com.example.bluegit.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -22,9 +25,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Transaction;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -333,6 +339,67 @@ public class FireStoreManager {
                 }
             }
         });
+
+//        ArrayList<DocumentReference> sellerRefs = new ArrayList<>();
+//
+//        Map<String, Order> doc = new HashMap<>();
+//        for(Product product : cart.keySet()){
+//            if(!sellerRefs.contains(product.getSellerId())){
+//                sellerRefs.add(product.getSellerId());
+//            }
+//        }
+//
+//        WriteBatch batch = db.batch();
+//        int netTotal = 0;
+//        for(DocumentReference seller : sellerRefs){
+//            String id = UUID.randomUUID().toString();
+//            ArrayList<String> productIDs = new ArrayList<>();
+//            ArrayList<Integer> amount = new ArrayList<>();
+//            int total = 0;
+//
+//            for(Map.Entry<Product, Integer> entry : cart.entrySet()){
+//                if(entry.getKey().getSellerId().equals(seller)){
+//                    productIDs.add(entry.getKey().getProductId());
+//                    amount.add(entry.getValue());
+//                    total += entry.getKey().getProductPrice() * entry.getValue();
+//                }
+//            }
+//            netTotal += total;
+//            Order order = new Order(id, productIDs, amount, total,
+//                    "", dbUsers.document(currentUser.getUid()), seller);
+//
+//            batch.set(dbOrders.document(id), order);
+//            batch.update(seller, "orderRef", FieldValue.arrayUnion(dbOrders.document(id)));
+//
+//        }
+//
+//        int finalNetTotal = netTotal;
+//        getCurrentUser(new GetUserDataCallBack() {
+//            @Override
+//            public void onSuccess(User result) {
+//                if(result.getBalance() < finalNetTotal){
+//                    // callBack.onFailure(new InsufficientBalanceException("Insufficient Balance"));
+//                }else{
+//                    batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            if (task.isSuccessful()){
+//                                callBack.onSuccess();
+//                            }else{
+//                                callBack.onFailure(task.getException());
+//                            }
+//                        }
+//                    });
+//                }
+//            }
+//            @Override
+//            public void onFailure(Exception e) {
+//                callBack.onFailure(e);
+//            }
+//        });
+
+
+
     }
 
     public void addToCart(Map<String, Integer> products, CartCallBack callBack){
@@ -380,19 +447,91 @@ public class FireStoreManager {
         });
     }
 
-    public void emptyCart(CartCallBack callBack){
+    public void emptyCart(){
         DocumentReference dbUserCart = db.collection("users").document(currentUser.getUid())
                 .collection("cart").document("1");
-        dbUserCart.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+        dbUserCart.delete();
+    }
+
+    public void addOrders(Map<Product, Integer> cart, AddOrdersCallBack callBack){
+        CollectionReference dbOrders = db.collection("orders");
+        CollectionReference dbUsers = db.collection("users");
+        CollectionReference dbProducts = db.collection("products");
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Nullable
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    callBack.onSuccess();
-                }else { callBack.onFailure(task.getException()); }
+            public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+
+                ArrayList<DocumentReference> sellerRefs = new ArrayList<>();
+                int netTotal = 0;
+
+                for(Map.Entry<Product, Integer> entry : cart.entrySet()){
+
+                    // Check if product has stock
+                    DocumentSnapshot snapshot = transaction.get(dbProducts.document(entry.getKey().getProductId()));
+                    Long realQuant = snapshot.getLong("quantity");
+                    if(realQuant < entry.getValue()){
+                        throw new OutOfStockException("Run out of stock for " + snapshot.getString("productName"), FirebaseFirestoreException.Code.ABORTED);
+                    }
+
+                    netTotal += snapshot.getLong("productPrice");
+                    if(!sellerRefs.contains(entry.getKey().getSellerId())){
+                        sellerRefs.add(entry.getKey().getSellerId());
+                    }
+                }
+                int finalNetTotal = netTotal;
+
+                // Check if user has sufficient fund
+                Long currentBalance = transaction.get(dbUsers.document(currentUser.getUid())).getLong("balance");
+                if(currentBalance < finalNetTotal){
+                    throw new InsufficientBalanceException("Insufficient Balance", FirebaseFirestoreException.Code.ABORTED);
+                }
+
+                transaction.update(dbUsers.document(currentUser.getUid()), "balance", FieldValue.increment(-netTotal));
+
+                for(DocumentReference seller : sellerRefs){
+                    String id = UUID.randomUUID().toString();
+                    ArrayList<String> productIDs = new ArrayList<>();
+                    ArrayList<Integer> amount = new ArrayList<>();
+                    int total = 0;
+
+                    for(Map.Entry<Product, Integer> entry : cart.entrySet()){
+                        if(entry.getKey().getSellerId().equals(seller)){
+                            productIDs.add(entry.getKey().getProductId());
+                            amount.add(entry.getValue());
+                            total += entry.getKey().getProductPrice() * entry.getValue();
+                            transaction.update(dbProducts.document(entry.getKey().getProductId()),
+                                    "quantity", FieldValue.increment(-entry.getValue()));
+                        }
+                    }
+
+                    Order order = new Order(id, productIDs, amount, total,
+                            "", dbUsers.document(currentUser.getUid()), seller);
+
+                    transaction.set(dbOrders.document(id), order);
+                    transaction.update(seller, "balance", FieldValue.increment(total));
+                    transaction.update(seller, "orderRef", FieldValue.arrayUnion(dbOrders.document(id)));
+                }
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                callBack.onSuccess();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callBack.onFailure(e);
             }
         });
     }
 
+    public interface AddOrdersCallBack{
+        void onSuccess();
+        void onFailure(Exception e);
+    }
 
     public interface GetProductsCallBack {
         void onSuccess(ArrayList<Product> result);
@@ -444,6 +583,14 @@ class NoUserInDatabaseException extends Exception{
     public NoUserInDatabaseException(String messageError){
         super(messageError);
     }
+}
+
+class InsufficientBalanceException extends FirebaseFirestoreException{
+    public InsufficientBalanceException(String messageError, Code code){ super(messageError, code); }
+}
+
+class OutOfStockException extends FirebaseFirestoreException{
+    public OutOfStockException(String messageError, Code code){ super(messageError, code); }
 }
 
 
