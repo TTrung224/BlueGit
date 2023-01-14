@@ -116,7 +116,7 @@
             android:background="@drawable/text_box_round"
             android:ems="10"
             android:hint="Discount Percent"
-            android:inputType="textPersonName"
+            android:inputType="numberSigned"
             android:paddingTop="6dp"
             android:paddingBottom="6dp" />
 
@@ -129,7 +129,7 @@
             android:background="@drawable/text_box_round"
             android:ems="10"
             android:hint="Min Per Order"
-            android:inputType="textPersonName"
+            android:inputType="numberSigned"
             android:paddingTop="6dp"
             android:paddingBottom="6dp" />
 
@@ -142,7 +142,7 @@
             android:background="@drawable/text_box_round"
             android:ems="10"
             android:hint="Max Discount"
-            android:inputType="textPersonName"
+            android:inputType="numberSigned"
             android:paddingTop="6dp"
             android:paddingBottom="6dp" />
 

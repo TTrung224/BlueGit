@@ -96,6 +96,9 @@ public class AdminVoucherActivity extends AppCompatActivity {
         } else if(discountPercentStr.equals("")) {
             addDiscountPercent.setError("Please enter discount percent.");
             addDiscountPercent.requestFocus();
+        } else if(discountPercent>100){
+            addDiscountPercent.setError("The maximum number can input is 100.");
+            addDiscountPercent.requestFocus();
         } else if(maxAmountStr.equals("")) {
             addMaxDiscount.setError("Please enter max discount amount.");
             addMaxDiscount.requestFocus();
