@@ -90,7 +90,7 @@
         android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:layout_editor_absoluteX="0dp">
 
@@ -108,40 +108,40 @@
             android:paddingBottom="6dp" />
 
         <EditText
-            android:id="@+id/addDiscountVoucher"
+            android:id="@+id/addDiscountPercent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/text_box_round"
             android:ems="10"
-            android:hint="Discount"
+            android:hint="Discount percent"
             android:inputType="textPersonName"
             android:paddingTop="6dp"
             android:paddingBottom="6dp" />
 
         <EditText
-            android:id="@+id/addQuantityVoucher"
+            android:id="@+id/addMaxDiscountAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/text_box_round"
             android:ems="10"
-            android:hint="Quantity"
+            android:hint="Max discount amount"
             android:inputType="textPersonName"
             android:paddingTop="6dp"
             android:paddingBottom="6dp" />
 
         <EditText
-            android:id="@+id/addExpireDateVoucher"
+            android:id="@+id/addMinOrderValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/text_box_round"
             android:ems="10"
-            android:hint="Expire Date"
+            android:hint="Min order value"
             android:inputType="textPersonName"
             android:paddingTop="6dp"
             android:paddingBottom="6dp" />
@@ -152,7 +152,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/submitVoucher"
+                android:id="@+id/cancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -165,7 +165,7 @@
                 android:text="cancel" />
 
             <Button
-                android:id="@+id/submitVoucher2"
+                android:id="@+id/submitVoucher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -173,6 +173,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/submit_box_round"
+                android:onClick="addVoucher"
                 android:text="ADD" />
         </LinearLayout>
 

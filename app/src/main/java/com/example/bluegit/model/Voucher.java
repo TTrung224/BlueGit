@@ -7,21 +7,21 @@ import java.util.ArrayList;
 public class Voucher implements Serializable {
     private String voucherId;
     private String voucherName;
-    private boolean disabled;
     private int discountPercent;
-    private int maxDiscount;
     private int minOrderValue;
+    private int maxDiscount;
+    private boolean disabled;
     private ArrayList<String> usedUsers;
 
     public Voucher() {
     }
 
-    public Voucher(String voucherId, String voucherName, int discountPercent, int maxDiscount, int minOrderValue) {
+    public Voucher(String voucherId, String voucherName, int discountPercent, int minOrderValue, int maxDiscount) {
         this.voucherId = voucherId;
         this.voucherName = voucherName;
         this.discountPercent = discountPercent;
-        this.maxDiscount = maxDiscount;
         this.minOrderValue = minOrderValue;
+        this.maxDiscount = maxDiscount;
         this.disabled = false;
         usedUsers = new ArrayList<>();
     }
@@ -34,12 +34,20 @@ public class Voucher implements Serializable {
         this.usedUsers = usedUsers;
     }
 
-    public boolean isDisabled() {
-        return disabled;
+    public String getVoucherId() {
+        return voucherId;
     }
 
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+    public void setVoucherId(String voucherId) {
+        this.voucherId = voucherId;
+    }
+
+    public String getVoucherName() {
+        return voucherName;
+    }
+
+    public void setVoucherName(String voucherName) {
+        this.voucherName = voucherName;
     }
 
     public int getDiscountPercent() {
@@ -50,14 +58,6 @@ public class Voucher implements Serializable {
         this.discountPercent = discountPercent;
     }
 
-    public int getMaxDiscount() {
-        return maxDiscount;
-    }
-
-    public void setMaxDiscount(int maxDiscount) {
-        this.maxDiscount = maxDiscount;
-    }
-
     public int getMinOrderValue() {
         return minOrderValue;
     }
@@ -66,21 +66,19 @@ public class Voucher implements Serializable {
         this.minOrderValue = minOrderValue;
     }
 
-    public String getVoucherId() {
-        return voucherId;
+    public int getMaxDiscount() {
+        return maxDiscount;
     }
 
-    public String getVoucherName() {
-        return voucherName;
+    public void setMaxDiscount(int maxDiscount) {
+        this.maxDiscount = maxDiscount;
     }
 
-
-    public void setVoucherId(String voucherId) {
-        this.voucherId = voucherId;
+    public boolean isDisabled() {
+        return disabled;
     }
 
-    public void setVoucherName(String voucherName) {
-        this.voucherName = voucherName;
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
-
 }

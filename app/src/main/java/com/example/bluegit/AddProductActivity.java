@@ -35,6 +35,7 @@ public class AddProductActivity extends AppCompatActivity {
     Uri imgUri;
     Button productCreate;
     ProgressBar progressBar;
+    ImageView addImage;
 
     FireStoreManager fireStoreManager;
 
@@ -52,7 +53,7 @@ public class AddProductActivity extends AppCompatActivity {
         price = findViewById(R.id.productPriceAdd);
         quantity = findViewById(R.id.productQuantityAdd);
 
-        ImageView addImage = findViewById(R.id.productImgAdd);
+        addImage = findViewById(R.id.productImgAdd);
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,13 +87,25 @@ public class AddProductActivity extends AppCompatActivity {
         int priceFloat = Integer.parseInt(price.getText().toString());
         DocumentReference sellerId = FirebaseFirestore.getInstance().document("users/"+FirebaseAuth.getInstance().getUid());
 
-        if(!nameStr.equals("")
-                && !descriptionStr.equals("")
-                && !specificationStr.equals("")
-                && !quantity.getText().toString().equals("")
-                && !price.getText().toString().equals("")
-                && imgUri != null) {
-
+        if(nameStr.equals("")){
+            name.setError("Please enter name.");
+            name.requestFocus();
+        } else if(descriptionStr.equals("")) {
+            description.setError("Please enter description.");
+            description.requestFocus();
+        } else if(specificationStr.equals("")) {
+            specification.setError("Please enter specification.");
+            specification.requestFocus();
+        } else if(quantity.getText().toString().equals("")) {
+            quantity.setError("Please enter quantity.");
+            quantity.requestFocus();
+        } else if(price.getText().toString().equals("")) {
+            price.setError("Please enter price.");
+            price.requestFocus();
+        } else if(imgUri != null){
+            price.setError("Please select image.");
+            price.requestFocus();
+        }else{
             Product product = new Product(UUID.randomUUID().toString(),nameStr, descriptionStr, specificationStr,
                     priceFloat, imgUri.toString(), quantityInt, sellerId);
 
