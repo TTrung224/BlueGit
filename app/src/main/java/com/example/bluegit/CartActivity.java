@@ -1,12 +1,16 @@
 package com.example.bluegit;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,6 +24,7 @@ import com.example.bluegit.adapters.AdminProductAdapter;
 import com.example.bluegit.adapters.CartAdapter;
 import com.example.bluegit.model.Product;
 import com.example.bluegit.model.User;
+import com.example.bluegit.model.Voucher;
 import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.checkerframework.checker.units.qual.A;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +49,10 @@ public class CartActivity extends AppCompatActivity {
     Button orderBtn;
     ProgressBar orderProgress;
     Spinner shippingInfoSpin;
+    Button voucherBtn;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    Button itemListDisabler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +64,9 @@ public class CartActivity extends AppCompatActivity {
         orderBtn = findViewById(R.id.order_button);
         orderProgress = findViewById(R.id.order_progress);
         shippingInfoSpin = findViewById(R.id.shippingInfo);
+        voucherBtn = findViewById(R.id.addVoucherBtn);
+        itemListDisabler = findViewById(R.id.itemListDisabler);
+
         fireStoreManager.getCurrentUser(new FireStoreManager.GetUserDataCallBack() {
             @Override
             public void onSuccess(User result) {
@@ -102,6 +114,18 @@ public class CartActivity extends AppCompatActivity {
                         CartAdapter adapter = new CartAdapter(result, CartActivity.this, orderTotal);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(CartActivity.this));
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            recyclerView.setFocusable(View.NOT_FOCUSABLE);
+                        }
+                        voucherBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent i = new Intent(CartActivity.this, VoucherSelect.class);
+                                i.putExtra("totalPrice", adapter.totalPrice);
+                                startActivityForResult(i, 300);
+                            }
+                        });
 
                         orderBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -158,6 +182,15 @@ public class CartActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 300){
+            if(resultCode == RESULT_OK){
+                itemListDisabler.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 
     public void goBack(View view) {
         setResult(RESULT_OK);

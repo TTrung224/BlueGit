@@ -28,7 +28,7 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductAdapte
         this.inflater = LayoutInflater.from(context);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         public ImageView img;
         public TextView price;
         public TextView quantity;
@@ -47,7 +47,7 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductAdapte
     @Override
     public OrderProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.layout_order_product, parent, false);
-        return new OrderProductAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override

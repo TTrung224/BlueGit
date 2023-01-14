@@ -64,6 +64,19 @@
             android:layout_width="match_parent"
             android:layout_height="800dp">
 
+            <Button
+                android:id="@+id/itemListDisabler"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                android:background="@color/clear"
+                app:layout_constraintTop_toTopOf="@id/itemList"
+                app:layout_constraintBottom_toBottomOf="@id/itemList"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:elevation="20dp"
+                />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/itemList"
                 android:layout_width="match_parent"
@@ -72,7 +85,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/empty_message"
@@ -176,6 +189,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"/>
 
                     <Button
+                        android:id="@+id/addVoucherBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/add_voucher"

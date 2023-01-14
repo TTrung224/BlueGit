@@ -19,6 +19,12 @@ import com.example.bluegit.model.Voucher;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import android.widget.Toast;
+
+import com.example.bluegit.model.Voucher;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.UUID;
 
 
 public class AdminVoucherActivity extends AppCompatActivity {
@@ -73,6 +79,56 @@ public class AdminVoucherActivity extends AppCompatActivity {
         inputNewVoucher.setVisibility(View.VISIBLE);
     }
 
+    public void addVoucher(View view){
+        String voucherId = UUID.randomUUID().toString();
+        String name = addNameVoucher.getText().toString();
+
+        String discountPercentStr = addDiscountPercent.getText().toString();
+
+        String maxAmountStr = addMaxDiscountAmount.getText().toString();
+
+        String minOrderValueStr = addMinOrderValue.getText().toString();
+
+
+        int discountPercent = Integer.parseInt(discountPercentStr);
+        int maxAmount = Integer.parseInt(maxAmountStr);
+        int minOrderValue = Integer.parseInt(minOrderValueStr);
+
+        if(name.equals("")) {
+            addNameVoucher.setError("Please enter name.");
+            addNameVoucher.requestFocus();
+        } else if(discountPercentStr.equals("")) {
+            addDiscountPercent.setError("Please enter discount percent.");
+            addDiscountPercent.requestFocus();
+        } else if(maxAmountStr.equals("")) {
+            addMaxDiscountAmount.setError("Please enter max discount amount.");
+            addMaxDiscountAmount.requestFocus();
+        } else if(minOrderValueStr.equals("")) {
+            addMinOrderValue.setError("Please enter min spend.");
+            addMinOrderValue.requestFocus();
+        } else {
+            Voucher voucher = new Voucher(voucherId, name, discountPercent,
+                    minOrderValue, maxAmount);
+            fireStoreManager.addVoucher(voucher, new FireStoreManager.AddVoucherCallBack() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(AdminVoucherActivity.this,
+                            "Add voucher successfully", Toast.LENGTH_SHORT).show();
+                    inputNewVoucher.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Toast.makeText(AdminVoucherActivity.this,
+                            "Fail to add voucher, please try again later", Toast.LENGTH_SHORT)
+                            .show();
+                    inputNewVoucher.setVisibility(View.GONE);
+                }
+            });
+        }
+
+    }
+
     public void cancel(View view){
         inputNewVoucher.setVisibility(View.GONE);
     }
@@ -81,8 +137,6 @@ public class AdminVoucherActivity extends AppCompatActivity {
         setResult(RESULT_OK);
         finish();
     }
-
-
 
     public void toManageProduct(View view){
         navIntent.putExtra("navTo", AdminActivity.NAV_TO_MANAGE_PRODUCT);

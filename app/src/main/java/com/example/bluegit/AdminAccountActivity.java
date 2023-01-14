@@ -37,7 +37,7 @@ public class AdminAccountActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        fireStoreManager.getAllUser(new FireStoreManager.getAllUserCallBack() {
+        fireStoreManager.getAllUser(new FireStoreManager.GetAllUserCallBack() {
             @Override
             public void onSuccess(ArrayList<User> result) {
                 AdminAccountAdapter adapter = new AdminAccountAdapter(result, AdminAccountActivity.this);
