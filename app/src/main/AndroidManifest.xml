@@ -93,7 +93,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".OrderBuyDetailActivity"
+            android:name=".OrderDetailActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

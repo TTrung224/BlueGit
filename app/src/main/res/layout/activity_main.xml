@@ -360,11 +360,11 @@
         android:onClick="onSignOutClick"
         android:paddingStart="4dp"
         android:paddingEnd="0dp"
-        android:tint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/search_bar_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/sign_out_2" />
+        app:srcCompat="@drawable/sign_out_2"
+        app:tint="@color/white" />
 
     <ImageButton
         android:id="@+id/imageButton3"
@@ -376,11 +376,11 @@
         android:onClick="onChatsClick"
         android:paddingStart="2dp"
         android:paddingEnd="0dp"
-        android:tint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/search_bar_layout"
         app:layout_constraintEnd_toStartOf="@+id/imageButton2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.517"
-        app:srcCompat="@drawable/chat_circle_dots" />
+        app:srcCompat="@drawable/chat_circle_dots"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

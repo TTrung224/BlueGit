@@ -9,14 +9,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bluegit.adapters.AdminProductAdapter;
 import com.example.bluegit.adapters.CartAdapter;
 import com.example.bluegit.model.Product;
+import com.example.bluegit.model.User;
 import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -26,6 +29,7 @@ import org.checkerframework.checker.units.qual.A;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -38,6 +42,7 @@ public class CartActivity extends AppCompatActivity {
     TextView orderTotal;
     Button orderBtn;
     ProgressBar orderProgress;
+    Spinner shippingInfoSpin;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -49,11 +54,39 @@ public class CartActivity extends AppCompatActivity {
         orderTotal = findViewById(R.id.order_total);
         orderBtn = findViewById(R.id.order_button);
         orderProgress = findViewById(R.id.order_progress);
+        shippingInfoSpin = findViewById(R.id.shippingInfo);
+        fireStoreManager.getCurrentUser(new FireStoreManager.GetUserDataCallBack() {
+            @Override
+            public void onSuccess(User result) {
+                List<String> addressList = result.getAddress();
+                if(addressList == null){
+                    addressList = new ArrayList<>();
+                }
+                if (addressList.isEmpty()) {
+                    addressList.add("There is not any shipping information, Let's add one!");
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(CartActivity.this,
+                            android.R.layout.simple_spinner_item,
+                            addressList);
 
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
+                    adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
+                    shippingInfoSpin.setAdapter(adapter);
+                } else {
+                    addressList = result.getAddress();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(CartActivity.this,
+                            android.R.layout.simple_spinner_item,
+                            addressList);
+
+                    adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
+                    shippingInfoSpin.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d("Get User Exception", e.getMessage());
+                finish();
+            }
+        });
 
         fireStoreManager.getCart(new FireStoreManager.GetCartCallBack() {
             @Override
@@ -77,11 +110,11 @@ public class CartActivity extends AppCompatActivity {
                                     Toast.makeText(CartActivity.this, "No item in cart", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
-
+                                orderProgress.setVisibility(View.VISIBLE);
                                 v.setEnabled(false);
                                 v.setAlpha(0.5f);
-                                orderProgress.setVisibility(View.VISIBLE);
-                                fireStoreManager.addOrders(adapter.cartMap, new FireStoreManager.AddOrdersCallBack() {
+
+                                fireStoreManager.addOrders(adapter.cartMap, shippingInfoSpin.getSelectedItem().toString(), null, new FireStoreManager.AddOrdersCallBack() {
                                     @Override
                                     public void onSuccess() {
                                         fireStoreManager.emptyCart();
@@ -99,8 +132,9 @@ public class CartActivity extends AppCompatActivity {
                                             Toast.makeText(CartActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                         }else if(e instanceof OutOfStockException){
                                             Toast.makeText(CartActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                        else{
+                                        } else if(e instanceof MissingAddressException){
+                                            Toast.makeText(CartActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        } else{
                                             Toast.makeText(CartActivity.this, "Unable to create order", Toast.LENGTH_SHORT).show();
                                             Log.d("MakeOrderException", e.getMessage());
                                         }
@@ -122,10 +156,8 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
+
 
     public void goBack(View view) {
         setResult(RESULT_OK);

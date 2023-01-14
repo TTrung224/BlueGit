@@ -5,26 +5,29 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 
-public class Order {
+public class Order implements  Comparable<Order>{
     private String id;
     private ArrayList<String> productIDs;
     private ArrayList<Integer> amount;
-    private String voucher;
+    private Voucher voucher;
     private String address;
     private String status;
     private Timestamp createdDate;
     private int totalPrice;
 
-    // TODO: reconsider data type
     private DocumentReference customerId;
     private DocumentReference sellerId;
 
-    public Order(String id, ArrayList<String> products, ArrayList<Integer> amount, int totalPrice,
-                 String voucher, DocumentReference customerId, DocumentReference sellerId) {
+    public Order() {
+    }
+
+    public Order(String id, ArrayList<String> products, ArrayList<Integer> amount, int totalPrice, String address,
+                 Voucher voucher, DocumentReference customerId, DocumentReference sellerId) {
         this.id = id;
         this.productIDs = products;
         this.amount = amount;
         this.totalPrice = totalPrice;
+        this.address = address;
         this.voucher = voucher;
         this.customerId = customerId;
         this.status = "pending";
@@ -32,6 +35,8 @@ public class Order {
         createdDate = Timestamp.now();
 
     }
+
+
 
     public ArrayList<String> getProductIDs() {
         return productIDs;
@@ -57,11 +62,11 @@ public class Order {
         this.sellerId = sellerId;
     }
 
-    public String getVoucher() {
+    public Voucher getVoucher() {
         return voucher;
     }
 
-    public void setVoucher(String voucher) {
+    public void setVoucher(Voucher voucher) {
         this.voucher = voucher;
     }
 
@@ -115,6 +120,21 @@ public class Order {
 
     public int getProductQuantity(){
         return productIDs.size();
+    }
+
+    @Override
+    public int compareTo(Order o) { // delivering, pending, completed
+        if(this.status.equals(o.status)){
+            return 0;
+        }else if(this.status.equals("delivering")){
+            return -1;
+        }else if(this.status.equals("completed")){
+            return 1;
+        }else if(this.status.equals("pending") && o.status.equals("delivering")){
+            return 1;
+        }else {
+            return -1;
+        }
     }
 }
 

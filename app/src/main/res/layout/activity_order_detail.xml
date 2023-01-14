@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".OrderBuyDetailActivity">
+    tools:context=".OrderDetailActivity">
 
     <ImageView
         android:id="@+id/ordersBackBtn2"
@@ -17,6 +17,7 @@
         android:paddingStart="15dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
+        android:onClick="goBack"
         app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
 
     <TextView
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
-        android:text="Order 123456"
+        android:text="Order"
         android:textColor="#000000"
         android:textSize="40sp"
         android:textStyle="bold" />
@@ -58,10 +59,9 @@
                     android:id="@+id/orderCreatedDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="2"
-                    android:text="12/12/2022"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -84,12 +84,11 @@
                     android:textColor="#585858" />
 
                 <TextView
-                    android:id="@+id/createdDateOrder"
+                    android:id="@+id/orderShippingInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_weight="2"
-                    android:text="Name: Nguyen Van A, Phone: 0123456, address 123/456 NVL, Q7, HCM"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -118,26 +117,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginStart="18dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_toEndOf="@+id/totalPriceLabel"
                     android:layout_weight="2"
-                    android:text="$200"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/totalPriceBeforeDiscount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toEndOf="@+id/totalPrice"
-                    android:text="$220"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="16sp"
-                    android:visibility="visible" />
             </RelativeLayout>
 
             <TextView

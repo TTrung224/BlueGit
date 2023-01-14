@@ -1,9 +1,5 @@
 package com.example.bluegit;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.bluegit.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -74,7 +74,7 @@ public class AccountActivity extends AppCompatActivity{
 
         addAddressForm = findViewById(R.id.addShippingInfoForm);
 
-        fireStoreManager.getUserById(uId, new FireStoreManager.GetUserDataCallBack() {
+        fireStoreManager.getCurrentUser(new FireStoreManager.GetUserDataCallBack() {
             @Override
             public void onSuccess(User result) {
                 nameEdit.setText(result.getDisplayName());
@@ -83,7 +83,13 @@ public class AccountActivity extends AppCompatActivity{
                 currentImg = result.getProfileImageSrc();
                 Picasso.get().load(result.getProfileImageSrc()).into(profileImgView);
                 addressList = result.getAddress();
-                if(addressList.isEmpty()) {
+                if(addressList == null){
+                    Log.d("TESTING", "addressList is null");
+                    addressList = new ArrayList<>();
+                }
+
+                if (addressList.isEmpty()) {
+
                     addressList.add("There is not any shipping information, Let's add one!");
                 }
                 adapter = new ArrayAdapter<String>(AccountActivity.this,
@@ -141,22 +147,22 @@ public class AccountActivity extends AppCompatActivity{
                 .collection("users")
                 .document(uId).update("address", FieldValue.arrayUnion(info))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(AccountActivity.this, "Add info successfully", Toast.LENGTH_SHORT).show();
-                            addAddressForm.setVisibility(View.GONE);
-                            if(addressList.get(0).equals("There is not any shipping information, Let's add one!")){
-                                addressList.clear();
-                            }
-                            addressList.add(info);
-                            shippingInfoSpin.setAdapter(adapter);
-
-                        } else {
-                            Toast.makeText(AccountActivity.this, "Fail to add, please try again later", Toast.LENGTH_SHORT).show();
-                            addAddressForm.setVisibility(View.GONE);
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(AccountActivity.this, "Add info successfully", Toast.LENGTH_SHORT).show();
+                        addAddressForm.setVisibility(View.GONE);
+                        if(addressList.get(0).equals("There is no shipping information, Let's add one!")){
+                            addressList.clear();
                         }
+                        addressList.add(info);
+                        shippingInfoSpin.setAdapter(adapter);
+
+                    } else {
+                        Toast.makeText(AccountActivity.this, "Fail to add, please try again later", Toast.LENGTH_SHORT).show();
+                        addAddressForm.setVisibility(View.GONE);
                     }
+                }
             });
         }
     }
