@@ -1,9 +1,5 @@
 package com.example.bluegit;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,14 +8,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.bluegit.adapters.OrderBuyAdapter;
 import com.example.bluegit.model.Order;
-import com.example.bluegit.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
-import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class OrdersBuyActivity extends AppCompatActivity {
 
@@ -30,7 +27,6 @@ public class OrdersBuyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidThreeTen.init(this);
         setContentView(R.layout.activity_orders_buy);;
         progressBar = findViewById(R.id.orderProgress);
         noOrderMsg = findViewById(R.id.no_order_msg);

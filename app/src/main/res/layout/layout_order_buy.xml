@@ -158,7 +158,6 @@
         android:layout_marginEnd="10dp"
         android:layout_toEndOf="@+id/detailBtn"
         android:background="@drawable/shape_button_main_color"
-        android:cursorVisible="false"
         android:text="Received"
         android:textAlignment="center"
         android:textColor="@color/white"

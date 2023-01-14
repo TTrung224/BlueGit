@@ -106,4 +106,9 @@ public class ProductManageActivity extends AppCompatActivity {
         Intent intent = new Intent(ProductManageActivity.this, AddProductActivity.class);
         startActivity(intent);
     }
+
+    public void viewSellOrders(View view) {
+        Intent intent = new Intent(ProductManageActivity.this, OrdersSellActivity.class);
+        startActivity(intent);
+    }
 }
