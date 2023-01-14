@@ -672,6 +672,22 @@ public class FireStoreManager {
         });
 
     }
+    public void disableProduct(String productId, disableProductCallBack callBack){
+        DocumentReference dbProduct = db.collection("products").document(productId);
+
+        Map<String, Object> update = new HashMap<>();
+        update.put("disabled", true);
+
+        dbProduct.update(update).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    callBack.onSuccess();
+                }else{callBack.onFailure(task.getException());}
+            }
+        });
+
+    }
 
     public void addOrders(Map<Product, Integer> cart, String address, Voucher voucher, AddOrdersCallBack callBack){
         CollectionReference dbOrders = db.collection("orders");
@@ -969,6 +985,11 @@ public class FireStoreManager {
         void onSuccess();
         void onFailure(Exception e);
     }
+    public interface disableProductCallBack{
+        void onSuccess();
+        void onFailure(Exception e);
+    }
+
 
 }
 
