@@ -1,6 +1,7 @@
 package com.example.bluegit.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class Voucher {
     private String voucherId;
@@ -9,6 +10,7 @@ public class Voucher {
     private int minOrderValue;
     private int maxDiscount;
     private boolean disabled;
+    private ArrayList<String> usedUsers;
 
     public Voucher(){}
 
@@ -19,6 +21,15 @@ public class Voucher {
         this.minOrderValue = minOrderValue;
         this.maxDiscount = maxDiscount;
         this.disabled = false;
+        this.usedUsers = new ArrayList<>();
+    }
+
+    public ArrayList<String> getUsedUsers() {
+        return usedUsers;
+    }
+
+    public void setUsedUsers(ArrayList<String> usedUsers) {
+        this.usedUsers = usedUsers;
     }
 
     public String getVoucherId() {

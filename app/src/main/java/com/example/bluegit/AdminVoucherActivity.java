@@ -19,10 +19,6 @@ import com.example.bluegit.model.Voucher;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-import android.widget.Toast;
-
-import com.example.bluegit.model.Voucher;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.UUID;
 
@@ -58,7 +54,7 @@ public class AdminVoucherActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        fireStoreManager.getAllVoucher(new FireStoreManager.getAllVoucherCallBack() {
+        fireStoreManager.getAllVoucher(new FireStoreManager.GetAllVoucherCallBack() {
             @Override
             public void onSuccess(ArrayList<Voucher> result){
                 RecyclerView recyclerView = findViewById(R.id.adminVoucherList);

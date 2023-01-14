@@ -2,8 +2,6 @@ package com.example.bluegit;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.util.Log;
 
@@ -19,8 +17,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,25 +24,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.Transaction;
-import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
-import org.checkerframework.checker.units.qual.A;
-
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +40,10 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class FireStoreManager {
+    private final String ADMIN_ID = "kJrA6qCYxISIJ2R2u74214UrcMA3";
+    int SELLER_SHARE = 80;
+    int ADMIN_SHARE = 100 - SELLER_SHARE;
+
     private FirebaseUser currentUser;
     private final FirebaseFirestore db;
     private final Context ctx;
@@ -145,7 +135,7 @@ public class FireStoreManager {
         }
     }
 
-    public void getAllUser(getAllUserCallBack callBack){
+    public void getAllUser(GetAllUserCallBack callBack){
         CollectionReference dbUsers = db.collection("users");
 
         dbUsers.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -233,7 +223,7 @@ public class FireStoreManager {
                     }
                 });
     }
-    public void getAllVoucher(getAllVoucherCallBack callBack){
+    public void getAllVoucher(GetAllVoucherCallBack callBack){
         CollectionReference dbUsers = db.collection("vouchers");
 
         dbUsers.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -714,9 +704,7 @@ public class FireStoreManager {
         });
     }
 
-
-
-    public void getChatWithOfAUser(getChatWithOfAUserCallBack callBack){
+    public void getChatWithOfAUser(GetChatWithOfAUserCallBack callBack){
         CollectionReference dbUserChatWith = db.collection("users")
                 .document(currentUser.getUid())
                 .collection("chatWith");
@@ -738,7 +726,7 @@ public class FireStoreManager {
         });
     }
 
-    public void getDataForChatAdapter(ArrayList<DocumentReference> chatRefList, getDataForChatAdapterCallBack callBack){
+    public void getDataForChatAdapter(ArrayList<DocumentReference> chatRefList, GetDataForChatAdapterCallBack callBack){
         CollectionReference userRef = db.collection("users");
 
         db.runTransaction(new Transaction.Function<Map<User, Message>>() {
@@ -780,23 +768,6 @@ public class FireStoreManager {
             }
         });
     }
-
-//    public void getLastMessageOfChat(DocumentReference chatRef,getLastMessageOfChatCallBack callBack) {
-//        Query query = chatRef.collection("messages")
-//                .orderBy("sentTime", Query.Direction.DESCENDING)
-//                .limit(1);
-//        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if(task.isSuccessful()){
-//                    Message message = task.getResult().getDocuments().get(0).toObject(Message.class);
-//                    callBack.onSuccess(message);
-//                } else {
-//                    callBack.onFailure(task.getException());
-//                }
-//            }
-//        });
-//    }
 
     public void addVoucher(Voucher voucher, AddVoucherCallBack callBack){
         DocumentReference voucherRef = db.collection("vouchers")
@@ -849,12 +820,12 @@ public class FireStoreManager {
         void onFailure(Exception e);
     }
 
-    public interface getAllUserCallBack {
+    public interface GetAllUserCallBack {
         void onSuccess(ArrayList<User> result);
         void onFailure(Exception e);
     }
 
-    public interface getAllVoucherCallBack {
+    public interface GetAllVoucherCallBack {
         void onSuccess(ArrayList<Voucher> result);
         void onFailure(Exception e);
     }
@@ -906,6 +877,11 @@ public class FireStoreManager {
 
     public interface getAllProductForAdminCallBack{
         void onSuccess(ArrayList<Product> result);
+        void onFailure(Exception e);
+    }
+
+    public interface GetVouchersCallBack{
+        void onSuccess(ArrayList<Voucher> result);
         void onFailure(Exception e);
     }
 
