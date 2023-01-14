@@ -2,6 +2,7 @@ package com.example.bluegit.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class Voucher implements Serializable {
     private String voucherId;
@@ -10,6 +11,7 @@ public class Voucher implements Serializable {
     private int minOrderValue;
     private int maxDiscount;
     private boolean disabled;
+    private ArrayList<String> usedUsers;
 
     public Voucher(){}
 
@@ -20,6 +22,15 @@ public class Voucher implements Serializable {
         this.minOrderValue = minOrderValue;
         this.maxDiscount = maxDiscount;
         this.disabled = false;
+        this.usedUsers = new ArrayList<>();
+    }
+
+    public ArrayList<String> getUsedUsers() {
+        return usedUsers;
+    }
+
+    public void setUsedUsers(ArrayList<String> usedUsers) {
+        this.usedUsers = usedUsers;
     }
 
     public String getVoucherId() {
