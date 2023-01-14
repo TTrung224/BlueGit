@@ -83,6 +83,8 @@ public class FireStoreManager {
         });
     }
 
+
+
     public void updateUser(User user, Uri img, UpdateUserDataCallBack callBack) {
         CollectionReference dbUsers = db.collection("users");
 
@@ -414,6 +416,67 @@ public class FireStoreManager {
                 }
             }
         });
+
+//        ArrayList<DocumentReference> sellerRefs = new ArrayList<>();
+//
+//        Map<String, Order> doc = new HashMap<>();
+//        for(Product product : cart.keySet()){
+//            if(!sellerRefs.contains(product.getSellerId())){
+//                sellerRefs.add(product.getSellerId());
+//            }
+//        }
+//
+//        WriteBatch batch = db.batch();
+//        int netTotal = 0;
+//        for(DocumentReference seller : sellerRefs){
+//            String id = UUID.randomUUID().toString();
+//            ArrayList<String> productIDs = new ArrayList<>();
+//            ArrayList<Integer> amount = new ArrayList<>();
+//            int total = 0;
+//
+//            for(Map.Entry<Product, Integer> entry : cart.entrySet()){
+//                if(entry.getKey().getSellerId().equals(seller)){
+//                    productIDs.add(entry.getKey().getProductId());
+//                    amount.add(entry.getValue());
+//                    total += entry.getKey().getProductPrice() * entry.getValue();
+//                }
+//            }
+//            netTotal += total;
+//            Order order = new Order(id, productIDs, amount, total,
+//                    "", dbUsers.document(currentUser.getUid()), seller);
+//
+//            batch.set(dbOrders.document(id), order);
+//            batch.update(seller, "orderRef", FieldValue.arrayUnion(dbOrders.document(id)));
+//
+//        }
+//
+//        int finalNetTotal = netTotal;
+//        getCurrentUser(new GetUserDataCallBack() {
+//            @Override
+//            public void onSuccess(User result) {
+//                if(result.getBalance() < finalNetTotal){
+//                    // callBack.onFailure(new InsufficientBalanceException("Insufficient Balance"));
+//                }else{
+//                    batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            if (task.isSuccessful()){
+//                                callBack.onSuccess();
+//                            }else{
+//                                callBack.onFailure(task.getException());
+//                            }
+//                        }
+//                    });
+//                }
+//            }
+//            @Override
+//            public void onFailure(Exception e) {
+//                callBack.onFailure(e);
+//            }
+//        });
+
+
+
     }
 
     public void addToCart(Map<String, Integer> products, CartCallBack callBack){
@@ -678,7 +741,6 @@ public class FireStoreManager {
                             productIDs.add(entry.getKey().getProductId());
                             amount.add(entry.getValue());
                             total += entry.getKey().getProductPrice() * entry.getValue();
-
                             transaction.update(dbProducts.document(entry.getKey().getProductId()),
                                     "quantity", FieldValue.increment(-entry.getValue()));
                         }
@@ -738,6 +800,7 @@ public class FireStoreManager {
             }
         });
     }
+
 
     public void getDataForChatAdapter(ArrayList<DocumentReference> chatRefList, getDataForChatAdapterCallBack callBack){
         CollectionReference userRef = db.collection("users");
