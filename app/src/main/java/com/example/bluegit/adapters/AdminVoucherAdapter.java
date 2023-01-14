@@ -19,6 +19,7 @@ import java.util.Locale;
 
 public class AdminVoucherAdapter extends RecyclerView.Adapter<AdminVoucherAdapter.ViewHolder> {
 
+
     private RecyclerViewOnClickListener recyclerViewOnClickListener;
     private ArrayList<Voucher> vouchers;
     private LayoutInflater layoutInflater;

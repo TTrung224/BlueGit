@@ -85,9 +85,9 @@ public class AdminVoucherActivity extends AppCompatActivity {
 
         String discountPercentStr = addDiscountPercent.getText().toString();
 
-        String maxAmountStr = addMaxDiscountAmount.getText().toString();
+        String maxAmountStr = addMaxDiscount.getText().toString();
 
-        String minOrderValueStr = addMinOrderValue.getText().toString();
+        String minOrderValueStr = addMinOrder.getText().toString();
 
 
         int discountPercent = Integer.parseInt(discountPercentStr);
@@ -101,11 +101,11 @@ public class AdminVoucherActivity extends AppCompatActivity {
             addDiscountPercent.setError("Please enter discount percent.");
             addDiscountPercent.requestFocus();
         } else if(maxAmountStr.equals("")) {
-            addMaxDiscountAmount.setError("Please enter max discount amount.");
-            addMaxDiscountAmount.requestFocus();
+            addMaxDiscount.setError("Please enter max discount amount.");
+            addMaxDiscount.requestFocus();
         } else if(minOrderValueStr.equals("")) {
-            addMinOrderValue.setError("Please enter min spend.");
-            addMinOrderValue.requestFocus();
+            addMinOrder.setError("Please enter min spend.");
+            addMinOrder.requestFocus();
         } else {
             Voucher voucher = new Voucher(voucherId, name, discountPercent,
                     minOrderValue, maxAmount);
