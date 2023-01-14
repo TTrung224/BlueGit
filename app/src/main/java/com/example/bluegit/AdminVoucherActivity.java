@@ -75,7 +75,7 @@ public class AdminVoucherActivity extends AppCompatActivity {
         inputNewVoucher.setVisibility(View.VISIBLE);
     }
 
-    public void addVoucher(View view){
+    public void addNewVoucher(View view){
         String voucherId = UUID.randomUUID().toString();
         String name = addNameVoucher.getText().toString();
 
@@ -85,19 +85,11 @@ public class AdminVoucherActivity extends AppCompatActivity {
 
         String minOrderValueStr = addMinOrder.getText().toString();
 
-
-        int discountPercent = Integer.parseInt(discountPercentStr);
-        int maxAmount = Integer.parseInt(maxAmountStr);
-        int minOrderValue = Integer.parseInt(minOrderValueStr);
-
         if(name.equals("")) {
             addNameVoucher.setError("Please enter name.");
             addNameVoucher.requestFocus();
         } else if(discountPercentStr.equals("")) {
             addDiscountPercent.setError("Please enter discount percent.");
-            addDiscountPercent.requestFocus();
-        } else if(discountPercent>100){
-            addDiscountPercent.setError("The maximum number can input is 100.");
             addDiscountPercent.requestFocus();
         } else if(maxAmountStr.equals("")) {
             addMaxDiscount.setError("Please enter max discount amount.");
@@ -106,24 +98,34 @@ public class AdminVoucherActivity extends AppCompatActivity {
             addMinOrder.setError("Please enter min spend.");
             addMinOrder.requestFocus();
         } else {
-            Voucher voucher = new Voucher(voucherId, name, discountPercent,
-                    minOrderValue, maxAmount);
-            fireStoreManager.addVoucher(voucher, new FireStoreManager.AddVoucherCallBack() {
-                @Override
-                public void onSuccess() {
-                    Toast.makeText(AdminVoucherActivity.this,
-                            "Add voucher successfully", Toast.LENGTH_SHORT).show();
-                    inputNewVoucher.setVisibility(View.GONE);
-                }
+            int discountPercent = Integer.parseInt(discountPercentStr);
+            int maxAmount = Integer.parseInt(maxAmountStr);
+            int minOrderValue = Integer.parseInt(minOrderValueStr);
 
-                @Override
-                public void onFailure(Exception e) {
-                    Toast.makeText(AdminVoucherActivity.this,
-                            "Fail to add voucher, please try again later", Toast.LENGTH_SHORT)
-                            .show();
-                    inputNewVoucher.setVisibility(View.GONE);
-                }
-            });
+            if(discountPercent>100) {
+                addDiscountPercent.setError("The maximum number can input is 100.");
+                addDiscountPercent.requestFocus();
+                } else {
+
+                Voucher voucher = new Voucher(voucherId, name, discountPercent,
+                        minOrderValue, maxAmount);
+                fireStoreManager.addVoucher(voucher, new FireStoreManager.AddVoucherCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(AdminVoucherActivity.this,
+                                "Add voucher successfully", Toast.LENGTH_SHORT).show();
+                        inputNewVoucher.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(AdminVoucherActivity.this,
+                                        "Fail to add voucher, please try again later", Toast.LENGTH_SHORT)
+                                .show();
+                        inputNewVoucher.setVisibility(View.GONE);
+                    }
+                });
+            }
         }
 
     }

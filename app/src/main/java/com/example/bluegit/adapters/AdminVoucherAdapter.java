@@ -18,8 +18,6 @@ import java.util.Locale;
 
 
 public class AdminVoucherAdapter extends RecyclerView.Adapter<AdminVoucherAdapter.ViewHolder> {
-
-
     private RecyclerViewOnClickListener recyclerViewOnClickListener;
     private ArrayList<Voucher> vouchers;
     private LayoutInflater layoutInflater;
@@ -58,7 +56,9 @@ public class AdminVoucherAdapter extends RecyclerView.Adapter<AdminVoucherAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.voucherID.setText(vouchers.get(position).getVoucherId());
         holder.voucherName.setText(vouchers.get(position).getVoucherName());
-        holder.discountPercent.setText(vouchers.get(position).getDiscountPercent());
+
+        String discountStr = Integer.toString(vouchers.get(position).getDiscountPercent());
+        holder.discountPercent.setText(discountStr);
 
         NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         String minOrder = nf.format(vouchers.get(position).getMinOrderValue());
