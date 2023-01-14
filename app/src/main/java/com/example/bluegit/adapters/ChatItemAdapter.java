@@ -45,7 +45,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
         public ViewHolder(@NonNull View itemView, RecyclerViewOnClickListener recyclerViewOnClickListener) {
             super(itemView);
             otherImg = itemView.findViewById(R.id.otherImg);
-            name = itemView.findViewById(R.id.otherName);
+            name = itemView.findViewById(R.id.product_name);
             lastMessage = itemView.findViewById(R.id.lastMsg);
             lastMessageTime = itemView.findViewById(R.id.lastMsgTime);
 

@@ -2,12 +2,9 @@ package com.example.bluegit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.accounts.Account;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,10 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bluegit.adapters.MessageAdapter;
-import com.example.bluegit.adapters.ProductDisplayAdapter;
 import com.example.bluegit.model.Message;
 
-import com.example.bluegit.model.Product;
 import com.example.bluegit.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -37,7 +32,6 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -76,7 +70,7 @@ public class ChatActivity extends AppCompatActivity {
         fireStoreManager.getUserById(otherId ,new FireStoreManager.GetUserDataCallBack() {
             @Override
             public void onSuccess(User otherUser) {
-                TextView otherNameTextView = findViewById(R.id.otherName);
+                TextView otherNameTextView = findViewById(R.id.product_name);
                 otherNameTextView.setText(otherUser.getDisplayName());
                 ImageView otherImg = findViewById(R.id.otherImg);
                 Picasso.get().load(Uri.parse(otherUser.getProfileImageSrc())).into(otherImg);

@@ -35,11 +35,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ordersBackBtn" />
 
+    <ProgressBar
+        android:id="@+id/orderProgress"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:indeterminateTint="@color/main"
+        android:indeterminate="true"
+        android:elevation="20dp"
+        app:layout_constraintTop_toTopOf="@id/buyerOrders"
+        app:layout_constraintBottom_toBottomOf="@id/buyerOrders"
+        app:layout_constraintStart_toStartOf="@id/buyerOrders"
+        app:layout_constraintEnd_toEndOf="@id/buyerOrders"/>
+
+    <TextView
+        android:id="@+id/no_order_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_order"
+        android:textSize="25sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/buyerOrders"
+        app:layout_constraintBottom_toBottomOf="@id/buyerOrders"
+        app:layout_constraintStart_toStartOf="@id/buyerOrders"
+        app:layout_constraintEnd_toEndOf="@id/buyerOrders"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/buyerOrders"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="6dp"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,11 +140,11 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="2dp"
-                android:tint="#7BFA4B"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/order_bool_descending_variant" />
+                app:srcCompat="@drawable/order_bool_descending_variant"
+                app:tint="#7BFA4B" />
 
             <TextView
                 android:id="@+id/OrderNavTxt"

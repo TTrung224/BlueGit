@@ -28,4 +28,6 @@
     <string name="sold_orders">Sold Orders</string>
     <string name="empty_cart">You don\'t have any item yet…\nGo do some shopping :D</string>
     <string name="order">Order</string>
+    <string name="no_order">No Order At The Moment</string>
+    <string name="add_voucher">Add Voucher</string>
 </resources>

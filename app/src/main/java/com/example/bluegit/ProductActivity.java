@@ -47,8 +47,6 @@ public class ProductActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //TODO: WHEN ADD TO CART, ADD PRODUCT ID INTO IT, WHEN CREATE ORDER, PASS IN DOCUMENTREFERENCE, MAYBE
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
         FireStoreManager fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());

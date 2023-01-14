@@ -1,18 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/adminProductName"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/adminProductPriceItem"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/adminProductImageItem"
+        android:elevation="10dp"
+        app:cardCornerRadius="360dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/otherImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_profile_picture" />
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/adminProductNameItem"
-        android:layout_width="103dp"
-        android:layout_height="30dp"
+        android:layout_width="262dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="13dp"
-        android:layout_marginEnd="175dp"
+        android:layout_marginEnd="15dp"
         android:text="Car"
         android:textColor="@color/black" />
 
@@ -26,38 +51,61 @@
 
     <TextView
         android:id="@+id/adminProductSellerItem"
-        android:layout_width="107dp"
-        android:layout_height="30dp"
+        android:layout_width="231dp"
+        android:layout_height="32dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="11dp"
         android:text="khoi shop"
         android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/adminProductPriceItem"
-        android:layout_width="107dp"
-        android:layout_height="30dp"
+        android:layout_width="124dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="55dp"
-        android:layout_marginEnd="170dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="153dp"
         android:text="30k"
         android:textColor="@color/black" />
 
     <Button
         android:id="@+id/adminProductDeleteItem"
-        android:layout_width="117dp"
-        android:layout_height="30dp"
+        android:layout_width="195dp"
+        android:layout_height="26dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="55dp"
-        android:layout_marginEnd="43dp"
+        android:layout_marginTop="113dp"
+        android:layout_marginEnd="113dp"
         android:background="@drawable/shape_button_main_color"
         android:backgroundTint="#F34747"
         android:text="Delete"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="63dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="86dp"
+        android:text="Quantity:"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/adminProductQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="62dp"
+        android:text="10"
+        android:textColor="@color/black" />
+
 </RelativeLayout>

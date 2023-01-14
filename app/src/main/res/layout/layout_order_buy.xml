@@ -1,146 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="4dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginEnd="4dp"
-    android:layout_marginBottom="4dp"
+    android:layout_margin="10dp"
+    android:elevation="20dp"
     android:background="@drawable/shape_order_list_item"
-    android:paddingTop="3dp">
+    android:padding="10dp">
+
+    <ImageButton
+        android:id="@+id/chatBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/shape_circle_button"
+        app:srcCompat="@drawable/chat_circle_dots"
+        app:layout_constraintTop_toBottomOf="@id/orderQuantityLabel"
+        app:layout_constraintEnd_toStartOf="@id/receivedBtn"/>
 
     <TextView
         android:id="@+id/orderStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/orderQuantityLabel"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="20dp"
         android:text="Preparing"
         android:textColor="#10C922"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/createdDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/orderId"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="12dp"
+        android:textSize="18sp"
         android:text="Order date:"
-        android:textColor="#585858" />
+        android:textColor="#585858"
+        app:layout_constraintTop_toBottomOf="@id/orderIdLabel"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/orderQuantityLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/createdDateLabel"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="12dp"
-        android:text="Total quantity:"
-        android:textColor="#585858" />
+        android:textSize="18sp"
+        android:text="Product Count:"
+        android:textColor="#585858"
+        app:layout_constraintTop_toBottomOf="@id/orderPriceLabel"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/orderPriceLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/createdDateLabel"
         android:layout_marginTop="12dp"
+        android:textSize="18sp"
         android:layout_marginEnd="8dp"
         android:layout_toStartOf="@+id/orderPrice"
         android:text="Order Price: "
-        android:textColor="#585858" />
+        android:textColor="#585858"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/createdDateLabel"/>
 
     <TextView
         android:id="@+id/createdDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/orderId"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/createdDateLabel"
         android:text="12/12/2022"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/createdDateLabel"
+        app:layout_constraintStart_toEndOf="@id/createdDateLabel"
+        app:layout_constraintTop_toTopOf="@id/createdDateLabel"/>
 
     <TextView
         android:id="@+id/orderQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/createdDateLabel"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/orderQuantityLabel"
         android:text="5"
+        app:layout_constraintBottom_toBottomOf="@id/orderQuantityLabel"
+        app:layout_constraintStart_toEndOf="@id/orderQuantityLabel"
+        app:layout_constraintTop_toTopOf="@id/orderQuantityLabel"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/orderPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/createdDateLabel"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="5dp"
         android:text="$50"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/orderPriceLabel"
+        app:layout_constraintTop_toTopOf="@id/orderPriceLabel"
+        app:layout_constraintStart_toEndOf="@id/orderPriceLabel"/>
+
+    <TextView
+        android:id="@+id/orderIdLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order:"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/orderId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:text="Order 123456"
+        android:layout_marginStart="5dp"
+        android:textSize="18sp"
         android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:text="AAAAAAAA"
+        app:layout_constraintStart_toEndOf="@id/orderIdLabel"
+        app:layout_constraintTop_toTopOf="@id/orderIdLabel"
+        app:layout_constraintBottom_toBottomOf="@id/orderIdLabel"/>
 
-    <TextView
+    <Button
         android:id="@+id/detailBtn"
         android:layout_width="124dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/orderQuantityLabel"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="11dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/shape_button_main_color"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
         android:text="Details"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/orderQuantityLabel" />
 
-    <TextView
+    <Button
         android:id="@+id/receivedBtn"
         android:layout_width="124dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/orderQuantityLabel"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="11dp"
         android:layout_marginBottom="15dp"
+        android:layout_marginEnd="10dp"
         android:layout_toEndOf="@+id/detailBtn"
         android:background="@drawable/shape_button_main_color"
-        android:cursorVisible="false"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
         android:text="Received"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:visibility="visible" />
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@id/detailBtn"
+        app:layout_constraintTop_toBottomOf="@id/orderQuantityLabel"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
