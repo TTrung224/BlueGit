@@ -33,6 +33,7 @@ public class User {
         this.profileImageSrc = profileImageSrc;
         this.balance = 1000000;
         this.orderRef = new ArrayList<>();
+        this.address = new ArrayList<>();
     }
 
     public int getBalance() {

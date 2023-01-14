@@ -83,27 +83,14 @@ public class AccountActivity extends AppCompatActivity{
                 currentImg = result.getProfileImageSrc();
                 Picasso.get().load(result.getProfileImageSrc()).into(profileImgView);
                 addressList = result.getAddress();
-                if (addressList == null) {
-                    Log.d("TESTING", "addressList is null");
-                    List<String> emptyAddress= new ArrayList<>();
-                    addressList = new ArrayList<>();
+                if(addressList.isEmpty()) {
                     addressList.add("There is not any shipping information, Let's add one!");
-                    adapter = new ArrayAdapter<String>(AccountActivity.this,
-                            android.R.layout.simple_spinner_item,
-                            addressList);
-
-                    adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
-                    shippingInfoSpin.setAdapter(adapter);
-                } else {
-                    Log.d("testing", result.getAddress().toString());
-                    addressList = result.getAddress();
-                    adapter = new ArrayAdapter<String>(AccountActivity.this,
-                            android.R.layout.simple_spinner_item,
-                            addressList);
-
-                    adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
-                    shippingInfoSpin.setAdapter(adapter);
                 }
+                adapter = new ArrayAdapter<String>(AccountActivity.this,
+                        android.R.layout.simple_spinner_item,
+                        addressList);
+                adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
+                shippingInfoSpin.setAdapter(adapter);
             }
 
             @Override
@@ -154,25 +141,22 @@ public class AccountActivity extends AppCompatActivity{
                 .collection("users")
                 .document(uId).update("address", FieldValue.arrayUnion(info))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(AccountActivity.this, "Add info successfully", Toast.LENGTH_SHORT).show();
-                        addAddressForm.setVisibility(View.GONE);
-                        if(addressList.get(0).equals("There is not any shipping information, Let's add one!")){
-                            addressList.clear();
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(AccountActivity.this, "Add info successfully", Toast.LENGTH_SHORT).show();
+                            addAddressForm.setVisibility(View.GONE);
+                            if(addressList.get(0).equals("There is not any shipping information, Let's add one!")){
+                                addressList.clear();
+                            }
+                            addressList.add(info);
+                            shippingInfoSpin.setAdapter(adapter);
+
+                        } else {
+                            Toast.makeText(AccountActivity.this, "Fail to add, please try again later", Toast.LENGTH_SHORT).show();
+                            addAddressForm.setVisibility(View.GONE);
                         }
-                        addressList.add(info);
-//                        adapter = new ArrayAdapter<String>(AccountActivity.this,
-//                                android.R.layout.simple_spinner_item,
-//                                addressList);
-                        shippingInfoSpin.setAdapter(adapter);
-//                        refresh(shippingInfoSpin);
-                    } else {
-                        Toast.makeText(AccountActivity.this, "Fail to add, please try again later", Toast.LENGTH_SHORT).show();
-                        addAddressForm.setVisibility(View.GONE);
                     }
-                }
             });
         }
     }
@@ -204,7 +188,6 @@ public class AccountActivity extends AppCompatActivity{
         } else {
             progressBar.setVisibility(View.VISIBLE);
             User user = new User(uId, name, email, phoneNumber, currentImg);
-            user.setAddress(addressList);
             fireStoreManager.updateUser(user, imgUri, new FireStoreManager.UpdateUserDataCallBack() {
                 @Override
                 public void onSuccess() {
