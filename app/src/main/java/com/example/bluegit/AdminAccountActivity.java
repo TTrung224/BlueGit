@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bluegit.adapters.AdminAccountAdapter;
@@ -20,6 +21,7 @@ public class AdminAccountActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     FireStoreManager fireStoreManager;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class AdminAccountActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.adminAccountList);
         fireStoreManager = new FireStoreManager(AdminAccountActivity.this,
                 FirebaseAuth.getInstance().getCurrentUser());
+        progressBar = (ProgressBar) findViewById(R.id.accountAdminProgress);
     }
 
     @Override
@@ -43,6 +46,7 @@ public class AdminAccountActivity extends AppCompatActivity {
                 AdminAccountAdapter adapter = new AdminAccountAdapter(result, AdminAccountActivity.this);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(AdminAccountActivity.this));
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
