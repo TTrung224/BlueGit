@@ -241,6 +241,8 @@ public class FireStoreManager {
         });
     }
 
+
+
     public void getProductsFromString(String searchStr, GetProductsCallBack callBack){
         CollectionReference dbProducts = db.collection("products");
         String[] searchWords = searchStr.toLowerCase().trim().split(" ");
@@ -654,6 +656,22 @@ public class FireStoreManager {
                     }
                 });
     }
+    public void disableVoucher(String voucherId, disableVoucherCallBack callBack){
+        DocumentReference dbVoucher = db.collection("vouchers").document(voucherId);
+
+        Map<String, Object> update = new HashMap<>();
+        update.put("disabled", true);
+
+        dbVoucher.update(update).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    callBack.onSuccess();
+                }else{callBack.onFailure(task.getException());}
+            }
+        });
+
+    }
 
     public void addOrders(Map<Product, Integer> cart, String address, Voucher voucher, AddOrdersCallBack callBack){
         CollectionReference dbOrders = db.collection("orders");
@@ -944,6 +962,11 @@ public class FireStoreManager {
 
     public interface GetVouchersCallBack{
         void onSuccess(ArrayList<Voucher> result);
+        void onFailure(Exception e);
+    }
+
+    public interface disableVoucherCallBack{
+        void onSuccess();
         void onFailure(Exception e);
     }
 
