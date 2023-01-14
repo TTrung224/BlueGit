@@ -1,6 +1,7 @@
 package com.example.bluegit.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +91,27 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
         holder.productPrice.setText(price);
         String quantity = Integer.toString(products.get(position).getQuantity());
         holder.productQuantity.setText(quantity);
+
+        if(products.get(holder.getAdapterPosition()).isDisabled() == true) {
+            holder.productDeleteBtn.setVisibility(View.INVISIBLE);}
+        holder.productDeleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fireStoreManager.disableProduct(products.get(holder.getAdapterPosition()).getProductId(), new FireStoreManager.disableProductCallBack(){
+                    @Override
+                    public void onSuccess(){
+                        v.findViewById(R.id.adminProductDeleteItem).setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d("Product Deleted ", e.getLocalizedMessage());
+                    }
+                });
+            }
+        });
     }
+
 
 
 
