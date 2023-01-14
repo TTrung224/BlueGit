@@ -115,33 +115,33 @@
             android:layout_marginBottom="4dp"
             android:background="@drawable/text_box_round"
             android:ems="10"
-            android:hint="Discount percent"
+            android:hint="Discount Percent"
             android:inputType="textPersonName"
             android:paddingTop="6dp"
             android:paddingBottom="6dp" />
 
         <EditText
-            android:id="@+id/addMaxDiscountAmount"
+            android:id="@+id/addMinOrder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/text_box_round"
             android:ems="10"
-            android:hint="Max discount amount"
+            android:hint="Min Per Order"
             android:inputType="textPersonName"
             android:paddingTop="6dp"
             android:paddingBottom="6dp" />
 
         <EditText
-            android:id="@+id/addMinOrderValue"
+            android:id="@+id/addMaxDiscount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/text_box_round"
             android:ems="10"
-            android:hint="Min order value"
+            android:hint="Max Discount"
             android:inputType="textPersonName"
             android:paddingTop="6dp"
             android:paddingBottom="6dp" />
@@ -152,7 +152,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/cancel"
+                android:id="@+id/submitVoucher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -165,7 +165,7 @@
                 android:text="cancel" />
 
             <Button
-                android:id="@+id/submitVoucher"
+                android:id="@+id/submitVoucher2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -173,13 +173,14 @@
                 android:layout_marginEnd="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/submit_box_round"
-                android:onClick="addVoucher"
+                android:onClick="addNewVoucher"
                 android:text="ADD" />
         </LinearLayout>
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/adminVoucherList"
         android:layout_width="416dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"

@@ -1,6 +1,8 @@
 package com.example.bluegit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +12,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.bluegit.adapters.AdminVoucherAdapter;
+import com.example.bluegit.model.Voucher;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 import android.widget.Toast;
 
 import com.example.bluegit.model.Voucher;
@@ -23,30 +32,47 @@ public class AdminVoucherActivity extends AppCompatActivity {
     LinearLayout inputNewVoucher;
     Intent navIntent;
     TextView voucherID;
-    EditText addNameVoucher, addDiscountPercent, addMaxDiscountAmount, addMinOrderValue;
+    EditText addNameVoucher, addDiscountPercent, addMinOrder, addMaxDiscount;
     Button submitVoucher;
+    RecyclerView recyclerView;
     FireStoreManager fireStoreManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_voucher);
+        addNewVoucher = (ImageButton) findViewById(R.id.addNewVoucher);
+        inputNewVoucher = (LinearLayout) findViewById(R.id.inputVoucher);
         addNameVoucher = (EditText) findViewById(R.id.addVoucherName);
         addDiscountPercent = (EditText) findViewById(R.id.addDiscountPercent);
-        addMaxDiscountAmount = (EditText) findViewById(R.id.addMaxDiscountAmount);
-        addMinOrderValue = (EditText) findViewById(R.id.addMinOrderValue);
-
-        inputNewVoucher = (LinearLayout) findViewById(R.id.inputVoucher);
-        addNewVoucher = (ImageButton) findViewById(R.id.addNewVoucher);
-
-        fireStoreManager = new FireStoreManager(AdminVoucherActivity.this,
-                FirebaseAuth.getInstance().getCurrentUser());
-
-//        submitVoucher = (Button) findViewById(R.id.cancel);
+        addMinOrder = (EditText) findViewById(R.id.addMinOrder);
+        addMaxDiscount = (EditText) findViewById(R.id.addMaxDiscount);
+        submitVoucher = (Button) findViewById(R.id.submitVoucher);
 //        voucherID = (TextView) findViewById(R.id.voucherID);
 
         navIntent = new Intent(this, AdminActivity.class);
+        recyclerView = findViewById(R.id.adminVoucherList);
+        fireStoreManager = new FireStoreManager(AdminVoucherActivity.this, FirebaseAuth.getInstance().getCurrentUser());
 
+    }
+    @Override
+    protected void onStart(){
+        super.onStart();
+        fireStoreManager.getAllVoucher(new FireStoreManager.getAllVoucherCallBack() {
+            @Override
+            public void onSuccess(ArrayList<Voucher> result){
+                RecyclerView recyclerView = findViewById(R.id.adminVoucherList);
+                AdminVoucherAdapter adapter = new AdminVoucherAdapter(result, AdminVoucherActivity.this);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(AdminVoucherActivity.this));
+            }
+
+            @Override
+            public void onFailure(Exception e){
+                Toast.makeText(AdminVoucherActivity.this, "Fail to load vouchers data, please try again", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
 
     public void addClick(View view){
@@ -59,9 +85,9 @@ public class AdminVoucherActivity extends AppCompatActivity {
 
         String discountPercentStr = addDiscountPercent.getText().toString();
 
-        String maxAmountStr = addMaxDiscountAmount.getText().toString();
+        String maxAmountStr = addMaxDiscount.getText().toString();
 
-        String minOrderValueStr = addMinOrderValue.getText().toString();
+        String minOrderValueStr = addMinOrder.getText().toString();
 
 
         int discountPercent = Integer.parseInt(discountPercentStr);
@@ -75,11 +101,11 @@ public class AdminVoucherActivity extends AppCompatActivity {
             addDiscountPercent.setError("Please enter discount percent.");
             addDiscountPercent.requestFocus();
         } else if(maxAmountStr.equals("")) {
-            addMaxDiscountAmount.setError("Please enter max discount amount.");
-            addMaxDiscountAmount.requestFocus();
+            addMaxDiscount.setError("Please enter max discount amount.");
+            addMaxDiscount.requestFocus();
         } else if(minOrderValueStr.equals("")) {
-            addMinOrderValue.setError("Please enter min spend.");
-            addMinOrderValue.requestFocus();
+            addMinOrder.setError("Please enter min spend.");
+            addMinOrder.requestFocus();
         } else {
             Voucher voucher = new Voucher(voucherId, name, discountPercent,
                     minOrderValue, maxAmount);
