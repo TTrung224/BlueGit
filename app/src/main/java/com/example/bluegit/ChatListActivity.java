@@ -1,7 +1,5 @@
 package com.example.bluegit;
 
-import static org.threeten.bp.zone.ZoneRulesProvider.refresh;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,20 +9,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bluegit.adapters.ChatItemAdapter;
 import com.example.bluegit.adapters.RecyclerViewOnClickListener;
 import com.example.bluegit.model.Message;
-import com.example.bluegit.model.Product;
 import com.example.bluegit.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -52,11 +46,11 @@ public class ChatListActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.chatListRecyclerView);
 
-        fireStoreManager.getChatWithOfAUser(new FireStoreManager.getChatWithOfAUserCallBack() {
+        fireStoreManager.getChatWithOfAUser(new FireStoreManager.GetChatWithOfAUserCallBack() {
             @Override
             public void onSuccess(ArrayList<DocumentReference> chatRefList) {
                 if(chatRefList != null) {
-                    fireStoreManager.getDataForChatAdapter(chatRefList, new FireStoreManager.getDataForChatAdapterCallBack() {
+                    fireStoreManager.getDataForChatAdapter(chatRefList, new FireStoreManager.GetDataForChatAdapterCallBack() {
                         @Override
                         public void onSuccess(Map<User, Message> data) {
                             userList = new ArrayList<>(data.keySet());
