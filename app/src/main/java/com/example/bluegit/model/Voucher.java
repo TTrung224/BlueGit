@@ -21,16 +21,9 @@ public class Voucher implements Serializable {
         this.discountPercent = discountPercent;
         this.minOrderValue = minOrderValue;
         this.maxDiscount = maxDiscount;
+        this.usedUsers = new ArrayList<>();
         this.disabled = false;
         this.usedUsers = new ArrayList<>();
-    }
-
-    public ArrayList<String> getUsedUsers() {
-        return usedUsers;
-    }
-
-    public void setUsedUsers(ArrayList<String> usedUsers) {
-        this.usedUsers = usedUsers;
     }
 
     public String getVoucherId() {
@@ -79,5 +72,13 @@ public class Voucher implements Serializable {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
+    }
+
+    public ArrayList<String> getUsedUsers() {
+        return usedUsers;
+    }
+
+    public void setUsedUsers(ArrayList<String> usedUsers) {
+        this.usedUsers = usedUsers;
     }
 }

@@ -46,7 +46,11 @@ public class VoucherSelect extends AppCompatActivity {
                         int discounted = totalPrice;
                         Voucher voucher = result.get(position);
 
-                        discounted = discounted * (100 - voucher.getDiscountPercent()) /100;
+                        int discountedAmount = totalPrice * voucher.getDiscountPercent()/100;
+                        if(discountedAmount > voucher.getMaxDiscount()){
+                            discountedAmount = voucher.getMaxDiscount();
+                        }
+                        discounted = discounted - discountedAmount;
                         bundle.putSerializable("voucher", voucher);
                         bundle.putInt("newPrice", discounted);
                         intent.putExtras(bundle);

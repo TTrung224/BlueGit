@@ -63,10 +63,11 @@ public class ChooseVoucherAdapter extends RecyclerView.Adapter<ChooseVoucherAdap
     @Override
     public void onBindViewHolder(@NonNull ChooseVoucherAdapter.ViewHolder holder, int position) {
         holder.voucherName.setText(vouchers.get(position).getVoucherName());
-        holder.voucherMaxDisc.setText(String.valueOf(vouchers.get(position).getMaxDiscount()));
         String discountVal = String.valueOf(vouchers.get(position).getDiscountPercent());
-
         NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String maxDiscText = "Max. deducted amount: " + nf.format(vouchers.get(position).getMaxDiscount());
+
+        holder.voucherMaxDisc.setText(maxDiscText);
         String discountMinOrder = nf.format(vouchers.get(position).getMinOrderValue());
 
         String disText = "-" + discountVal + "% off ";

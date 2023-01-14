@@ -532,7 +532,6 @@ public class FireStoreManager {
                         Order order = transaction.get(ref).toObject(Order.class);
                         if(order == null){
                             orderRefs.remove(ref);
-                            transaction.update(dbUser, "buyOrderRef", orderRefs);
                         }else {
                             result.add(order);
                         }
@@ -560,11 +559,10 @@ public class FireStoreManager {
                 ArrayList<Order> result = new ArrayList<>();
                 ArrayList<DocumentReference> orderRefs = (ArrayList<DocumentReference>) transaction.get(dbUser).get("sellOrderRef");
                 if(orderRefs != null){
-                    for(DocumentReference ref : orderRefs){
+                    for(DocumentReference ref : orderRefs) {
                         Order order = transaction.get(ref).toObject(Order.class);
                         if(order == null){
                             orderRefs.remove(ref);
-                            transaction.update(dbUser, "sellOrderRef", orderRefs);
                         }else {
                             result.add(order);
                         }
@@ -578,6 +576,7 @@ public class FireStoreManager {
                 if(task.isSuccessful()){
                     callBack.onSuccess(task.getResult());
                 }else{
+                    task.getException().printStackTrace();
                     callBack.onFailure(task.getException());
                 }
             }
@@ -679,7 +678,6 @@ public class FireStoreManager {
                 ArrayList<DocumentReference> sellerRefs = new ArrayList<>();
                 int netTotal = 0;
                 for(Map.Entry<Product, Integer> entry : cart.entrySet()){
-
                     // Check if product has stock
                     DocumentSnapshot snapshot = transaction.get(dbProducts.document(entry.getKey().getProductId()));
                     Long realQuant = snapshot.getLong("quantity");
@@ -703,11 +701,12 @@ public class FireStoreManager {
                 if(voucher != null){
                     discountAmountTotal = netTotal * voucher.getDiscountPercent() / 100;
                     if(discountAmountTotal > voucher.getMaxDiscount()){
-                        discountAmountTotal = voucher.getDiscountPercent();
+                        discountAmountTotal = voucher.getMaxDiscount();
                     }
                 }
-
+                Log.d("Discount Amount", String.valueOf(discountAmountTotal));
                 int finalNetTotal = netTotal - discountAmountTotal;
+
 
                 // Check if user has sufficient fund
                 Long currentBalance = transaction.get(dbUsers.document(currentUser.getUid())).getLong("balance");
@@ -718,7 +717,14 @@ public class FireStoreManager {
                     throw new InsufficientBalanceException("Insufficient Balance", FirebaseFirestoreException.Code.ABORTED);
                 }
 
-                transaction.update(dbUsers.document(currentUser.getUid()), "balance", FieldValue.increment(-netTotal));
+                Log.d("Final Net Total", String.valueOf(finalNetTotal));
+                transaction.update(dbUsers.document(currentUser.getUid()), "balance", FieldValue.increment(-finalNetTotal));
+                if(voucher != null){
+                    transaction.update(db.collection("vouchers").document(voucher.getVoucherId()), "usedUsers", FieldValue.arrayUnion(currentUser.getUid()));
+                }
+
+
+                int adminShare = 0;
 
                 for(DocumentReference seller : sellerRefs){
                     String id = UUID.randomUUID().toString();
@@ -736,22 +742,20 @@ public class FireStoreManager {
                         }
                     }
 
-                    int discountAmount = 0;
-                    if(voucher != null){
-                        discountAmount = total * voucher.getDiscountPercent() / 100;
-                    }
-
-                    int sellerShare = (total * SELLER_SHARE / 100) - discountAmount;
-                    int adminShare = total * ADMIN_SHARE/100;
+                    int sellerShare = total * SELLER_SHARE/100;
+                    adminShare += total * ADMIN_SHARE/100;
+                    Log.d("Seller Share Total", String.valueOf(sellerShare));
                     Order order = new Order(id, productIDs, amount, total, address,
                             voucher, dbUsers.document(currentUser.getUid()), seller);
 
                     transaction.set(dbOrders.document(id), order);
                     transaction.update(seller, "balance", FieldValue.increment(sellerShare));
-                    transaction.update(dbUsers.document(ADMIN_ID),"balance", FieldValue.increment(adminShare));
                     transaction.update(dbUsers.document(currentUser.getUid()), "buyOrderRef", FieldValue.arrayUnion(dbOrders.document(id)));
                     transaction.update(seller, "sellOrderRef", FieldValue.arrayUnion(dbOrders.document(id)));
                 }
+                int finalAdminShare = adminShare - discountAmountTotal;
+                Log.d("Admin Share Total", String.valueOf(finalAdminShare));
+                transaction.update(dbUsers.document(ADMIN_ID),"balance", FieldValue.increment(finalAdminShare));
                 return null;
             }
         }).addOnSuccessListener(new OnSuccessListener<Void>() {

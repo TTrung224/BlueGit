@@ -29,6 +29,8 @@ public class Product {
         this.sellerId = sellerId;
     }
 
+
+
     public String getProductId() {
         return productId;
     }

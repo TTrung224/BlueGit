@@ -55,7 +55,7 @@ public class CartActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     Button itemListDisabler;
-    Voucher voucher;
+    Voucher voucher = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +143,7 @@ public class CartActivity extends AppCompatActivity {
                                 v.setEnabled(false);
                                 v.setAlpha(0.5f);
 
-                                fireStoreManager.addOrders(adapter.cartMap, shippingInfoSpin.getSelectedItem().toString(), null, new FireStoreManager.AddOrdersCallBack() {
+                                fireStoreManager.addOrders(adapter.cartMap, shippingInfoSpin.getSelectedItem().toString(), voucher, new FireStoreManager.AddOrdersCallBack() {
                                     @Override
                                     public void onSuccess() {
                                         fireStoreManager.emptyCart();

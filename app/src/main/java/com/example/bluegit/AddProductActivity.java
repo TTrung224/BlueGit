@@ -70,21 +70,15 @@ public class AddProductActivity extends AppCompatActivity {
             imgUri = data.getData();
             ImageView addImage = findViewById(R.id.productImgAdd);
             addImage.setImageURI(imgUri);
-            Log.d("Uir", imgUri.toString());
         }
     }
 
 
     public void submit(View view) {
-        productCreate.setEnabled(false);
-        productCreate.setAlpha(0.5f);
-        progressBar.setVisibility(View.VISIBLE);
 
         String nameStr = name.getText().toString();
         String descriptionStr = description.getText().toString();
         String specificationStr = specification.getText().toString();
-        int quantityInt = Integer.parseInt(quantity.getText().toString());
-        int priceFloat = Integer.parseInt(price.getText().toString());
         DocumentReference sellerId = FirebaseFirestore.getInstance().document("users/"+FirebaseAuth.getInstance().getUid());
 
         if(nameStr.equals("")){
@@ -102,10 +96,15 @@ public class AddProductActivity extends AppCompatActivity {
         } else if(price.getText().toString().equals("")) {
             price.setError("Please enter price.");
             price.requestFocus();
-        } else if(imgUri != null){
-            price.setError("Please select image.");
-            price.requestFocus();
+        } else if(imgUri == null){
+            name.setError("Please select image.");
+            name.requestFocus();
         }else{
+            productCreate.setEnabled(false);
+            productCreate.setAlpha(0.5f);
+            progressBar.setVisibility(View.VISIBLE);
+            int quantityInt = Integer.parseInt(quantity.getText().toString());
+            int priceFloat = Integer.parseInt(price.getText().toString());
             Product product = new Product(UUID.randomUUID().toString(),nameStr, descriptionStr, specificationStr,
                     priceFloat, imgUri.toString(), quantityInt, sellerId);
 
