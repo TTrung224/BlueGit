@@ -6,26 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".AdminAccountActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="266dp"
-        android:layout_height="36dp"
-        android:layout_below="@+id/orderBackBtn3"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="19dp"
-        android:text="Account list:"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orderBackBtn3" />
-
     <ImageView
-        android:id="@+id/orderBackBtn3"
-        android:layout_width="58dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:id="@+id/backBtn6"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="7dp"
         android:onClick="adminGoBack"
         android:outlineProvider="none"
         android:paddingStart="15dp"
@@ -34,6 +20,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderBackBtn3"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:text="Account list:"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backBtn6" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/adminOrderList"

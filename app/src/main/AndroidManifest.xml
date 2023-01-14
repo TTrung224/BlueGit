@@ -30,6 +30,13 @@
             android:exported="true" />
 
         <activity
+            android:name=".AdminActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".AdminAccountActivity"
             android:exported="false">
             <meta-data
@@ -45,6 +52,20 @@
         </activity>
         <activity
             android:name=".AdminProductActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".AdminVoucherActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".AdminOrdersActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

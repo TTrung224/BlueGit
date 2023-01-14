@@ -31,7 +31,7 @@ public class AdminVoucherActivity extends AppCompatActivity {
         addQuantityVoucher = (EditText) findViewById(R.id.addQuantityVoucher);
         addExpireDateVoucher = (EditText) findViewById(R.id.addExpireDateVoucher);
         submitVoucher = (Button) findViewById(R.id.submitVoucher);
-        voucherID = (TextView) findViewById(R.id.voucherID);
+//        voucherID = (TextView) findViewById(R.id.voucherID);
 
         navIntent = new Intent(this, AdminActivity.class);
 
@@ -41,7 +41,11 @@ public class AdminVoucherActivity extends AppCompatActivity {
         inputNewVoucher.setVisibility(View.VISIBLE);
     }
 
-    public void returnBack(View view){
+    public void cancel(View view){
+        inputNewVoucher.setVisibility(View.GONE);
+    }
+
+    public void adminGoBack(View view){
         setResult(RESULT_OK);
         finish();
     }

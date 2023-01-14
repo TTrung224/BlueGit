@@ -1,5 +1,8 @@
 package com.example.bluegit;
 
+import static org.threeten.bp.zone.ZoneRulesProvider.refresh;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,7 +72,7 @@ public class ChatListActivity extends AppCompatActivity {
                                     String otherId = userList.get(position).getId();
                                     Intent intent = new Intent(ChatListActivity.this, ChatActivity.class);
                                     intent.putExtra("otherUserId", otherId);
-                                    startActivity(intent);
+                                    startActivityForResult(intent, 100);
                                 }
                             });
                             recyclerView.setAdapter(adapter);
@@ -99,5 +102,17 @@ public class ChatListActivity extends AppCompatActivity {
 
     public void goBack(View view){
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode==RESULT_OK && requestCode==100){
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
+        }
     }
 }

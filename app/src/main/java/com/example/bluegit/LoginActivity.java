@@ -138,7 +138,11 @@ public class LoginActivity extends AppCompatActivity {
             currentUser = null;
             currentUser = mAuth.getCurrentUser();
             if(currentUser != null){
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                if(currentUser.getUid().equals("kJrA6qCYxISIJ2R2u74214UrcMA3")){
+                    startActivity(new Intent(LoginActivity.this, AdminActivity.class));
+                } else {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                }
             }
         }
     }
@@ -228,27 +232,31 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Login Successfully!", Toast.LENGTH_SHORT).show();
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(LoginActivity.this, "Login Successfully!", Toast.LENGTH_SHORT).show();
+                        if(mAuth.getUid().equals("kJrA6qCYxISIJ2R2u74214UrcMA3")){
+                            startActivity(new Intent(LoginActivity.this, AdminActivity.class));
+                        }else {
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        } else {
-                            try{
-                                throw task.getException();
-
-                            } catch(FirebaseAuthInvalidUserException e) {
-                                tPassword.setError(e.getMessage());
-                                tPassword.requestFocus();
-                            } catch(Exception e){
-                                Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-
                         }
+                    } else {
+                        try{
+                            throw task.getException();
+
+                        } catch(FirebaseAuthInvalidUserException e) {
+                            tPassword.setError(e.getMessage());
+                            tPassword.requestFocus();
+                        } catch(Exception e){
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
                     }
-                });
+                }
+            });
     }
 
     @Override

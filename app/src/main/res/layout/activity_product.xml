@@ -15,8 +15,9 @@
         android:src="@drawable/weebly_image_sample" />
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="285dp"
+        android:layout_width="fill_parent"
+        android:layout_height="261dp"
+        android:layout_above="@id/addToCartBar"
         android:layout_below="@+id/productImg"
         android:layout_marginTop="-20dp"
         android:layout_marginBottom="0dp"
@@ -169,6 +170,7 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/addToCartBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -189,9 +191,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#EDEDED"
+            android:onClick="minusQuantity"
             android:textAlignment="gravity"
-            app:srcCompat="@drawable/minus_icon"
-            android:onClick="minusQuantity"/>
+            app:srcCompat="@drawable/minus_icon" />
 
         <EditText
             android:id="@+id/quantity"
@@ -212,8 +214,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#EDEDED"
-            app:srcCompat="@drawable/ic_baseline_add_24"
-            android:onClick="bonusQuantity"/>
+            android:onClick="bonusQuantity"
+            app:srcCompat="@drawable/ic_baseline_add_24" />
 
         <Button
             android:id="@+id/addToCartBtn"

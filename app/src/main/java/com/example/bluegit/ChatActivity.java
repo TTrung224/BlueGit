@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.accounts.Account;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,6 +53,7 @@ public class ChatActivity extends AppCompatActivity {
     String otherId;
     FirestoreRecyclerAdapter<Message, MessageAdapter.MessageHolder> adapter;
     FireStoreManager fireStoreManager;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,10 +114,13 @@ public class ChatActivity extends AppCompatActivity {
 
                 adapter = new MessageAdapter(options, meId);
 
-                RecyclerView recyclerView = findViewById(R.id.chatRecyclerView);
+                recyclerView = findViewById(R.id.chatRecyclerView);
                 recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
+                recyclerView.setLayoutManager(linearLayoutManager);
                 adapter.startListening();
+                recyclerView.scrollToPosition(9);
+
             });
 }
 
@@ -199,6 +204,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void goBack(View view){
+        setResult(RESULT_OK);
         finish();
     }
 }
