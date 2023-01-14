@@ -555,7 +555,7 @@ public class FireStoreManager {
         CollectionReference dbVoucher = db.collection("vouchers");
         ArrayList<Voucher> vouchers = new ArrayList<>();
         dbVoucher.whereEqualTo("disabled", false)
-                .whereGreaterThanOrEqualTo("minOrderValue", totalPrice)
+                .whereLessThanOrEqualTo("minOrderValue", totalPrice)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -569,6 +569,7 @@ public class FireStoreManager {
                                 }
                                 callBack.onSuccess(vouchers);
                             }catch (Exception e){
+                                e.printStackTrace();
                                 callBack.onFailure(e);
                             }
                         }else {callBack.onFailure(task.getException());}

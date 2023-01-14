@@ -1,9 +1,10 @@
 package com.example.bluegit.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-public class Voucher {
+public class Voucher implements Serializable {
     private String voucherId;
     private String voucherName;
     private boolean disabled;
