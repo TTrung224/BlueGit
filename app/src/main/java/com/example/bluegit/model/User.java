@@ -1,11 +1,6 @@
 package com.example.bluegit.model;
 
-import android.net.Uri;
-
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.Exclude;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +14,8 @@ public class User {
     private String phoneNumber;
     private List<String> address;
     private int balance;
-    private ArrayList<DocumentReference> orderRef;
+    private ArrayList<DocumentReference> buyOrderRef;
+    private ArrayList<DocumentReference> sellOrderRef;
 
 
     public User() {
@@ -30,10 +26,15 @@ public class User {
         this.displayName = displayName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.address = new ArrayList<>();
         this.profileImageSrc = profileImageSrc;
-        this.balance = 1000000;
-        this.orderRef = new ArrayList<>();
+        this.balance = 5000000;
+        this.buyOrderRef = new ArrayList<>();
+        this.sellOrderRef = new ArrayList<>();
+        this.address = new ArrayList<>();
     }
+
+
 
     public int getBalance() {
         return balance;
@@ -43,12 +44,12 @@ public class User {
         this.balance = balance;
     }
 
-    public ArrayList<DocumentReference> getOrderRef() {
-        return orderRef;
+    public ArrayList<DocumentReference> getBuyOrderRef() {
+        return buyOrderRef;
     }
 
-    public void setOrderRef(ArrayList<DocumentReference> orderRef) {
-        this.orderRef = orderRef;
+    public void setBuyOrderRef(ArrayList<DocumentReference> buyOrderRef) {
+        this.buyOrderRef = buyOrderRef;
     }
 
     public String getId() {
@@ -97,5 +98,13 @@ public class User {
 
     public void setAddress(List<String> address) {
         this.address = address;
+    }
+
+    public ArrayList<DocumentReference> getSellOrderRef() {
+        return sellOrderRef;
+    }
+
+    public void setSellOrderRef(ArrayList<DocumentReference> sellOrderRef) {
+        this.sellOrderRef = sellOrderRef;
     }
 }

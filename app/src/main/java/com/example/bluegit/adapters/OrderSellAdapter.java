@@ -28,12 +28,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHolder> {
+public class OrderSellAdapter extends RecyclerView.Adapter<OrderSellAdapter.ViewHolder> {
     private final ArrayList<Order> orders;
     private final LayoutInflater inflater;
     private final FireStoreManager fireStoreManager;
 
-    public OrderBuyAdapter(ArrayList<Order> orders, Context context) {
+    public OrderSellAdapter(ArrayList<Order> orders, Context context) {
         Collections.sort(orders);
         this.orders = orders;
         this.inflater = LayoutInflater.from(context);
@@ -47,7 +47,7 @@ public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHo
         public TextView createdDate;
         public TextView orderStatus;
         public Button detailBtn;
-        public Button receivedBtn;
+        public Button confirmBtn;
         public ImageButton chatBtn;
 
         public ViewHolder(@NonNull View itemView) {
@@ -58,20 +58,20 @@ public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHo
             createdDate = itemView.findViewById(R.id.createdDate);
             orderStatus = itemView.findViewById(R.id.orderStatus);
             detailBtn = itemView.findViewById(R.id.detailBtn);
-            receivedBtn = itemView.findViewById(R.id.receivedBtn);
+            confirmBtn = itemView.findViewById(R.id.confirmBtn);
             chatBtn = itemView.findViewById(R.id.chatBtn);
         }
     }
 
     @NonNull
     @Override
-    public OrderBuyAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.layout_order_buy, parent, false);
+    public OrderSellAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = inflater.inflate(R.layout.layout_order_sell, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderBuyAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrderSellAdapter.ViewHolder holder, int position) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy", new Locale("vi, VN"));
         holder.orderId.setText(orders.get(position).getId().substring(0, 7).toUpperCase());
 
@@ -88,13 +88,13 @@ public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHo
         String statusText = status.substring(0, 1).toUpperCase() + status.substring(1);
         holder.orderStatus.setText(statusText);
 
-        if(orders.get(position).getStatus().equals("pending")){
-            holder.receivedBtn.setAlpha(0.5f);
-            holder.receivedBtn.setEnabled(false);
+        if(orders.get(position).getStatus().equals("delivering")){
+            holder.confirmBtn.setAlpha(0.5f);
+            holder.confirmBtn.setEnabled(false);
             holder.orderStatus.setTextColor(Color.rgb(245,184,114));
         }else if(orders.get(position).getStatus().equals("completed")){
-            holder.receivedBtn.setVisibility(View.GONE);
-            holder.receivedBtn.setEnabled(false);
+            holder.confirmBtn.setVisibility(View.GONE);
+            holder.confirmBtn.setEnabled(false);
             holder.orderStatus.setTextColor(Color.GRAY);
         }
 
@@ -102,18 +102,18 @@ public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ChatActivity.class);
-                intent.putExtra("otherUserId", orders.get(holder.getAdapterPosition()).getSellerId().getId());
+                intent.putExtra("otherUserId", orders.get(holder.getAdapterPosition()).getCustomerId().getId());
                 v.getContext().startActivity(intent);
             }
         });
 
-        holder.receivedBtn.setOnClickListener(new View.OnClickListener() {
+        holder.confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fireStoreManager.updateOrderStatus(orders.get(holder.getAdapterPosition()).getId(), "completed", new FireStoreManager.AddOrdersCallBack() {
+                fireStoreManager.updateOrderStatus(orders.get(holder.getAdapterPosition()).getId(), "delivering", new FireStoreManager.AddOrdersCallBack() {
                     @Override
                     public void onSuccess() {
-                        orders.get(holder.getAdapterPosition()).setStatus("completed");
+                        orders.get(holder.getAdapterPosition()).setStatus("delivering");
                         notifyItemChanged(holder.getAdapterPosition());
                     }
 
@@ -124,6 +124,9 @@ public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHo
                 });
             }
         });
+
+
+
         holder.detailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

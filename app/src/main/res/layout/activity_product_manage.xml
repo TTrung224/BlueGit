@@ -44,6 +44,7 @@
         android:background="@drawable/round_box_blue"
         android:text="@string/sold_orders"
         android:textColor="@color/white"
+        android:onClick="viewSellOrders"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

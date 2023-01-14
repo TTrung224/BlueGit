@@ -14,6 +14,7 @@ import com.example.bluegit.model.Message;
 import com.example.bluegit.model.Order;
 import com.example.bluegit.model.Product;
 import com.example.bluegit.model.User;
+import com.example.bluegit.model.Voucher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,6 +46,7 @@ import org.checkerframework.checker.units.qual.A;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -380,67 +382,6 @@ public class FireStoreManager {
                 }
             }
         });
-
-//        ArrayList<DocumentReference> sellerRefs = new ArrayList<>();
-//
-//        Map<String, Order> doc = new HashMap<>();
-//        for(Product product : cart.keySet()){
-//            if(!sellerRefs.contains(product.getSellerId())){
-//                sellerRefs.add(product.getSellerId());
-//            }
-//        }
-//
-//        WriteBatch batch = db.batch();
-//        int netTotal = 0;
-//        for(DocumentReference seller : sellerRefs){
-//            String id = UUID.randomUUID().toString();
-//            ArrayList<String> productIDs = new ArrayList<>();
-//            ArrayList<Integer> amount = new ArrayList<>();
-//            int total = 0;
-//
-//            for(Map.Entry<Product, Integer> entry : cart.entrySet()){
-//                if(entry.getKey().getSellerId().equals(seller)){
-//                    productIDs.add(entry.getKey().getProductId());
-//                    amount.add(entry.getValue());
-//                    total += entry.getKey().getProductPrice() * entry.getValue();
-//                }
-//            }
-//            netTotal += total;
-//            Order order = new Order(id, productIDs, amount, total,
-//                    "", dbUsers.document(currentUser.getUid()), seller);
-//
-//            batch.set(dbOrders.document(id), order);
-//            batch.update(seller, "orderRef", FieldValue.arrayUnion(dbOrders.document(id)));
-//
-//        }
-//
-//        int finalNetTotal = netTotal;
-//        getCurrentUser(new GetUserDataCallBack() {
-//            @Override
-//            public void onSuccess(User result) {
-//                if(result.getBalance() < finalNetTotal){
-//                    // callBack.onFailure(new InsufficientBalanceException("Insufficient Balance"));
-//                }else{
-//                    batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            if (task.isSuccessful()){
-//                                callBack.onSuccess();
-//                            }else{
-//                                callBack.onFailure(task.getException());
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//            @Override
-//            public void onFailure(Exception e) {
-//                callBack.onFailure(e);
-//            }
-//        });
-
-
-
     }
 
     public void addToCart(Map<String, Integer> products, CartCallBack callBack){
@@ -494,10 +435,130 @@ public class FireStoreManager {
         dbUserCart.delete();
     }
 
-    public void addOrders(Map<Product, Integer> cart, AddOrdersCallBack callBack){
+    public void getBuyOrders(GetOrdersCallBack callBack){
+        DocumentReference dbUser = db.collection("users").document(currentUser.getUid());
+        db.runTransaction(new Transaction.Function<ArrayList<Order>>() {
+            @Override
+            public ArrayList<Order> apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                ArrayList<Order> result = new ArrayList<>();
+                ArrayList<DocumentReference> orderRefs = (ArrayList<DocumentReference>) transaction.get(dbUser).get("buyOrderRef");
+                if(orderRefs != null){
+                    for(DocumentReference ref : orderRefs) {
+                        Order order = transaction.get(ref).toObject(Order.class);
+                        if(order == null){
+                            orderRefs.remove(ref);
+                            transaction.update(dbUser, "buyOrderRef", orderRefs);
+                        }else {
+                            result.add(order);
+                        }
+                    }
+                }
+                return result;
+            }
+        }).addOnCompleteListener(new OnCompleteListener<ArrayList<Order>>() {
+            @Override
+            public void onComplete(@NonNull Task<ArrayList<Order>> task) {
+                if(task.isSuccessful()){
+                    callBack.onSuccess(task.getResult());
+                }else{
+                    callBack.onFailure(task.getException());
+                }
+            }
+        });
+    }
+
+    public void getSellOrders(GetOrdersCallBack callBack){;
+        DocumentReference dbUser = db.collection("users").document(currentUser.getUid());
+        db.runTransaction(new Transaction.Function<ArrayList<Order>>() {
+            @Override
+            public ArrayList<Order> apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                ArrayList<Order> result = new ArrayList<>();
+                ArrayList<DocumentReference> orderRefs = (ArrayList<DocumentReference>) transaction.get(dbUser).get("sellOrderRef");
+                if(orderRefs != null){
+                    for(DocumentReference ref : orderRefs){
+                        Order order = transaction.get(ref).toObject(Order.class);
+                        if(order == null){
+                            orderRefs.remove(ref);
+                            transaction.update(dbUser, "sellOrderRef", orderRefs);
+                        }else {
+                            result.add(order);
+                        }
+                    }
+                }
+                return result;
+            }
+        }).addOnCompleteListener(new OnCompleteListener<ArrayList<Order>>() {
+            @Override
+            public void onComplete(@NonNull Task<ArrayList<Order>> task) {
+                if(task.isSuccessful()){
+                    callBack.onSuccess(task.getResult());
+                }else{
+                    callBack.onFailure(task.getException());
+                }
+            }
+        });
+    }
+
+    public void getOrderAndProductsById(String id, GetOrderAndProductsCallBack callBack){
+        DocumentReference dbOrder = db.collection("orders").document(id);
+        CollectionReference dbProduct = db.collection("products");
+
+        dbOrder.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    Order order = task.getResult().toObject(Order.class);
+
+                    db.runTransaction(new Transaction.Function<ArrayList<Product>>() {
+                        @Override
+                        public ArrayList<Product> apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                            ArrayList<Product> products = new ArrayList<>();
+
+                            for (String id : order.getProductIDs()){
+                                DocumentSnapshot snapshot = transaction.get(dbProduct.document(id));
+                                products.add(snapshot.toObject(Product.class));
+                            }
+                            return products;
+                        }
+                    }). addOnCompleteListener(new OnCompleteListener<ArrayList<Product>>() {
+                        @Override
+                        public void onComplete(@NonNull Task<ArrayList<Product>> task) {
+                            if(task.isSuccessful()){
+                                callBack.onSuccess(order, task.getResult());
+                            }else { callBack.onFailure(task.getException());}
+                        }
+                    });
+                }else {callBack.onFailure(task.getException());}
+            }
+        });
+    }
+
+    public void updateOrderStatus(String id, String status, AddOrdersCallBack callBack){
+        DocumentReference dbProducts = db.collection("orders").document(id);
+        dbProducts.update("status", status).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    callBack.onSuccess();
+                }else {callBack.onFailure(task.getException());}
+            }
+        });
+    }
+
+    public void addOrders(Map<Product, Integer> cart, String address, Voucher voucher, AddOrdersCallBack callBack){
         CollectionReference dbOrders = db.collection("orders");
         CollectionReference dbUsers = db.collection("users");
         CollectionReference dbProducts = db.collection("products");
+
+        if(address == null){
+            callBack.onFailure(new MissingAddressException("Address is missing, please add one in your profile"));
+            return;
+        }else{
+            if(address.equals("") || address.equals("There is not any shipping information, Let's add one!")){
+                callBack.onFailure(new MissingAddressException("Address is missing, please add one in your profile"));
+                return;
+            }
+        }
 
         db.runTransaction(new Transaction.Function<Void>() {
             @Nullable
@@ -506,17 +567,23 @@ public class FireStoreManager {
 
                 ArrayList<DocumentReference> sellerRefs = new ArrayList<>();
                 int netTotal = 0;
-
                 for(Map.Entry<Product, Integer> entry : cart.entrySet()){
 
                     // Check if product has stock
                     DocumentSnapshot snapshot = transaction.get(dbProducts.document(entry.getKey().getProductId()));
                     Long realQuant = snapshot.getLong("quantity");
+                    if(realQuant == null){
+                        realQuant = 0L;
+                    }
                     if(realQuant < entry.getValue()){
                         throw new OutOfStockException("Run out of stock for " + snapshot.getString("productName"), FirebaseFirestoreException.Code.ABORTED);
                     }
 
-                    netTotal += snapshot.getLong("productPrice");
+                    Long price = snapshot.getLong("productPrice");
+                    if(price == null){
+                        price = 0L;
+                    }
+                    netTotal += price;
                     if(!sellerRefs.contains(entry.getKey().getSellerId())){
                         sellerRefs.add(entry.getKey().getSellerId());
                     }
@@ -525,6 +592,9 @@ public class FireStoreManager {
 
                 // Check if user has sufficient fund
                 Long currentBalance = transaction.get(dbUsers.document(currentUser.getUid())).getLong("balance");
+                if(currentBalance == null){
+                    currentBalance = 0L;
+                }
                 if(currentBalance < finalNetTotal){
                     throw new InsufficientBalanceException("Insufficient Balance", FirebaseFirestoreException.Code.ABORTED);
                 }
@@ -542,17 +612,19 @@ public class FireStoreManager {
                             productIDs.add(entry.getKey().getProductId());
                             amount.add(entry.getValue());
                             total += entry.getKey().getProductPrice() * entry.getValue();
+
                             transaction.update(dbProducts.document(entry.getKey().getProductId()),
                                     "quantity", FieldValue.increment(-entry.getValue()));
                         }
                     }
 
-                    Order order = new Order(id, productIDs, amount, total,
-                            "", dbUsers.document(currentUser.getUid()), seller);
+                    Order order = new Order(id, productIDs, amount, total, address,
+                            voucher, dbUsers.document(currentUser.getUid()), seller);
 
                     transaction.set(dbOrders.document(id), order);
                     transaction.update(seller, "balance", FieldValue.increment(total));
-                    transaction.update(seller, "orderRef", FieldValue.arrayUnion(dbOrders.document(id)));
+                    transaction.update(dbUsers.document(currentUser.getUid()), "buyOrderRef", FieldValue.arrayUnion(dbOrders.document(id)));
+                    transaction.update(seller, "sellOrderRef", FieldValue.arrayUnion(dbOrders.document(id)));
                 }
                 return null;
             }
@@ -568,6 +640,8 @@ public class FireStoreManager {
             }
         });
     }
+
+
 
     public void getChatWithOfAUser(getChatWithOfAUserCallBack callBack){
         CollectionReference dbUserChatWith = db.collection("users")
@@ -654,8 +728,19 @@ public class FireStoreManager {
     public void getDataForChatAdapter(){
 
     }
+    // Callback interfaces
     public interface AddOrdersCallBack{
         void onSuccess();
+        void onFailure(Exception e);
+    }
+
+    public interface GetOrdersCallBack {
+        void onSuccess(ArrayList<Order> result);
+        void onFailure(Exception e);
+    }
+
+    public interface GetOrderAndProductsCallBack {
+        void onSuccess(Order result, ArrayList<Product> products);
         void onFailure(Exception e);
     }
 
@@ -733,6 +818,12 @@ public class FireStoreManager {
 
 class NoUserInDatabaseException extends Exception{
     public NoUserInDatabaseException(String messageError){
+        super(messageError);
+    }
+}
+
+class MissingAddressException extends Exception{
+    public MissingAddressException(String messageError){
         super(messageError);
     }
 }
