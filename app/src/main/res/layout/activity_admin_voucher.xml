@@ -90,7 +90,7 @@
         android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:layout_editor_absoluteX="0dp">
 
@@ -108,40 +108,40 @@
             android:paddingBottom="6dp" />
 
         <EditText
-            android:id="@+id/addDiscountVoucher"
+            android:id="@+id/addDiscountPercent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/text_box_round"
             android:ems="10"
-            android:hint="Discount"
+            android:hint="Discount Percent"
             android:inputType="textPersonName"
             android:paddingTop="6dp"
             android:paddingBottom="6dp" />
 
         <EditText
-            android:id="@+id/addQuantityVoucher"
+            android:id="@+id/addMinOrder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/text_box_round"
             android:ems="10"
-            android:hint="Quantity"
+            android:hint="Min Per Order"
             android:inputType="textPersonName"
             android:paddingTop="6dp"
             android:paddingBottom="6dp" />
 
         <EditText
-            android:id="@+id/addExpireDateVoucher"
+            android:id="@+id/addMaxDiscount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/text_box_round"
             android:ems="10"
-            android:hint="Expire Date"
+            android:hint="Max Discount"
             android:inputType="textPersonName"
             android:paddingTop="6dp"
             android:paddingBottom="6dp" />
@@ -173,12 +173,14 @@
                 android:layout_marginEnd="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/submit_box_round"
+                android:onClick="addNewVoucher"
                 android:text="ADD" />
         </LinearLayout>
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/adminVoucherList"
         android:layout_width="416dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"

@@ -1,6 +1,8 @@
 package com.example.bluegit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +12,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.bluegit.adapters.AdminVoucherAdapter;
+import com.example.bluegit.model.Voucher;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 
 
 public class AdminVoucherActivity extends AppCompatActivity {
@@ -17,8 +26,10 @@ public class AdminVoucherActivity extends AppCompatActivity {
     LinearLayout inputNewVoucher;
     Intent navIntent;
     TextView voucherID;
-    EditText addNameVoucher, addDiscountVoucher, addQuantityVoucher, addExpireDateVoucher;
+    EditText addNameVoucher, addDiscountPercent, addMinOrder, addMaxDiscount;
     Button submitVoucher;
+    RecyclerView recyclerView;
+    FireStoreManager fireStoreManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +38,35 @@ public class AdminVoucherActivity extends AppCompatActivity {
         addNewVoucher = (ImageButton) findViewById(R.id.addNewVoucher);
         inputNewVoucher = (LinearLayout) findViewById(R.id.inputVoucher);
         addNameVoucher = (EditText) findViewById(R.id.addVoucherName);
-        addDiscountVoucher = (EditText) findViewById(R.id.addDiscountVoucher);
-        addQuantityVoucher = (EditText) findViewById(R.id.addQuantityVoucher);
-        addExpireDateVoucher = (EditText) findViewById(R.id.addExpireDateVoucher);
+        addDiscountPercent = (EditText) findViewById(R.id.addDiscountPercent);
+        addMinOrder = (EditText) findViewById(R.id.addMinOrder);
+        addMaxDiscount = (EditText) findViewById(R.id.addMaxDiscount);
         submitVoucher = (Button) findViewById(R.id.submitVoucher);
 //        voucherID = (TextView) findViewById(R.id.voucherID);
 
         navIntent = new Intent(this, AdminActivity.class);
+        recyclerView = findViewById(R.id.adminVoucherList);
+        fireStoreManager = new FireStoreManager(AdminVoucherActivity.this, FirebaseAuth.getInstance().getCurrentUser());
 
+    }
+    @Override
+    protected void onStart(){
+        super.onStart();
+        fireStoreManager.getAllVoucher(new FireStoreManager.getAllVoucherCallBack() {
+            @Override
+            public void onSuccess(ArrayList<Voucher> result){
+                RecyclerView recyclerView = findViewById(R.id.adminVoucherList);
+                AdminVoucherAdapter adapter = new AdminVoucherAdapter(result, AdminVoucherActivity.this);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(AdminVoucherActivity.this));
+            }
+
+            @Override
+            public void onFailure(Exception e){
+                Toast.makeText(AdminVoucherActivity.this, "Fail to load vouchers data, please try again", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
 
     public void addClick(View view){
@@ -49,6 +81,8 @@ public class AdminVoucherActivity extends AppCompatActivity {
         setResult(RESULT_OK);
         finish();
     }
+
+
 
     public void toManageProduct(View view){
         navIntent.putExtra("navTo", AdminActivity.NAV_TO_MANAGE_PRODUCT);

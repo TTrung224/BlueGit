@@ -14,6 +14,7 @@ import com.example.bluegit.model.Message;
 import com.example.bluegit.model.Order;
 import com.example.bluegit.model.Product;
 import com.example.bluegit.model.User;
+import com.example.bluegit.model.Voucher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -80,6 +81,8 @@ public class FireStoreManager {
                     }
         });
     }
+
+
 
     public void updateUser(User user, Uri img, UpdateUserDataCallBack callBack) {
         CollectionReference dbUsers = db.collection("users");
@@ -158,6 +161,7 @@ public class FireStoreManager {
             }
         });
     }
+
     public void getUserById(String uID, GetUserDataCallBack callBack){
         CollectionReference dbUsers = db.collection("users");
         User user = new User();
@@ -194,6 +198,38 @@ public class FireStoreManager {
                         callBack.onFailure(new NoUserInDatabaseException("No User In Database   "));
                     }
                 }else {
+                    callBack.onFailure(task.getException());
+                }
+            }
+        });
+    }
+    public void addNewVoucher(Voucher voucher, AddVoucherDataCallBack callBack){
+        CollectionReference dbVouchers = db.collection("vouchers");
+
+        dbVouchers.document(voucher.getVoucherId()).set(voucher)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        callBack.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callBack.onFailure(e);
+                    }
+                });
+    }
+    public void getAllVoucher(getAllVoucherCallBack callBack){
+        CollectionReference dbUsers = db.collection("vouchers");
+
+        dbUsers.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    ArrayList<Voucher> vouchers = new ArrayList<>(task.getResult().toObjects(Voucher.class));
+                    callBack.onSuccess(vouchers);
+                } else {
                     callBack.onFailure(task.getException());
                 }
             }
@@ -666,6 +702,16 @@ public class FireStoreManager {
 
     public interface getAllUserCallBack {
         void onSuccess(ArrayList<User> result);
+        void onFailure(Exception e);
+    }
+
+    public interface getAllVoucherCallBack {
+        void onSuccess(ArrayList<Voucher> result);
+        void onFailure(Exception e);
+    }
+
+    public interface AddVoucherDataCallBack {
+        void onSuccess();
         void onFailure(Exception e);
     }
 

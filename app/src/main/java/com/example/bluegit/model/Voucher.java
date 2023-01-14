@@ -5,18 +5,20 @@ import java.sql.Timestamp;
 public class Voucher {
     private String voucherId;
     private String voucherName;
-    private int voucherDiscount;
-    private int voucherQuantity;
-    private Timestamp voucherExpireDate;
+    private int discountPercent;
+    private int minOrderValue;
+    private int maxDiscount;
+    private boolean disabled;
 
     public Voucher(){}
 
-    public Voucher(String voucherId, String voucherName, int voucherDiscount, int voucherQuantity, Timestamp voucherExpireDate) {
+    public Voucher(String voucherId, String voucherName, int discountPercent, int minOrderValue, int maxDiscount) {
         this.voucherId = voucherId;
         this.voucherName = voucherName;
-        this.voucherDiscount = voucherDiscount;
-        this.voucherQuantity = voucherQuantity;
-        this.voucherExpireDate = voucherExpireDate;
+        this.discountPercent = discountPercent;
+        this.minOrderValue = minOrderValue;
+        this.maxDiscount = maxDiscount;
+        this.disabled = false;
     }
 
     public String getVoucherId() {
@@ -27,16 +29,20 @@ public class Voucher {
         return voucherName;
     }
 
-    public int getVoucherDiscount() {
-        return voucherDiscount;
+    public int getDiscountPercent() {
+        return discountPercent;
     }
 
-    public int getVoucherQuantity() {
-        return voucherQuantity;
+    public int getMinOrderValue() {
+        return minOrderValue;
     }
 
-    public Timestamp getVoucherExpireDate() {
-        return voucherExpireDate;
+    public int getMaxDiscount() {
+        return maxDiscount;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
     }
 
     public void setVoucherId(String voucherId) {
@@ -47,15 +53,19 @@ public class Voucher {
         this.voucherName = voucherName;
     }
 
-    public void setVoucherDiscount(int voucherDiscount) {
-        this.voucherDiscount = voucherDiscount;
+    public void setDiscountPercent(int discountPercent) {
+        this.discountPercent = discountPercent;
     }
 
-    public void setVoucherQuantity(int voucherQuantity) {
-        this.voucherQuantity = voucherQuantity;
+    public void setMinOrderValue(int minOrderValue) {
+        this.minOrderValue = minOrderValue;
     }
 
-    public void setVoucherExpireDate(Timestamp voucherExpireDate) {
-        this.voucherExpireDate = voucherExpireDate;
+    public void setMaxDiscount(int maxDiscount) {
+        this.maxDiscount = maxDiscount;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 }
