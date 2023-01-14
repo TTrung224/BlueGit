@@ -95,8 +95,11 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
         return new ViewHolder(view);
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         FireStoreManager fireStoreManager = new FireStoreManager(this.inflater.getContext(), FirebaseAuth.getInstance().getCurrentUser());
 
         Picasso.get().load(products.get(position).getImageSource()).into(holder.productImage);
@@ -187,8 +190,6 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
             }
         });
     }
-
-
 
 
     @Override

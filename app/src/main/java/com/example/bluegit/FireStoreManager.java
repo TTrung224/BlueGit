@@ -54,7 +54,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class FireStoreManager {
-    private FirebaseUser currentUser;
+    private final String ADMIN_ID = "kJrA6qCYxISIJ2R2u74214UrcMA3";
+    int SELLER_SHARE = 80;
+    int ADMIN_SHARE = 100 - SELLER_SHARE;
+
+    private final FirebaseUser currentUser;
     private final FirebaseFirestore db;
     private final Context ctx;
 
@@ -160,6 +164,7 @@ public class FireStoreManager {
             }
         });
     }
+
     public void getUserById(String uID, GetUserDataCallBack callBack){
         CollectionReference dbUsers = db.collection("users");
         User user = new User();
@@ -530,6 +535,31 @@ public class FireStoreManager {
         });
     }
 
+    public void getEligibleVoucher(int totalPrice, GetVouchersCallBack callBack){
+        CollectionReference dbVoucher = db.collection("vouchers");
+        ArrayList<Voucher> vouchers = new ArrayList<>();
+        dbVoucher.whereEqualTo("disabled", false)
+                .whereGreaterThanOrEqualTo("minOrderValue", totalPrice)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            try{
+                                for(QueryDocumentSnapshot snapshot : task.getResult()){
+                                    Voucher voucher = snapshot.toObject(Voucher.class);
+                                    if(!voucher.getUsedUsers().contains(currentUser.getUid())){
+                                        vouchers.add(voucher);
+                                    }
+                                }
+                                callBack.onSuccess(vouchers);
+                            }catch (Exception e){
+                                callBack.onFailure(e);
+                            }
+                        }else {callBack.onFailure(task.getException());}
+                    }
+                });
+    }
+
     public void addOrders(Map<Product, Integer> cart, String address, Voucher voucher, AddOrdersCallBack callBack){
         CollectionReference dbOrders = db.collection("orders");
         CollectionReference dbUsers = db.collection("users");
@@ -573,7 +603,15 @@ public class FireStoreManager {
                         sellerRefs.add(entry.getKey().getSellerId());
                     }
                 }
-                int finalNetTotal = netTotal;
+                int discountAmountTotal = 0;
+                if(voucher != null){
+                    discountAmountTotal = netTotal * voucher.getDiscountPercent() / 100;
+                    if(discountAmountTotal > voucher.getMaxDiscount()){
+                        discountAmountTotal = voucher.getDiscountPercent();
+                    }
+                }
+
+                int finalNetTotal = netTotal - discountAmountTotal;
 
                 // Check if user has sufficient fund
                 Long currentBalance = transaction.get(dbUsers.document(currentUser.getUid())).getLong("balance");
@@ -603,11 +641,19 @@ public class FireStoreManager {
                         }
                     }
 
+                    int discountAmount = 0;
+                    if(voucher != null){
+                        discountAmount = total * voucher.getDiscountPercent() / 100;
+                    }
+
+                    int sellerShare = (total * SELLER_SHARE / 100) - discountAmount;
+                    int adminShare = total * ADMIN_SHARE/100;
                     Order order = new Order(id, productIDs, amount, total, address,
                             voucher, dbUsers.document(currentUser.getUid()), seller);
 
                     transaction.set(dbOrders.document(id), order);
-                    transaction.update(seller, "balance", FieldValue.increment(total));
+                    transaction.update(seller, "balance", FieldValue.increment(sellerShare));
+                    transaction.update(dbUsers.document(ADMIN_ID),"balance", FieldValue.increment(adminShare));
                     transaction.update(dbUsers.document(currentUser.getUid()), "buyOrderRef", FieldValue.arrayUnion(dbOrders.document(id)));
                     transaction.update(seller, "sellOrderRef", FieldValue.arrayUnion(dbOrders.document(id)));
                 }
@@ -625,8 +671,6 @@ public class FireStoreManager {
             }
         });
     }
-
-
 
     public void getChatWithOfAUser(getChatWithOfAUserCallBack callBack){
         CollectionReference dbUserChatWith = db.collection("users")
@@ -693,27 +737,13 @@ public class FireStoreManager {
         });
     }
 
-//    public void getLastMessageOfChat(DocumentReference chatRef,getLastMessageOfChatCallBack callBack) {
-//        Query query = chatRef.collection("messages")
-//                .orderBy("sentTime", Query.Direction.DESCENDING)
-//                .limit(1);
-//        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if(task.isSuccessful()){
-//                    Message message = task.getResult().getDocuments().get(0).toObject(Message.class);
-//                    callBack.onSuccess(message);
-//                } else {
-//                    callBack.onFailure(task.getException());
-//                }
-//            }
-//        });
-//    }
 
-    public void getDataForChatAdapter(){
-
-    }
     // Callback interfaces
+    public interface GetVouchersCallBack{
+        void onSuccess(ArrayList<Voucher> result);
+        void onFailure(Exception e);
+    }
+
     public interface AddOrdersCallBack{
         void onSuccess();
         void onFailure(Exception e);

@@ -55,9 +55,9 @@ public class AdminVoucherAdapter extends RecyclerView.Adapter<AdminVoucherAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.voucherID.setText(vouchers.get(position).getVoucherId());
         holder.voucherName.setText(vouchers.get(position).getVoucherName());
-        holder.voucherDiscount.setText(vouchers.get(position).getVoucherDiscount());
-        holder.voucherQuantity.setText(vouchers.get(position).getVoucherQuantity());
-        holder.voucherExpireDate.setText(vouchers.get(position).getVoucherExpireDate().toString());
+//        holder.voucherDiscount.setText(vouchers.get(position).getVoucherDiscount());
+//        holder.voucherQuantity.setText(vouchers.get(position).getVoucherQuantity());
+//        holder.voucherExpireDate.setText(vouchers.get(position).getVoucherExpireDate().toString());
     }
 
     @Override
