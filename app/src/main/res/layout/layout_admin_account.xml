@@ -3,68 +3,73 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/adminAccountDelete"
-        android:layout_width="117dp"
-        android:layout_height="30dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="17dp"
-        android:background="@drawable/shape_button_main_color"
-        android:backgroundTint="#F34747"
-        android:text="Delete"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/adminAccountAddress"
-        app:layout_constraintTop_toBottomOf="@+id/adminAccountPhone" />
+    android:layout_height="wrap_content"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginBottom="4dp"
+    android:background="@drawable/shape_order_list_item">
 
     <TextView
-        android:id="@+id/adminAccountPhone"
-        android:layout_width="107dp"
-        android:layout_height="30dp"
+        android:id="@+id/phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
-        android:text="10k"
+        android:layout_marginTop="8dp"
+        android:text="phone"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/adminAccountName"
+        app:layout_constraintStart_toEndOf="@+id/adminAccountImage"
+        app:layout_constraintTop_toBottomOf="@+id/balance" />
+
+    <TextView
+        android:id="@+id/balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="balance"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/adminAccountImage"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:text="khoi account"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/adminAccountImage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/adminAccountAddress"
-        android:layout_width="107dp"
-        android:layout_height="30dp"
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="17dp"
-        android:text="hcm sity"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="khoi email"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/adminAccountImage"
-        app:layout_constraintTop_toBottomOf="@+id/adminAccountName" />
-
-    <TextView
-        android:id="@+id/adminAccountName"
-        android:layout_width="103dp"
-        android:layout_height="30dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="16dp"
-        android:text="khoi account"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="140dp" />
+        app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <ImageView
         android:id="@+id/adminAccountImage"
-        android:layout_width="127dp"
-        android:layout_height="93dp"
+        android:layout_width="150dp"
+        android:layout_height="120dp"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/car" />

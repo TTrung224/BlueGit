@@ -143,6 +143,21 @@ public class FireStoreManager {
         }
     }
 
+    public void getAllUser(getAllUserCallBack callBack){
+        CollectionReference dbUsers = db.collection("users");
+
+        dbUsers.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    ArrayList<User> users = new ArrayList<>(task.getResult().toObjects(User.class));
+                    callBack.onSuccess(users);
+                } else {
+                    callBack.onFailure(task.getException());
+                }
+            }
+        });
+    }
     public void getUserById(String uID, GetUserDataCallBack callBack){
         CollectionReference dbUsers = db.collection("users");
         User user = new User();
@@ -646,6 +661,11 @@ public class FireStoreManager {
 
     public interface GetUserDataCallBack {
         void onSuccess(User result);
+        void onFailure(Exception e);
+    }
+
+    public interface getAllUserCallBack {
+        void onSuccess(ArrayList<User> result);
         void onFailure(Exception e);
     }
 

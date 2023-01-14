@@ -7,33 +7,55 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.bluegit.adapters.AdminAccountAdapter;
 import com.example.bluegit.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
 public class AdminAccountActivity extends AppCompatActivity {
-    private ArrayList<User> users;
     Intent navIntent;
+
+    RecyclerView recyclerView;
+    FireStoreManager fireStoreManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_account);
 
         navIntent = new Intent(this, AdminActivity.class);
+
+        recyclerView = findViewById(R.id.adminAccountList);
+        fireStoreManager = new FireStoreManager(AdminAccountActivity.this,
+                FirebaseAuth.getInstance().getCurrentUser());
     }
+
     @Override
     protected void onStart() {
         super.onStart();
 
-        // TODO: retrieve and process data here
+        fireStoreManager.getAllUser(new FireStoreManager.getAllUserCallBack() {
+            @Override
+            public void onSuccess(ArrayList<User> result) {
+                RecyclerView recyclerView = findViewById(R.id.adminAccountList);
+                AdminAccountAdapter adapter = new AdminAccountAdapter(result, AdminAccountActivity.this);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(AdminAccountActivity.this));
+            }
 
-        RecyclerView recyclerView = findViewById(R.id.adminOrderList);
-//        AdminAccountAdapter adapter = new AdminAccountAdapter(users, this);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(AdminAccountActivity.this, "Fail to load users data, please try again", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
+
+
+
 
     public void adminGoBack(View view){
         setResult(RESULT_OK);

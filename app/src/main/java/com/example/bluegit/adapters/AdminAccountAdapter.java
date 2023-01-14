@@ -16,13 +16,15 @@ import com.example.bluegit.R;
 import com.example.bluegit.model.User;
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
-
+import java.util.Locale;
 
 
 public class AdminAccountAdapter  extends RecyclerView.Adapter<AdminAccountAdapter.ViewHolder>{
     private ArrayList<User> users;
     private LayoutInflater inflater;
+    NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
     public AdminAccountAdapter(ArrayList<User> users, Context context) {
         this.users = users;
@@ -32,18 +34,18 @@ public class AdminAccountAdapter  extends RecyclerView.Adapter<AdminAccountAdapt
     public class ViewHolder extends RecyclerView.ViewHolder{
         public ImageView accountImage;
         public TextView accountName;
-        public TextView accountAddress;
+        public TextView accountEmail;
         public TextView accountPhone;
-        public Button accountDeleteBtn;
+        public TextView accountBalance;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             accountImage = itemView.findViewById(R.id.adminAccountImage);
-            accountName = itemView.findViewById(R.id.adminAccountName);
-            accountAddress = itemView.findViewById(R.id.adminAccountAddress);
-            accountPhone = itemView.findViewById(R.id.adminAccountPhone);
-            accountDeleteBtn = itemView.findViewById(R.id.adminAccountDelete);
+            accountName = itemView.findViewById(R.id.name);
+            accountEmail = itemView.findViewById(R.id.email);
+            accountPhone = itemView.findViewById(R.id.phone);
+            accountBalance = itemView.findViewById(R.id.balance);
         }
     }
 
@@ -58,7 +60,13 @@ public class AdminAccountAdapter  extends RecyclerView.Adapter<AdminAccountAdapt
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Picasso.get().load(users.get(position).getProfileImageSrc()).into(holder.accountImage);
         holder.accountName.setText(users.get(position).getDisplayName());
-        holder.accountPhone.setText(users.get(position).getPhoneNumber());
+        holder.accountEmail.setText(users.get(position).getEmail());
+
+        String phoneDisplayStr = "phone: " + users.get(position).getPhoneNumber();
+        holder.accountPhone.setText(phoneDisplayStr);
+
+        String balanceStr = "balance: " + nf.format(users.get(position).getBalance());
+        holder.accountBalance.setText(balanceStr);
 
     }
 

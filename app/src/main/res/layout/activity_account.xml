@@ -40,7 +40,8 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/infoLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profileTextView"
         android:layout_centerHorizontal="false"
@@ -138,35 +139,40 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/updateBtn"
-            android:layout_width="329dp"
-            android:layout_height="57dp"
-            android:layout_marginStart="42dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="40dp"
-            android:background="@drawable/submit_box_round"
-            android:onClick="updateAccount"
-            android:text="Update"
-            android:textColor="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addNewAddress" />
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/updateBtn"
+        android:layout_width="329dp"
+        android:layout_height="57dp"
+        android:layout_below="@+id/infoLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/submit_box_round"
+        android:onClick="updateAccount"
+        android:text="Update"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addNewAddress" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/updateBtn"
+        android:layout_alignEnd="@+id/updateBtn"
+        android:layout_alignBottom="@+id/updateBtn"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="505dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="42dp"
+        android:layout_marginBottom="5dp"
         android:indeterminateTint="@color/white"
+        android:translationZ="2dp"
         android:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
