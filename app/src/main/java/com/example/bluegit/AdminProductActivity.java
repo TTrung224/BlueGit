@@ -55,6 +55,7 @@ public class AdminProductActivity extends AppCompatActivity {
                 AdminProductAdapter adapter = new AdminProductAdapter(result, AdminProductActivity.this, currentUser);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(AdminProductActivity.this));
+                findViewById(R.id.progressBar3).setVisibility(View.GONE);
             }
 
             @Override
