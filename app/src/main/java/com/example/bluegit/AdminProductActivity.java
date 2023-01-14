@@ -15,6 +15,7 @@ import com.example.bluegit.adapters.OrderBuyAdapter;
 import com.example.bluegit.model.Product;
 import com.example.bluegit.model.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -25,14 +26,22 @@ public class AdminProductActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     FireStoreManager fireStoreManager;
+
+    FirebaseUser currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_product);
+
         navIntent = new Intent(this, AdminActivity.class);
         recyclerView = findViewById(R.id.adminProductList);
         fireStoreManager = new FireStoreManager(AdminProductActivity.this,
                 FirebaseAuth.getInstance().getCurrentUser());
+
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
     }
     @Override
     protected void onStart() {
@@ -43,7 +52,7 @@ public class AdminProductActivity extends AppCompatActivity {
         fireStoreManager.getAllProductForAdmin(new FireStoreManager.getAllProductForAdminCallBack() {
             @Override
             public void onSuccess(ArrayList<Product> result) {
-                AdminProductAdapter adapter = new AdminProductAdapter(result, AdminProductActivity.this);
+                AdminProductAdapter adapter = new AdminProductAdapter(result, AdminProductActivity.this, currentUser);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(AdminProductActivity.this));
             }
