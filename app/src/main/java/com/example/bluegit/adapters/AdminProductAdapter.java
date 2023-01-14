@@ -31,7 +31,10 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
         public TextView productName;
         public TextView productPrice;
         public TextView productOwner;
+        public TextView productQuantityTxt;
         public Button productDeleteBtn;
+        public TextView productQuantity;
+        public ImageView sellerImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -41,6 +44,11 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
             productPrice = itemView.findViewById(R.id.adminProductPriceItem);
             productOwner = itemView.findViewById(R.id.adminProductSellerItem);
             productDeleteBtn = itemView.findViewById(R.id.adminProductDeleteItem);
+            productQuantityTxt = itemView.findViewById(R.id.textView8);
+            productQuantity = itemView.findViewById(R.id.adminProductQuantity);
+            sellerImage = itemView.findViewById(R.id.otherImg);
+
+
         }
     }
 
@@ -54,12 +62,14 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Picasso.get().load(products.get(position).getImageSource()).into(holder.productImage);
+        Picasso.get().load(products.get(position).getImageSource()).into(holder.sellerImage);
         holder.productName.setText(products.get(position).getProductName());
         String price = products.get(position).getProductPrice() + " đ";
         holder.productPrice.setText(price);
         String sellerId = products.get(position).getSellerId().toString();
         holder.productOwner.setText(sellerId);
-
+        String quantity = Integer.toString(products.get(position).getQuantity());
+        holder.productQuantity.setText(quantity);
     }
 
 

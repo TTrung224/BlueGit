@@ -158,6 +158,21 @@ public class FireStoreManager {
             }
         });
     }
+    public void getAllProductForAdmin(getAllProductForAdminCallBack callBack){
+        CollectionReference dbProducts = db.collection("products");
+
+        dbProducts.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    ArrayList<Product> products = new ArrayList<>(task.getResult().toObjects(Product.class));
+                    callBack.onSuccess(products);
+                } else {
+                    callBack.onFailure(task.getException());
+                }
+            }
+        });
+    }
     public void getUserById(String uID, GetUserDataCallBack callBack){
         CollectionReference dbUsers = db.collection("users");
         User user = new User();
@@ -708,6 +723,12 @@ public class FireStoreManager {
         void onSuccess(Map<User, Message> data);
         void onFailure(Exception e);
     }
+
+    public interface getAllProductForAdminCallBack{
+        void onSuccess(ArrayList<Product> result);
+        void onFailure(Exception e);
+    }
+
 }
 
 class NoUserInDatabaseException extends Exception{

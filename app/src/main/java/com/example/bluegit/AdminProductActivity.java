@@ -7,10 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import com.example.bluegit.adapters.AdminAccountAdapter;
 import com.example.bluegit.adapters.AdminProductAdapter;
 import com.example.bluegit.adapters.OrderBuyAdapter;
 import com.example.bluegit.model.Product;
+import com.example.bluegit.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -18,11 +22,17 @@ public class AdminProductActivity extends AppCompatActivity {
 
     private ArrayList<Product> products;
     Intent navIntent;
+
+    RecyclerView recyclerView;
+    FireStoreManager fireStoreManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_product);
         navIntent = new Intent(this, AdminActivity.class);
+        recyclerView = findViewById(R.id.adminProductList);
+        fireStoreManager = new FireStoreManager(AdminProductActivity.this,
+                FirebaseAuth.getInstance().getCurrentUser());
     }
     @Override
     protected void onStart() {
@@ -30,10 +40,21 @@ public class AdminProductActivity extends AppCompatActivity {
 
         // TODO: retrieve and process data here
 
-        RecyclerView recyclerView = findViewById(R.id.adminProductList);
-//        AdminProductAdapter adapter = new AdminProductAdapter(products, this);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        fireStoreManager.getAllProductForAdmin(new FireStoreManager.getAllProductForAdminCallBack() {
+            @Override
+            public void onSuccess(ArrayList<Product> result) {
+                AdminProductAdapter adapter = new AdminProductAdapter(result, AdminProductActivity.this);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(AdminProductActivity.this));
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(AdminProductActivity.this, "Fail to load users data, please try again", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+
     }
 
     public void adminGoBack(View view){

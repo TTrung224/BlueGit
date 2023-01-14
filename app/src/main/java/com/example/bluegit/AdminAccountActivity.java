@@ -40,7 +40,6 @@ public class AdminAccountActivity extends AppCompatActivity {
         fireStoreManager.getAllUser(new FireStoreManager.getAllUserCallBack() {
             @Override
             public void onSuccess(ArrayList<User> result) {
-                RecyclerView recyclerView = findViewById(R.id.adminAccountList);
                 AdminAccountAdapter adapter = new AdminAccountAdapter(result, AdminAccountActivity.this);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(AdminAccountActivity.this));

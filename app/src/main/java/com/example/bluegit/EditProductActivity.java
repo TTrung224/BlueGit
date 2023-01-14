@@ -63,12 +63,12 @@ public class EditProductActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Product product) {
 
-//                Picasso.get().load(product.getImageSource()).into(addImage);
-//                addName.setText(product.getProductName());
-//                addPrice.setText(Float.toString(product.getProductPrice()));
-//                addQuantity.setText(product.getQuantity());
-//                addDescription.setText(product.getDescription());
-//                addSpecification.setText(product.getSpecification());
+                Picasso.get().load(product.getImageSource()).into(addImage);
+                addName.setText(product.getProductName());
+                addPrice.setText(Float.toString(product.getProductPrice()));
+                addQuantity.setText(product.getQuantity());
+                addDescription.setText(product.getDescription());
+                addSpecification.setText(product.getSpecification());
             }
 
             @Override
