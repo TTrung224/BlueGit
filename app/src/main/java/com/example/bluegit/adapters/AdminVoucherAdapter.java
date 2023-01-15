@@ -89,7 +89,7 @@ public class AdminVoucherAdapter extends RecyclerView.Adapter<AdminVoucherAdapte
                 builder.create();
                 builder.setTitle("DISABLE CONFIRMATION")
                         .setMessage("Are you sure you want to disable this voucher? When you accept you cannot undo it.")
-                        .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("DISABLE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         fireStoreManager.disableVoucher(vouchers.get(holder.getAdapterPosition()).getVoucherId(), new FireStoreManager.disableVoucherCallBack(){

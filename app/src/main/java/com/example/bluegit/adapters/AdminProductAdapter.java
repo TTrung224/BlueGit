@@ -104,7 +104,7 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
                 builder.create();
                 builder.setTitle("DISABLE CONFIRMATION")
                         .setMessage("Are you sure you want to disable this product? When you accept you cannot undo it.")
-                        .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("DISABLE", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 fireStoreManager.disableProduct(products.get(holder.getAdapterPosition()).getProductId(), new FireStoreManager.disableProductCallBack() {
