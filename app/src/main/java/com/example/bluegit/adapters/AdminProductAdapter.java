@@ -94,7 +94,7 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
         String quantity = Integer.toString(products.get(position).getQuantity());
         holder.productQuantity.setText(quantity);
 
-        if (products.get(holder.getAdapterPosition()).isDisabled() == true) {
+        if (products.get(holder.getAdapterPosition()).isDisabled()) {
             holder.productDeleteBtn.setVisibility(View.INVISIBLE);
         }
         holder.productDeleteBtn.setOnClickListener(new View.OnClickListener() {

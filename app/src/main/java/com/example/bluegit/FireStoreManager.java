@@ -301,73 +301,25 @@ public class FireStoreManager {
         });
     }
 
-    public void updateProduct(Product product, Uri img, updateProductCallBack callBack){
-        DocumentReference dbProducts = db.collection("products")
-                .document(product.getProductId());
+    public void updateProductQuantityById(String productId, int newQuantity, updateProductCallBack callBack){
+        DocumentReference dbProducts = db.collection("products").document(productId);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("productName", product.getProductName());
-        data.put("productPrice", product.getProductPrice());
-        data.put("quantity", product.getQuantity());
-        data.put("description", product.getDescription());
-        data.put("specification", product.getSpecification());
-        data.put("disabled", product.isDisabled());
+        data.put("quantity", newQuantity);
 
-        if (img != null) {
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-            StorageReference imgRef = storageReference.child("users/"+product.getSellerId().getId()
-                    +"/productsImg/"+product.getProductId() + ".png");
-
-            UploadTask uploadTask = imgRef.putFile(img);
-            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+        dbProducts.update(data)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        imgRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>(){
-                            @Override
-                            public void onComplete(@NonNull Task<Uri> task) {
-                                if (task.isSuccessful()) {
-                                    product.setImageSource(task.getResult().toString());
-                                    data.put("imageSource", product.getImageSource());
-
-                                    dbProducts.update(data)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                callBack.onSuccess();
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                callBack.onFailure(e);
-                                            }
-                                        });
-                                } else {
-                                    callBack.onFailure(task.getException());
-                                }
-                            }
-                        });
-                    } else {
-                        callBack.onFailure(task.getException());
-                    }
+                public void onSuccess(Void unused) {
+                    callBack.onSuccess();
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    callBack.onFailure(e);
                 }
             });
-        } else {
-            dbProducts.update(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        callBack.onSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callBack.onFailure(e);
-                    }
-                });
-        }
     }
 
     public void getProductById(String id, GetProductCallBack callBack){

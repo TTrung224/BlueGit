@@ -2,12 +2,14 @@ package com.example.bluegit;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -112,9 +114,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        ConnectivityManager connMgr = getSystemService(ConnectivityManager.class);
-        android.net.NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if(!networkInfo.isConnected()){
+//        ConnectivityManager connMgr = getSystemService(ConnectivityManager.class);
+//        android.net.NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+//        if(!networkInfo.isConnected()){
+
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) LoginActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager != null ? connectivityManager.getActiveNetworkInfo() : null;
+        if(activeNetworkInfo == null || !activeNetworkInfo.isConnected()){
             new AlertDialog.Builder(this)
                     .setTitle("Lost Internet Connection")
                     .setMessage("No internet connection. Please reconnect and log in again.")

@@ -75,6 +75,7 @@ public class AddProductActivity extends AppCompatActivity {
 
 
     public void submit(View view) {
+        findViewById(R.id.ImageNotSelected).setVisibility(View.GONE);
 
         String nameStr = name.getText().toString();
         String descriptionStr = description.getText().toString();
@@ -97,8 +98,8 @@ public class AddProductActivity extends AppCompatActivity {
             price.setError("Please enter price.");
             price.requestFocus();
         } else if(imgUri == null){
-            name.setError("Please select image.");
-            name.requestFocus();
+            findViewById(R.id.ImageNotSelected).setVisibility(View.VISIBLE);
+            addImage.requestFocus();
         }else{
             productCreate.setEnabled(false);
             productCreate.setAlpha(0.5f);

@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -26,14 +28,30 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if(intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")){
-            ConnectivityManager connMgr = context.getSystemService(ConnectivityManager.class);
-            android.net.NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            ConnectivityManager connectivityManager
+                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager != null ? connectivityManager.getActiveNetworkInfo() : null;
 
-            if(!networkInfo.isConnected()){
+//            if(activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+//                Toast.makeText(context, "internet: " + "true", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(context, "internet: " + "false", Toast.LENGTH_SHORT).show();
+//            }
+
+            if(activeNetworkInfo == null || !activeNetworkInfo.isConnected()){
                 Intent i = new Intent(context, LoginActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }
+
+//            ConnectivityManager connMgr = context.getSystemService(ConnectivityManager.class);
+//            android.net.NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+//            if(!networkInfo.isConnected()){
+//                Intent i = new Intent(context, LoginActivity.class);
+//                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(i);
+//            }
         }
 
     }

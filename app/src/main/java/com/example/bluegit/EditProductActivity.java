@@ -97,14 +97,12 @@ public class EditProductActivity extends AppCompatActivity {
                 collection("users").document(sellerId);
 
         progressBar.setVisibility(View.VISIBLE);
+
         String newImageSource = selectedImg.toString();
         String newName = addName.getText().toString();
-        int newPrice = Integer.parseInt(addPrice.getText().toString()) ;
-        int newQuantity = Integer.parseInt(addQuantity.getText().toString()) ;
         String newDescription = addDescription.getText().toString();
         String newSpecification = addSpecification.getText().toString();
-        Product productNew = new Product(productIdStr,newName,newDescription,
-                newSpecification,newPrice,newImageSource,newQuantity,sellerRef);
+
         if(addName.getText().toString().equals("")){
             addName.setError("Please enter your new name.");
             addName.requestFocus();
@@ -120,22 +118,29 @@ public class EditProductActivity extends AppCompatActivity {
         } else if(addSpecification.getText().toString().equals("")){
             addSpecification.setError("Please enter your new specification.");
             addSpecification.requestFocus();
+        } else {
+            int newPrice = Integer.parseInt(addPrice.getText().toString());
+            int newQuantity = Integer.parseInt(addQuantity.getText().toString());
+
+            Product productNew = new Product(productIdStr,newName,newDescription,
+                    newSpecification,newPrice,newImageSource,newQuantity,sellerRef);
+
+            fireStoreManager.addProduct(productNew, new FireStoreManager.AddProductCallBack() {
+                @Override
+                public void onSuccess() {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(EditProductActivity.this, "Successfully update your product", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(EditProductActivity.this, "Unable to update your product", Toast.LENGTH_SHORT).show();
+
+                }
+            });
         }
-        fireStoreManager.addProduct(productNew, new FireStoreManager.AddProductCallBack() {
-            @Override
-            public void onSuccess() {
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(EditProductActivity.this, "Successfully update your product", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(EditProductActivity.this, "Unable to update your product", Toast.LENGTH_SHORT).show();
-
-            }
-        });
     }
 
     @Override
