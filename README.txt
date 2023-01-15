@@ -12,6 +12,21 @@ Work distribution:
   4. Tran Minh Khoi (s3916827): Adapters, Firebase store manage, design UX/UI, code Voucher, Admin   -25%
  
 Functionalities:
+  1.Authentication: login by gmail,eamil and password.
+  2.Admin manage vouchers: admin can add,view, and disable voucher.
+  3.Admin manage products: admin can view product list, disable product.
+  4.Admin manage account: admin can view the account list.
+  5.Admin manage orders: admin can view user order list.
+  6.User view products: user can view list of available products.
+  7.User search products: user can search for a product by typing their name.
+  8.User buy products: user can select a product ,choose the quantity then add o cart.
+  9.User chat: user can chat with the shop owner or with customer.
+  10.User cart: the products that the uiser buy will be store in their cart, in the cart the user can choose shipping info, add voucher then order the products.
+  11.User bussiness: user can list products to sell and view the sold products.
+  12.User order: user can view the list of the product they have ordered.
+  13.User account: user update account information(user name, phone numer, add new shipping info).
+  14.Log out: addmin and user can log out of their account.
+  
   
 Technology used:
     Firebase Firestore
