@@ -57,12 +57,12 @@
 
     <TextView
         android:id="@+id/adminProductSellerItem"
-        android:layout_width="194dp"
+        android:layout_width="wrap_content"
         android:layout_height="31dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="75dp"
-        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/cardView"
         android:gravity="center_vertical"
         android:text="khoi shop"
         android:textColor="@color/black" />
@@ -90,7 +90,7 @@
         android:layout_marginEnd="113dp"
         android:background="@drawable/shape_button_main_color"
         android:backgroundTint="#F34747"
-        android:text="Delete"
+        android:text="Disable"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold" />

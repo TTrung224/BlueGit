@@ -118,9 +118,11 @@ public class Order implements  Comparable<Order>{
         this.amount = amount;
     }
 
-    public int getProductQuantity(){
+    public int perProductQuantity(){
         return productIDs.size();
     }
+
+
 
     @Override
     public int compareTo(Order o) { // delivering, pending, completed
@@ -135,6 +137,17 @@ public class Order implements  Comparable<Order>{
         }else {
             return -1;
         }
+    }
+
+    public int discountedTotal(){
+        int discountedAmount = 0;
+        if(voucher != null){
+            discountedAmount = totalPrice * voucher.getDiscountPercent() / 100;
+            if(discountedAmount > voucher.getMaxDiscount()){
+                discountedAmount = voucher.getMaxDiscount();
+            }
+        }
+        return totalPrice - discountedAmount;
     }
 }
 

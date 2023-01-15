@@ -73,10 +73,11 @@ public class FireStoreManager {
         });
     }
 
-
-
     public void updateUser(User user, Uri img, UpdateUserDataCallBack callBack) {
         CollectionReference dbUsers = db.collection("users");
+        Map<String, Object> data = new HashMap<>();
+        data.put("displayName", user.getDisplayName());
+        data.put("phoneNumber", user.getPhoneNumber());
 
         if (img != null) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -92,9 +93,6 @@ public class FireStoreManager {
                             public void onComplete(@NonNull Task<Uri> task) {
                                 if (task.isSuccessful()) {
                                     user.setProfileImageSrc(task.getResult().toString());
-                                    Map<String, Object> data = new HashMap<>();
-                                    data.put("displayName", user.getDisplayName());
-                                    data.put("phoneNumber", user.getPhoneNumber());
                                     data.put("profileImageSrc", user.getProfileImageSrc());
 
                                     dbUsers.document(user.getId()).update(data)
@@ -121,7 +119,7 @@ public class FireStoreManager {
                 }
             });
         } else {
-            dbUsers.document(user.getId()).set(user)
+            dbUsers.document(user.getId()).update(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -152,6 +150,7 @@ public class FireStoreManager {
             }
         });
     }
+
     public void getAllProductForAdmin(getAllProductForAdminCallBack callBack){
         CollectionReference dbProducts = db.collection("products");
 
@@ -167,6 +166,7 @@ public class FireStoreManager {
             }
         });
     }
+
     public void getUserById(String uID, GetUserDataCallBack callBack){
         CollectionReference dbUsers = db.collection("users");
         User user = new User();
@@ -208,23 +208,7 @@ public class FireStoreManager {
             }
         });
     }
-    public void addNewVoucher(Voucher voucher, AddVoucherDataCallBack callBack){
-        CollectionReference dbVouchers = db.collection("vouchers");
 
-        dbVouchers.document(voucher.getVoucherId()).set(voucher)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        callBack.onSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callBack.onFailure(e);
-                    }
-                });
-    }
     public void getAllVoucher(GetAllVoucherCallBack callBack){
         CollectionReference dbUsers = db.collection("vouchers");
 
@@ -315,7 +299,75 @@ public class FireStoreManager {
                 });
             }
         });
+    }
 
+    public void updateProduct(Product product, Uri img, updateProductCallBack callBack){
+        DocumentReference dbProducts = db.collection("products")
+                .document(product.getProductId());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("productName", product.getProductName());
+        data.put("productPrice", product.getProductPrice());
+        data.put("quantity", product.getQuantity());
+        data.put("description", product.getDescription());
+        data.put("specification", product.getSpecification());
+        data.put("disabled", product.isDisabled());
+
+        if (img != null) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            StorageReference imgRef = storageReference.child("users/"+product.getSellerId().getId()
+                    +"/productsImg/"+product.getProductId() + ".png");
+
+            UploadTask uploadTask = imgRef.putFile(img);
+            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        imgRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>(){
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.isSuccessful()) {
+                                    product.setImageSource(task.getResult().toString());
+                                    data.put("imageSource", product.getImageSource());
+
+                                    dbProducts.update(data)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                callBack.onSuccess();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                callBack.onFailure(e);
+                                            }
+                                        });
+                                } else {
+                                    callBack.onFailure(task.getException());
+                                }
+                            }
+                        });
+                    } else {
+                        callBack.onFailure(task.getException());
+                    }
+                }
+            });
+        } else {
+            dbProducts.update(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        callBack.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callBack.onFailure(e);
+                    }
+                });
+        }
     }
 
     public void getProductById(String id, GetProductCallBack callBack){
@@ -534,7 +586,6 @@ public class FireStoreManager {
                         Order order = transaction.get(ref).toObject(Order.class);
                         if(order == null){
                             orderRefs.remove(ref);
-                            transaction.update(dbUser, "buyOrderRef", orderRefs);
                         }else {
                             result.add(order);
                         }
@@ -562,11 +613,10 @@ public class FireStoreManager {
                 ArrayList<Order> result = new ArrayList<>();
                 ArrayList<DocumentReference> orderRefs = (ArrayList<DocumentReference>) transaction.get(dbUser).get("sellOrderRef");
                 if(orderRefs != null){
-                    for(DocumentReference ref : orderRefs){
+                    for(DocumentReference ref : orderRefs) {
                         Order order = transaction.get(ref).toObject(Order.class);
                         if(order == null){
                             orderRefs.remove(ref);
-                            transaction.update(dbUser, "sellOrderRef", orderRefs);
                         }else {
                             result.add(order);
                         }
@@ -580,6 +630,7 @@ public class FireStoreManager {
                 if(task.isSuccessful()){
                     callBack.onSuccess(task.getResult());
                 }else{
+                    task.getException().printStackTrace();
                     callBack.onFailure(task.getException());
                 }
             }
@@ -636,7 +687,7 @@ public class FireStoreManager {
         CollectionReference dbVoucher = db.collection("vouchers");
         ArrayList<Voucher> vouchers = new ArrayList<>();
         dbVoucher.whereEqualTo("disabled", false)
-                .whereGreaterThanOrEqualTo("minOrderValue", totalPrice)
+                .whereLessThanOrEqualTo("minOrderValue", totalPrice)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -650,6 +701,7 @@ public class FireStoreManager {
                                 }
                                 callBack.onSuccess(vouchers);
                             }catch (Exception e){
+                                e.printStackTrace();
                                 callBack.onFailure(e);
                             }
                         }else {callBack.onFailure(task.getException());}
@@ -712,7 +764,6 @@ public class FireStoreManager {
                 ArrayList<DocumentReference> sellerRefs = new ArrayList<>();
                 int netTotal = 0;
                 for(Map.Entry<Product, Integer> entry : cart.entrySet()){
-
                     // Check if product has stock
                     DocumentSnapshot snapshot = transaction.get(dbProducts.document(entry.getKey().getProductId()));
                     Long realQuant = snapshot.getLong("quantity");
@@ -727,7 +778,7 @@ public class FireStoreManager {
                     if(price == null){
                         price = 0L;
                     }
-                    netTotal += price;
+                    netTotal += price * entry.getValue();
                     if(!sellerRefs.contains(entry.getKey().getSellerId())){
                         sellerRefs.add(entry.getKey().getSellerId());
                     }
@@ -736,11 +787,12 @@ public class FireStoreManager {
                 if(voucher != null){
                     discountAmountTotal = netTotal * voucher.getDiscountPercent() / 100;
                     if(discountAmountTotal > voucher.getMaxDiscount()){
-                        discountAmountTotal = voucher.getDiscountPercent();
+                        discountAmountTotal = voucher.getMaxDiscount();
                     }
                 }
-
+                Log.d("Discount Amount", String.valueOf(discountAmountTotal));
                 int finalNetTotal = netTotal - discountAmountTotal;
+
 
                 // Check if user has sufficient fund
                 Long currentBalance = transaction.get(dbUsers.document(currentUser.getUid())).getLong("balance");
@@ -751,7 +803,14 @@ public class FireStoreManager {
                     throw new InsufficientBalanceException("Insufficient Balance", FirebaseFirestoreException.Code.ABORTED);
                 }
 
-                transaction.update(dbUsers.document(currentUser.getUid()), "balance", FieldValue.increment(-netTotal));
+                Log.d("Final Net Total", String.valueOf(finalNetTotal));
+                transaction.update(dbUsers.document(currentUser.getUid()), "balance", FieldValue.increment(-finalNetTotal));
+                if(voucher != null){
+                    transaction.update(db.collection("vouchers").document(voucher.getVoucherId()), "usedUsers", FieldValue.arrayUnion(currentUser.getUid()));
+                }
+
+
+                int adminShare = 0;
 
                 for(DocumentReference seller : sellerRefs){
                     String id = UUID.randomUUID().toString();
@@ -769,22 +828,20 @@ public class FireStoreManager {
                         }
                     }
 
-                    int discountAmount = 0;
-                    if(voucher != null){
-                        discountAmount = total * voucher.getDiscountPercent() / 100;
-                    }
-
-                    int sellerShare = (total * SELLER_SHARE / 100) - discountAmount;
-                    int adminShare = total * ADMIN_SHARE/100;
+                    int sellerShare = total * SELLER_SHARE/100;
+                    adminShare += total * ADMIN_SHARE/100;
+                    Log.d("Seller Share Total", String.valueOf(sellerShare));
                     Order order = new Order(id, productIDs, amount, total, address,
                             voucher, dbUsers.document(currentUser.getUid()), seller);
 
                     transaction.set(dbOrders.document(id), order);
                     transaction.update(seller, "balance", FieldValue.increment(sellerShare));
-                    transaction.update(dbUsers.document(ADMIN_ID),"balance", FieldValue.increment(adminShare));
                     transaction.update(dbUsers.document(currentUser.getUid()), "buyOrderRef", FieldValue.arrayUnion(dbOrders.document(id)));
                     transaction.update(seller, "sellOrderRef", FieldValue.arrayUnion(dbOrders.document(id)));
                 }
+                int finalAdminShare = adminShare - discountAmountTotal;
+                Log.d("Admin Share Total", String.valueOf(finalAdminShare));
+                transaction.update(dbUsers.document(ADMIN_ID),"balance", FieldValue.increment(finalAdminShare));
                 return null;
             }
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -880,6 +937,7 @@ public class FireStoreManager {
             }
         });
     }
+
     // Callback interfaces
     public interface AddOrdersCallBack{
         void onSuccess();
@@ -952,6 +1010,11 @@ public class FireStoreManager {
     }
 
     public interface AddProductCallBack {
+        void onSuccess();
+        void onFailure(Exception e);
+    }
+
+    public interface updateProductCallBack{
         void onSuccess();
         void onFailure(Exception e);
     }

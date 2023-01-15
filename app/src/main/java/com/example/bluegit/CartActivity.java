@@ -50,9 +50,12 @@ public class CartActivity extends AppCompatActivity {
     ProgressBar orderProgress;
     Spinner shippingInfoSpin;
     Button voucherBtn;
+    TextView voucherName;
+    TextView voucherDiscount;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     Button itemListDisabler;
+    Voucher voucher = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,8 @@ public class CartActivity extends AppCompatActivity {
         shippingInfoSpin = findViewById(R.id.shippingInfo);
         voucherBtn = findViewById(R.id.addVoucherBtn);
         itemListDisabler = findViewById(R.id.itemListDisabler);
+        voucherName = findViewById(R.id.voucherName);
+        voucherDiscount = findViewById(R.id.voucherDiscount);
 
         fireStoreManager.getCurrentUser(new FireStoreManager.GetUserDataCallBack() {
             @Override
@@ -138,7 +143,7 @@ public class CartActivity extends AppCompatActivity {
                                 v.setEnabled(false);
                                 v.setAlpha(0.5f);
 
-                                fireStoreManager.addOrders(adapter.cartMap, shippingInfoSpin.getSelectedItem().toString(), null, new FireStoreManager.AddOrdersCallBack() {
+                                fireStoreManager.addOrders(adapter.cartMap, shippingInfoSpin.getSelectedItem().toString(), voucher, new FireStoreManager.AddOrdersCallBack() {
                                     @Override
                                     public void onSuccess() {
                                         fireStoreManager.emptyCart();
@@ -188,6 +193,19 @@ public class CartActivity extends AppCompatActivity {
         if(requestCode == 300){
             if(resultCode == RESULT_OK){
                 itemListDisabler.setVisibility(View.VISIBLE);
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    voucher = data.getExtras().getSerializable("voucher", Voucher.class);
+                    int newPrice = data.getIntExtra("newPrice", 0);
+
+                    voucherName.setText(voucher.getVoucherName());
+                    String tDisc = "-" + voucher.getDiscountPercent() + "%";
+                    voucherDiscount.setText(tDisc);
+                    NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                    orderTotal.setText(nf.format(newPrice));
+                    itemListDisabler.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(this, "Your Version does not support this feature", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

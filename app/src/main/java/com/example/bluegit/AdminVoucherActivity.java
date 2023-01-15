@@ -35,6 +35,8 @@ public class AdminVoucherActivity extends AppCompatActivity {
     FireStoreManager fireStoreManager;
     ProgressBar adminVoucherProgress;
 
+    ArrayList<Voucher> voucherArrayList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +62,10 @@ public class AdminVoucherActivity extends AppCompatActivity {
         fireStoreManager.getAllVoucher(new FireStoreManager.GetAllVoucherCallBack() {
             @Override
             public void onSuccess(ArrayList<Voucher> result){
+                voucherArrayList = result;
                 RecyclerView recyclerView = findViewById(R.id.adminVoucherList);
-                AdminVoucherAdapter adapter = new AdminVoucherAdapter(result, AdminVoucherActivity.this);
+                AdminVoucherAdapter adapter = new AdminVoucherAdapter(voucherArrayList,
+                        AdminVoucherActivity.this);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(AdminVoucherActivity.this));
                 adminVoucherProgress.setVisibility(View.GONE);
@@ -69,7 +73,9 @@ public class AdminVoucherActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception e){
-                Toast.makeText(AdminVoucherActivity.this, "Fail to load vouchers data, please try again", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminVoucherActivity.this,
+                        "Fail to load vouchers data, please try again", Toast.LENGTH_SHORT)
+                        .show();
                 finish();
             }
         });
@@ -119,6 +125,10 @@ public class AdminVoucherActivity extends AppCompatActivity {
                         Toast.makeText(AdminVoucherActivity.this,
                                 "Add voucher successfully", Toast.LENGTH_SHORT).show();
                         inputNewVoucher.setVisibility(View.GONE);
+                        voucherArrayList.add(voucher);
+                        recyclerView.setAdapter(new AdminVoucherAdapter(voucherArrayList,
+                                AdminVoucherActivity.this));
+                        recyclerView.smoothScrollToPosition(voucherArrayList.size()-1);
                     }
 
                     @Override

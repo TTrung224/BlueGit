@@ -75,11 +75,11 @@ public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHo
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy", new Locale("vi, VN"));
         holder.orderId.setText(orders.get(position).getId().substring(0, 7).toUpperCase());
 
-        String quantity = Integer.toString(orders.get(position).getProductQuantity());
+        String quantity = Integer.toString(orders.get(position).perProductQuantity());
         holder.quantity.setText(quantity);
 
         String formattedPrice = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"))
-                .format(orders.get(position).getTotalPrice());
+                .format(orders.get(position).discountedTotal());
         holder.orderPrice.setText(formattedPrice);
 
         holder.createdDate.setText(dateFormatter.format(orders.get(position).getCreatedDate().toDate()));
