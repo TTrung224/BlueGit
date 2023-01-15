@@ -225,8 +225,6 @@ public class FireStoreManager {
         });
     }
 
-
-
     public void getProductsFromString(String searchStr, GetProductsCallBack callBack){
         CollectionReference dbProducts = db.collection("products");
         String[] searchWords = searchStr.toLowerCase().trim().split(" ");
@@ -560,6 +558,25 @@ public class FireStoreManager {
                     callBack.onSuccess(task.getResult());
                 }else{
                     task.getException().printStackTrace();
+                    callBack.onFailure(task.getException());
+                }
+            }
+        });
+    }
+
+    public void getAllOrders(GetOrdersCallBack callBack){
+        CollectionReference dbOrders = db.collection("orders");
+        dbOrders.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                ArrayList<Order> orders = new ArrayList<>();
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot snapshot : task.getResult()){
+                        Order order = snapshot.toObject(Order.class);
+                        orders.add(order);
+                    }
+                    callBack.onSuccess(orders);
+                }else {
                     callBack.onFailure(task.getException());
                 }
             }

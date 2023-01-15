@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:elevation="20dp"
+    android:background="@drawable/shape_order_list_item"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/orderStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preparing"
+        android:textColor="#10C922"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/createdDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textSize="18sp"
+        android:text="Order date:"
+        android:textColor="#585858"
+        app:layout_constraintTop_toBottomOf="@id/orderIdLabel"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/orderQuantityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp"
+        android:textSize="18sp"
+        android:text="Product Count:"
+        android:textColor="#585858"
+        app:layout_constraintTop_toBottomOf="@id/orderPriceLabel"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/orderPriceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textSize="18sp"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@+id/orderPrice"
+        android:text="Order Price: "
+        android:textColor="#585858"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/createdDateLabel"/>
+
+    <TextView
+        android:id="@+id/createdDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/createdDateLabel"
+        android:text="12/12/2022"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/createdDateLabel"
+        app:layout_constraintStart_toEndOf="@id/createdDateLabel"
+        app:layout_constraintTop_toTopOf="@id/createdDateLabel"/>
+
+    <TextView
+        android:id="@+id/orderQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/orderQuantityLabel"
+        android:text="5"
+        app:layout_constraintBottom_toBottomOf="@id/orderQuantityLabel"
+        app:layout_constraintStart_toEndOf="@id/orderQuantityLabel"
+        app:layout_constraintTop_toTopOf="@id/orderQuantityLabel"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/orderPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:text="$50"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/orderPriceLabel"
+        app:layout_constraintTop_toTopOf="@id/orderPriceLabel"
+        app:layout_constraintStart_toEndOf="@id/orderPriceLabel"/>
+
+    <TextView
+        android:id="@+id/orderOldPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:text="$50"
+        android:textColor="@color/dark_grey"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/orderPriceLabel"
+        app:layout_constraintTop_toTopOf="@id/orderPriceLabel"
+        app:layout_constraintStart_toEndOf="@id/orderPrice"/>
+
+    <TextView
+        android:id="@+id/orderIdLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order:"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/orderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="AAAAAAAA"
+        app:layout_constraintStart_toEndOf="@id/orderIdLabel"
+        app:layout_constraintTop_toTopOf="@id/orderIdLabel"
+        app:layout_constraintBottom_toBottomOf="@id/orderIdLabel"/>
+
+    <Button
+        android:id="@+id/detailBtn"
+        android:layout_width="124dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/shape_button_main_color"
+        android:text="Details"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/orderQuantityLabel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
