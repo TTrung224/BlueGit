@@ -2,8 +2,10 @@ package com.example.bluegit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -63,7 +65,14 @@ public class AdminActivity extends AppCompatActivity {
 
 
     public void signOutClick(View view){
-        FirebaseAuth.getInstance().signOut();
+        AlertDialog.Builder builder = new AlertDialog.Builder(AdminActivity.this);
+        builder.create();
+        builder.setTitle("SIGN OUT CONFIRMATION")
+                .setMessage("Are you sure you want to sign out?")
+                .setPositiveButton("SIGN OUT", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth.getInstance().signOut();
 
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
@@ -75,7 +84,7 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
         finish();
-    }
+    }}).setNegativeButton("CANCEL", null).show();}
     public void refresh(View view) {
         this.recreate();
     }

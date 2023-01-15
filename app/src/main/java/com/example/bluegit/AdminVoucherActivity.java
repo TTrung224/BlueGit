@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class AdminVoucherActivity extends AppCompatActivity {
     Button submitVoucher;
     RecyclerView recyclerView;
     FireStoreManager fireStoreManager;
+    ProgressBar adminVoucherProgress;
 
     ArrayList<Voucher> voucherArrayList;
 
@@ -51,6 +53,7 @@ public class AdminVoucherActivity extends AppCompatActivity {
         navIntent = new Intent(this, AdminActivity.class);
         recyclerView = findViewById(R.id.adminVoucherList);
         fireStoreManager = new FireStoreManager(AdminVoucherActivity.this, FirebaseAuth.getInstance().getCurrentUser());
+        adminVoucherProgress = findViewById(R.id.voucherProgressBar);
 
     }
     @Override
@@ -64,8 +67,8 @@ public class AdminVoucherActivity extends AppCompatActivity {
                 AdminVoucherAdapter adapter = new AdminVoucherAdapter(voucherArrayList,
                         AdminVoucherActivity.this);
                 recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(
-                        new LinearLayoutManager(AdminVoucherActivity.this));
+                recyclerView.setLayoutManager(new LinearLayoutManager(AdminVoucherActivity.this));
+                adminVoucherProgress.setVisibility(View.GONE);
             }
 
             @Override

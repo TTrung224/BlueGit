@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bluegit.adapters.AdminAccountAdapter;
@@ -28,6 +29,7 @@ public class AdminProductActivity extends AppCompatActivity {
     FireStoreManager fireStoreManager;
 
     FirebaseUser currentUser;
+    ProgressBar adminProductProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class AdminProductActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().getCurrentUser());
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
+        adminProductProgress = findViewById(R.id.adminProductProgress);
 
     }
     @Override
@@ -55,7 +57,7 @@ public class AdminProductActivity extends AppCompatActivity {
                 AdminProductAdapter adapter = new AdminProductAdapter(result, AdminProductActivity.this, currentUser);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(AdminProductActivity.this));
-                findViewById(R.id.progressBar3).setVisibility(View.GONE);
+                adminProductProgress.setVisibility(View.GONE);
             }
 
             @Override
