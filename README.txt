@@ -21,5 +21,10 @@ Technology used:
     Anroid Studio
     Github
     
+Open issues:
+  If the data is too much, it may takes a long time to load and display it all. 
+  
+Known Bugs: 
+  
    
   
