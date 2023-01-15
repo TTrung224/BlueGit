@@ -63,7 +63,7 @@ public class AdminVoucherAdapter extends RecyclerView.Adapter<AdminVoucherAdapte
         FireStoreManager fireStoreManager= new FireStoreManager(this.layoutInflater.getContext(), FirebaseAuth.getInstance().getCurrentUser());
         holder.voucherName.setText(vouchers.get(position).getVoucherName());
 
-        String discountStr = Integer.toString(vouchers.get(position).getDiscountPercent());
+        String discountStr = String.valueOf(vouchers.get(position).getDiscountPercent());
         holder.discountPercent.setText(discountStr);
 
         NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
@@ -73,7 +73,7 @@ public class AdminVoucherAdapter extends RecyclerView.Adapter<AdminVoucherAdapte
         String maxDiscount = nf.format(vouchers.get(position).getMaxDiscount());
         holder.maxDiscount.setText(maxDiscount);
 
-        if(vouchers.get(holder.getAdapterPosition()).isDisabled() == true) {
+        if(vouchers.get(holder.getAdapterPosition()).isDisabled()) {
             holder.disabaleBtn.setVisibility(View.GONE);
         }
 

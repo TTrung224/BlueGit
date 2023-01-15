@@ -131,7 +131,7 @@ public class ProductActivity extends AppCompatActivity {
         int maxQuant = Integer.parseInt(tStock.getText().toString());
         if(quantity > maxQuant){
             Toast.makeText(this, "Don't have enough item in stock", Toast.LENGTH_SHORT).show();
-            productQuantityEdit.setText(String.valueOf(maxQuant));
+            // productQuantityEdit.setText(String.valueOf(maxQuant));
             return;
         } else if(quantity < 1){
             Toast.makeText(this, "Please enter a valid quantity", Toast.LENGTH_SHORT).show();

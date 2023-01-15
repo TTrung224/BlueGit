@@ -580,17 +580,25 @@ public class FireStoreManager {
             @Override
             public ArrayList<Order> apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
                 ArrayList<Order> result = new ArrayList<>();
+
                 ArrayList<DocumentReference> orderRefs = (ArrayList<DocumentReference>) transaction.get(dbUser).get("buyOrderRef");
                 if(orderRefs != null){
                     for(DocumentReference ref : orderRefs) {
-                        Order order = transaction.get(ref).toObject(Order.class);
-                        if(order == null){
-                            orderRefs.remove(ref);
-                        }else {
-                            result.add(order);
+                        DocumentSnapshot snapshot = transaction.get(ref);
+                        if(snapshot.exists()){
+                            Order order = snapshot.toObject(Order.class);
+                            if(order != null){
+                                result.add(order);
+                            }
                         }
                     }
                 }
+
+                ArrayList<DocumentReference> newOrderRef = new ArrayList<>();
+                for(Order order : result){
+                    newOrderRef.add(db.collection("orders").document(order.getId()));
+                }
+                transaction.update(dbUser, "buyOrderRef", newOrderRef);
                 return result;
             }
         }).addOnCompleteListener(new OnCompleteListener<ArrayList<Order>>() {
@@ -599,6 +607,7 @@ public class FireStoreManager {
                 if(task.isSuccessful()){
                     callBack.onSuccess(task.getResult());
                 }else{
+                    task.getException().printStackTrace();
                     callBack.onFailure(task.getException());
                 }
             }
@@ -611,17 +620,25 @@ public class FireStoreManager {
             @Override
             public ArrayList<Order> apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
                 ArrayList<Order> result = new ArrayList<>();
+
                 ArrayList<DocumentReference> orderRefs = (ArrayList<DocumentReference>) transaction.get(dbUser).get("sellOrderRef");
                 if(orderRefs != null){
                     for(DocumentReference ref : orderRefs) {
-                        Order order = transaction.get(ref).toObject(Order.class);
-                        if(order == null){
-                            orderRefs.remove(ref);
-                        }else {
-                            result.add(order);
+                        DocumentSnapshot snapshot = transaction.get(ref);
+                        if(snapshot.exists()){
+                            Order order = snapshot.toObject(Order.class);
+                            if(order != null){
+                                result.add(order);
+                            }
                         }
                     }
                 }
+
+                ArrayList<DocumentReference> newOrderRef = new ArrayList<>();
+                for(Order order : result){
+                    newOrderRef.add(db.collection("orders").document(order.getId()));
+                }
+                transaction.update(dbUser, "sellOrderRef", newOrderRef);
                 return result;
             }
         }).addOnCompleteListener(new OnCompleteListener<ArrayList<Order>>() {
@@ -785,9 +802,11 @@ public class FireStoreManager {
                 }
                 int discountAmountTotal = 0;
                 if(voucher != null){
-                    discountAmountTotal = netTotal * voucher.getDiscountPercent() / 100;
+                    discountAmountTotal = (int) (netTotal * voucher.getDiscountPercent() / 100);
                     if(discountAmountTotal > voucher.getMaxDiscount()){
                         discountAmountTotal = voucher.getMaxDiscount();
+                        float newDiscountPercent = Math.round(((1-((float)(netTotal-discountAmountTotal)/netTotal)) * 100) * 10) / 10f;
+                        voucher.setDiscountPercent(newDiscountPercent);
                     }
                 }
                 Log.d("Discount Amount", String.valueOf(discountAmountTotal));

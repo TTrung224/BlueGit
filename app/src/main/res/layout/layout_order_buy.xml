@@ -108,6 +108,19 @@
         app:layout_constraintStart_toEndOf="@id/orderPriceLabel"/>
 
     <TextView
+        android:id="@+id/orderOldPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:text="$50"
+        android:textColor="@color/dark_grey"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/orderPriceLabel"
+        app:layout_constraintTop_toTopOf="@id/orderPriceLabel"
+        app:layout_constraintStart_toEndOf="@id/orderPrice"/>
+
+    <TextView
         android:id="@+id/orderIdLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

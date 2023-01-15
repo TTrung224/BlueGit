@@ -33,7 +33,6 @@ public class Order implements  Comparable<Order>{
         this.status = "pending";
         this.sellerId = sellerId;
         createdDate = Timestamp.now();
-
     }
 
 
@@ -142,7 +141,7 @@ public class Order implements  Comparable<Order>{
     public int discountedTotal(){
         int discountedAmount = 0;
         if(voucher != null){
-            discountedAmount = totalPrice * voucher.getDiscountPercent() / 100;
+            discountedAmount = (int) (totalPrice * voucher.getDiscountPercent() / 100);
             if(discountedAmount > voucher.getMaxDiscount()){
                 discountedAmount = voucher.getMaxDiscount();
             }

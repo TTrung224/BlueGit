@@ -3,6 +3,7 @@ package com.example.bluegit.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,7 @@ public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHo
         public TextView orderId;
         public TextView quantity;
         public TextView orderPrice;
+        public TextView orderOldPrice;
         public TextView createdDate;
         public TextView orderStatus;
         public Button detailBtn;
@@ -55,6 +57,7 @@ public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHo
             orderId = itemView.findViewById(R.id.orderId);
             quantity = itemView.findViewById(R.id.orderQuantity);
             orderPrice = itemView.findViewById(R.id.orderPrice);
+            orderOldPrice = itemView.findViewById(R.id.orderOldPrice);
             createdDate = itemView.findViewById(R.id.createdDate);
             orderStatus = itemView.findViewById(R.id.orderStatus);
             detailBtn = itemView.findViewById(R.id.detailBtn);
@@ -78,8 +81,14 @@ public class OrderBuyAdapter extends RecyclerView.Adapter<OrderBuyAdapter.ViewHo
         String quantity = Integer.toString(orders.get(position).perProductQuantity());
         holder.quantity.setText(quantity);
 
-        String formattedPrice = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"))
-                .format(orders.get(position).discountedTotal());
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        if(orders.get(holder.getAdapterPosition()).getVoucher() != null){
+            holder.orderOldPrice.setText(nf.format(orders.get(position).getTotalPrice()));
+            holder.orderOldPrice.setPaintFlags(holder.orderOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }else{
+            holder.orderOldPrice.setVisibility(View.GONE);
+        }
+        String formattedPrice = nf.format(orders.get(position).discountedTotal());
         holder.orderPrice.setText(formattedPrice);
 
         holder.createdDate.setText(dateFormatter.format(orders.get(position).getCreatedDate().toDate()));

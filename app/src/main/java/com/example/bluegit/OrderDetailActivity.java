@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.bluegit.adapters.OrderProductAdapter;
 import com.example.bluegit.model.Order;
 import com.example.bluegit.model.Product;
+import com.example.bluegit.model.Voucher;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.NumberFormat;
@@ -27,6 +28,8 @@ public class OrderDetailActivity extends AppCompatActivity {
     TextView tOrderCreatedDate;
     TextView tOrderShippingInfo;
     TextView tTotalPrice;
+    TextView tVoucher;
+    TextView tDiscount;
     RecyclerView orderProductList;
 
 
@@ -43,6 +46,8 @@ public class OrderDetailActivity extends AppCompatActivity {
         tOrderCreatedDate = findViewById(R.id.orderCreatedDate);
         tOrderShippingInfo = findViewById(R.id.orderShippingInfo);
         tTotalPrice = findViewById(R.id.totalPrice);
+        tVoucher = findViewById(R.id.voucher);
+        tDiscount = findViewById(R.id.discountPrice);
 
         orderProductList = findViewById(R.id.orderProductList);
 
@@ -56,13 +61,24 @@ public class OrderDetailActivity extends AppCompatActivity {
                 tOrderCreatedDate.setText(dateFormat.format(result.getCreatedDate().toDate()));
 
                 String[] addressArray = result.getAddress().split("\\|");
-                String shippingInfo = "\nName: " + addressArray[0] +
+                String shippingInfo = "Name: " + addressArray[0] +
                         "\nPhone: " + addressArray[1] +
                         "\nAddress: " + addressArray[2];
                 tOrderShippingInfo.setText(shippingInfo);
 
-                tTotalPrice.setText(NumberFormat.getCurrencyInstance(new Locale("vi", "VN"))
-                        .format(result.getTotalPrice()));
+                NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                tTotalPrice.setText(nf.format(result.getTotalPrice()));
+
+                Voucher voucher = result.getVoucher();
+                if(voucher != null){
+                    String voucherInfo = "Apply -" + voucher.getDiscountPercent() + "% for this order.";
+                    tVoucher.setText(voucherInfo);
+                    tDiscount.setText(nf.format(result.discountedTotal()));
+                }else {
+                    tVoucher.setText("None");
+                    tDiscount.setText("None");
+                }
+
                 OrderProductAdapter adapter = new OrderProductAdapter(products, result.getAmount(), OrderDetailActivity.this);
                 orderProductList.setAdapter(adapter);
                 orderProductList.setLayoutManager(new LinearLayoutManager(OrderDetailActivity.this));

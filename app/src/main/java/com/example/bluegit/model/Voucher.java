@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Voucher implements Serializable {
     private String voucherId;
     private String voucherName;
-    private int discountPercent;
+    private float discountPercent;
     private int minOrderValue;
     private int maxDiscount;
     private boolean disabled;
@@ -15,7 +15,7 @@ public class Voucher implements Serializable {
 
     public Voucher(){}
 
-    public Voucher(String voucherId, String voucherName, int discountPercent, int minOrderValue, int maxDiscount) {
+    public Voucher(String voucherId, String voucherName, float discountPercent, int minOrderValue, int maxDiscount) {
         this.voucherId = voucherId;
         this.voucherName = voucherName;
         this.discountPercent = discountPercent;
@@ -34,7 +34,7 @@ public class Voucher implements Serializable {
         return voucherName;
     }
 
-    public int getDiscountPercent() {
+    public float getDiscountPercent() {
         return discountPercent;
     }
 
@@ -58,7 +58,7 @@ public class Voucher implements Serializable {
         this.voucherName = voucherName;
     }
 
-    public void setDiscountPercent(int discountPercent) {
+    public void setDiscountPercent(float discountPercent) {
         this.discountPercent = discountPercent;
     }
 
