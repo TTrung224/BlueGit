@@ -29,7 +29,7 @@
   7. **User view products**: User can view list of available products posted by other users.
   8. **User search products**: User can search for a product by typing relating keywords.
   9. **User buy products**: User can select a product, choose the quantity then add to cart. *NOTE: if items in cart belong to different sellers, different orders will be created for each of the sellers.*
-  10. **Voucher**: Voucher decreases total price of cart. Decrease amounts will vary for each order.
+  10. **Voucher**: Voucher decreases total price of cart. Decrease amounts will vary for each order, the deducted amount will be deducted from the admin's profit.
   11. **User chat**: User can chat with the shop owner or with customer.
   12. **User cart**: The products that the user buy will be store in their cart, in the cart the user need to provide shipping info, add voucher (if wanted) then order the products.
   13. **User business**: User can list products to sell and view the sold products. *NOTE: 20% of the sold amount will be added to the admin's account, ensure profit to system runner.*
