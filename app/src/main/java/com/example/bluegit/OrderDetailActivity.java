@@ -1,5 +1,6 @@
 package com.example.bluegit;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,8 +14,12 @@ import android.widget.TextView;
 import com.example.bluegit.adapters.OrderProductAdapter;
 import com.example.bluegit.model.Order;
 import com.example.bluegit.model.Product;
+import com.example.bluegit.model.User;
 import com.example.bluegit.model.Voucher;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -30,6 +35,8 @@ public class OrderDetailActivity extends AppCompatActivity {
     TextView tTotalPrice;
     TextView tVoucher;
     TextView tDiscount;
+    TextView tBuyerEmail;
+    TextView tSellerEmail;
     RecyclerView orderProductList;
 
 
@@ -48,12 +55,32 @@ public class OrderDetailActivity extends AppCompatActivity {
         tTotalPrice = findViewById(R.id.totalPrice);
         tVoucher = findViewById(R.id.voucher);
         tDiscount = findViewById(R.id.discountPrice);
+        tBuyerEmail = findViewById(R.id.buyerEmail);
+        tSellerEmail = findViewById(R.id.sellerEmail);
 
         orderProductList = findViewById(R.id.orderProductList);
 
         fireStoreManager.getOrderAndProductsById(orderId, new FireStoreManager.GetOrderAndProductsCallBack() {
             @Override
             public void onSuccess(Order result, ArrayList<Product> products) {
+                result.getSellerId().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            tSellerEmail.setText(task.getResult().getString("email"));
+                        }
+                    }
+                });
+
+                result.getCustomerId().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            tBuyerEmail.setText(task.getResult().getString("email"));
+                        }
+                    }
+                });
+
                 String header = "Order " + result.getId().substring(0, 7).toUpperCase();
                 tOrderHeader.setText(header);
 

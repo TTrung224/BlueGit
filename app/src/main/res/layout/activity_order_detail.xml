@@ -69,6 +69,52 @@
                 app:layout_constraintBottom_toBottomOf="@id/orderCreatedDateLabel"
                 app:layout_constraintStart_toEndOf="@id/orderCreatedDateLabel"/>
 
+            <TextView
+                android:id="@+id/buyerEmailLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_weight="0.05"
+                android:text="Buyer Email:"
+                android:textColor="#585858"
+                app:layout_constraintTop_toBottomOf="@id/orderCreatedDateLabel"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/buyerEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="2"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/buyerEmailLabel"
+                app:layout_constraintStart_toEndOf="@id/buyerEmailLabel"/>
+
+            <TextView
+                android:id="@+id/sellerEmailLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_weight="0.05"
+                android:text="Seller Email:"
+                android:textColor="#585858"
+                app:layout_constraintTop_toBottomOf="@id/buyerEmailLabel"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/sellerEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="2"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/sellerEmailLabel"
+                app:layout_constraintStart_toEndOf="@id/sellerEmailLabel"/>
+
 
             <TextView
                 android:id="@+id/orderShippingInfoLabel"
@@ -79,7 +125,7 @@
                 android:text="Shipping information:"
                 android:textColor="#585858"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/orderCreatedDateLabel"/>
+                app:layout_constraintTop_toBottomOf="@id/sellerEmailLabel"/>
 
             <TextView
                 android:id="@+id/orderShippingInfo"
