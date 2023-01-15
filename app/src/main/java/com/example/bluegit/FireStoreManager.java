@@ -778,7 +778,7 @@ public class FireStoreManager {
                     if(price == null){
                         price = 0L;
                     }
-                    netTotal += price;
+                    netTotal += price * entry.getValue();
                     if(!sellerRefs.contains(entry.getKey().getSellerId())){
                         sellerRefs.add(entry.getKey().getSellerId());
                     }
