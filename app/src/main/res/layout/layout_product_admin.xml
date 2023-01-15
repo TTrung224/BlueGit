@@ -4,15 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/adminProductName"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/shape_order_list_item">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_height="31dp"
         android:layout_below="@+id/adminProductPriceItem"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/adminProductImageItem"
         android:elevation="10dp"
         app:cardCornerRadius="360dp"
@@ -34,10 +38,12 @@
         android:id="@+id/adminProductNameItem"
         android:layout_width="262dp"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/adminProductPriceItem"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="54dp"
         android:text="Car"
         android:textColor="@color/black" />
 
@@ -51,12 +57,13 @@
 
     <TextView
         android:id="@+id/adminProductSellerItem"
-        android:layout_width="231dp"
-        android:layout_height="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="31dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="11dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="75dp"
+        android:layout_toEndOf="@+id/cardView"
+        android:gravity="center_vertical"
         android:text="khoi shop"
         android:textColor="@color/black" />
 
@@ -66,8 +73,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="153dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="49dp"
+        android:layout_marginEnd="128dp"
+        android:layout_toEndOf="@+id/adminProductImageItem"
         android:text="30k"
         android:textColor="@color/black" />
 
@@ -81,7 +90,7 @@
         android:layout_marginEnd="113dp"
         android:background="@drawable/shape_button_main_color"
         android:backgroundTint="#F34747"
-        android:text="Delete"
+        android:text="Disable"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -92,8 +101,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="86dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="60dp"
         android:text="Quantity:"
         android:textColor="@color/black" />
 
@@ -103,8 +112,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="41dp"
-        android:layout_marginEnd="62dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="42dp"
         android:text="10"
         android:textColor="@color/black" />
 
