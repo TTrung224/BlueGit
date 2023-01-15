@@ -2,10 +2,13 @@ package com.example.bluegit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -157,6 +160,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSignOutClick(View view) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.create();
+        builder.setTitle("SIGN OUT CONFIRMATION")
+                .setMessage("Are you sure you want to sign out?")
+                .setPositiveButton("SIGN OUT", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
         FirebaseAuth.getInstance().signOut();
 
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
@@ -170,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         finish();
-    }
+    }}).setNegativeButton("CANCEL", null).show();}
 
 
     public void onChatsClick(View view) {
