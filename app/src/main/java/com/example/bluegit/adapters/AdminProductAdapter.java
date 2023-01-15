@@ -1,6 +1,7 @@
 package com.example.bluegit.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bluegit.FireStoreManager;
@@ -67,12 +69,12 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        FireStoreManager fireStoreManager = new FireStoreManager(context,currentUser );
+        FireStoreManager fireStoreManager = new FireStoreManager(context, currentUser);
 
         fireStoreManager.getUserById(products.get(position).getSellerId().getId(), new FireStoreManager.GetUserDataCallBack() {
             @Override
             public void onSuccess(User result) {
-                holder.productOwner.setText( result.getDisplayName());
+                holder.productOwner.setText(result.getDisplayName());
 
                 Picasso.get().load(result.getProfileImageSrc()).into(holder.sellerImage);
             }
@@ -92,22 +94,32 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
         String quantity = Integer.toString(products.get(position).getQuantity());
         holder.productQuantity.setText(quantity);
 
-        if(products.get(holder.getAdapterPosition()).isDisabled() == true) {
-            holder.productDeleteBtn.setVisibility(View.INVISIBLE);}
+        if (products.get(holder.getAdapterPosition()).isDisabled() == true) {
+            holder.productDeleteBtn.setVisibility(View.INVISIBLE);
+        }
         holder.productDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fireStoreManager.disableProduct(products.get(holder.getAdapterPosition()).getProductId(), new FireStoreManager.disableProductCallBack(){
-                    @Override
-                    public void onSuccess(){
-                        v.findViewById(R.id.adminProductDeleteItem).setVisibility(View.INVISIBLE);
-                    }
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.create();
+                builder.setTitle("DISABLE CONFIRMATION")
+                        .setMessage("Are you sure you want to disable this product? When you accept you cannot undo it.")
+                        .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                fireStoreManager.disableProduct(products.get(holder.getAdapterPosition()).getProductId(), new FireStoreManager.disableProductCallBack() {
+                                    @Override
+                                    public void onSuccess() {
+                                        v.findViewById(R.id.adminProductDeleteItem).setVisibility(View.INVISIBLE);
+                                    }
 
-                    @Override
-                    public void onFailure(Exception e) {
-                        Log.d("Product Deleted ", e.getLocalizedMessage());
-                    }
-                });
+                                    @Override
+                                    public void onFailure(Exception e) {
+                                        Log.d("Product Deleted ", e.getLocalizedMessage());
+                                    }
+                                });
+                            }
+                        }).setNegativeButton("CANCEL", null).show();
             }
         });
     }
@@ -120,3 +132,6 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
         return products.size();
     }
 }
+
+
+

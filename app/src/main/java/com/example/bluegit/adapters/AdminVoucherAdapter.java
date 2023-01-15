@@ -1,6 +1,8 @@
 package com.example.bluegit.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bluegit.FireStoreManager;
@@ -26,10 +29,12 @@ public class AdminVoucherAdapter extends RecyclerView.Adapter<AdminVoucherAdapte
     private RecyclerViewOnClickListener recyclerViewOnClickListener;
     private ArrayList<Voucher> vouchers;
     private LayoutInflater layoutInflater;
+    private Context context;
 
     public AdminVoucherAdapter( ArrayList<Voucher> vouchers, Context context) {
         this.vouchers = vouchers;
         this.layoutInflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -80,20 +85,32 @@ public class AdminVoucherAdapter extends RecyclerView.Adapter<AdminVoucherAdapte
         holder.disabaleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fireStoreManager.disableVoucher(vouchers.get(holder.getAdapterPosition()).getVoucherId(), new FireStoreManager.disableVoucherCallBack(){
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.create();
+                builder.setTitle("DISABLE CONFIRMATION")
+                        .setMessage("Are you sure you want to disable this voucher? When you accept you cannot undo it.")
+                        .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onSuccess(){
-                        v.findViewById(R.id.disableBtn).setVisibility(View.GONE);
-                    }
+                    public void onClick(DialogInterface dialog, int which) {
+                        fireStoreManager.disableVoucher(vouchers.get(holder.getAdapterPosition()).getVoucherId(), new FireStoreManager.disableVoucherCallBack(){
+                            @Override
+                            public void onSuccess(){
+                                v.findViewById(R.id.disableBtn).setVisibility(View.GONE);
+                            }
 
-                    @Override
-                    public void onFailure(Exception e) {
-                        Log.d("DisableVoucher", e.getLocalizedMessage());
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d("DisableVoucher", e.getLocalizedMessage());
+                            }
+                        });
                     }
-                });
+                }).setNegativeButton("CANCEL", null).show();
             }
         });
+
     }
+
+
 
     @Override
     public int getItemCount() {
