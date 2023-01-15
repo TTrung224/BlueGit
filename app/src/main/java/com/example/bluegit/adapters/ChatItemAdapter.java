@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHolder> {
 
@@ -32,6 +33,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
            Context context, RecyclerViewOnClickListener recyclerViewOnClickListener) {
         this.lastMessages = lastMessages;
         this.users = users;
+        sortMessages(this.lastMessages, this.users);
         this.inflater = LayoutInflater.from(context);
         this.recyclerViewOnClickListener = recyclerViewOnClickListener;
     }
@@ -97,5 +99,17 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
     @Override
     public int getItemCount() {
         return users.size();
+    }
+
+    void sortMessages(ArrayList<Message> messages, ArrayList<User> users){
+        // Bubble sort to put latest first
+        for(int i = 0; i < messages.size() - 1; i ++){
+            for(int j = 0; j < messages.size() - i - 1; j++){
+                if(messages.get(j).getSentTime().compareTo(messages.get(j + 1).getSentTime()) < 0){
+                    Collections.swap(messages, j, j + 1);
+                    Collections.swap(users, j , j + 1);
+                }
+            }
+        }
     }
 }
