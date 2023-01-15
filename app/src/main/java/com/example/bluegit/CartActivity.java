@@ -192,20 +192,24 @@ public class CartActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 300){
             if(resultCode == RESULT_OK){
-                itemListDisabler.setVisibility(View.VISIBLE);
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                    voucher = data.getExtras().getSerializable("voucher", Voucher.class);
+                if(data != null){
+                    itemListDisabler.setVisibility(View.VISIBLE);
                     int newPrice = data.getIntExtra("newPrice", 0);
+                    String cVoucherId = data.getStringExtra("voucherId");
+                    String cVoucherName = data.getStringExtra("voucherName");
+                    float cDiscountPercent = data.getFloatExtra("discountPercent", 0f);
+                    int cMinOrderValue = data.getIntExtra("minOrderValue", 0);
+                    int cMaxDiscount = data.getIntExtra("maxDiscount", 0);
 
+                    voucher = new Voucher(cVoucherId, cVoucherName, cDiscountPercent, cMinOrderValue, cMaxDiscount);
                     voucherName.setText(voucher.getVoucherName());
                     String tDisc = "-" + voucher.getDiscountPercent() + "%";
                     voucherDiscount.setText(tDisc);
                     NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
                     orderTotal.setText(nf.format(newPrice));
                     itemListDisabler.setVisibility(View.VISIBLE);
-                } else {
-                    Toast.makeText(this, "Your Version does not support this feature", Toast.LENGTH_SHORT).show();
                 }
+
             }
         }
     }
