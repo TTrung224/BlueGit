@@ -37,9 +37,8 @@
   14. **User order**: User can view the list of the product they have ordered.
   15.  **Order status**: Order can be set to "delivering" by seller, and set to "completed" by customer.
   16. **User account**: User update account information(user name, phone number, add new shipping info).
-  17. **Log out**: Admin and user can log out of their account.
-  18. **Internet Connection Broadcast Receiver**: Check for internet connection while using app, which is required for database access.
-  19. **Notification Service**: Listen for new incoming message, new order and update of order status, then notify the appropriate user accordingly.
+  17. **Internet Connection Broadcast Receiver**: Check for internet connection while using app, which is required for database access.
+  18. **Notification Service**: Listen for new incoming message, new order and update of order status, then notify the appropriate user accordingly.
   
 
 ## Technology used:
