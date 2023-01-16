@@ -152,13 +152,15 @@ public class AccountActivity extends AppCompatActivity{
                     if (task.isSuccessful()) {
                         Toast.makeText(AccountActivity.this, "Add info successfully", Toast.LENGTH_SHORT).show();
                         addAddressForm.setVisibility(View.GONE);
-                        if(addressList.get(0).equals("There is no shipping information, Let's add one!")){
+                        if(addressList.get(0).equals("There is not any shipping information, Let's add one!")){
                             addressList.clear();
                         }
                         addressList.add(info);
                         adapter = new ArrayAdapter<String>(AccountActivity.this,
                                 android.R.layout.simple_spinner_item,
                                 addressList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
+
                         shippingInfoSpin.setAdapter(adapter);
 
                     } else {
