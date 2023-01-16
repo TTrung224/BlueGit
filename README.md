@@ -20,7 +20,7 @@
 
 ## Functionalities:
 
-  1. **Authentication**: Login by Gmail, email and password.
+  1. **Authentication**: Login by Gmail, email and password. *NOTE: If user uses Google login after registering with that google email, the Google Auth will overwrite the previous authentication data. User data will remain but user will have to use Google Auth from that point on to authenticate their account.*
   2. **Admin manage vouchers**: Admin can add, view, and disable voucher.
   3. **Admin manage products**: Admin can view product list, disable product.
   4. **Admin manage account**: Admin can view the list of users in system.
@@ -56,3 +56,5 @@
  At the moment, the system is not very scalable. If we encounter too much traffic, where there are too many users and user's activities, the system will definitely suffer from long load time due to time to get/put data from and to FireStore. 
 
 ## Known Bugs:
+
+  For the Login using Google, on some developing computers, it might occasionally return an error while using this function. At the moment, we are not sure what the exact cause of this, but we suspect that it is due to the emulator not working properly. The reason for this is because the function would work again after resetting or wiping the emulator's data, as well as the function working fine in other developing computers.
