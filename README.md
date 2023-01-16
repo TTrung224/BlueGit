@@ -1,19 +1,20 @@
 
 # COSC2657_A3
 
+![Project Logo](https://github.com/TTrung224/BlueGit/blob/main/readme_logo.png)
 
 ## Team Members:
 
-  1. Tran Quoc Trung(s3891724)
-  2. Huynh Ky Thanh(s3884734)
-  3. Ho Tran Minh Khoi(s3877653)
-  4. Tran Minh Khoi(s3916827)
+  1. Tran Quoc Trung (s3891724)
+  2. Huynh Ky Thanh (s3884734)
+  3. Ho Tran Minh Khoi (s3877653)
+  4. Tran Minh Khoi (s3916827)
   
 
 ## Work distribution:
 
-  1. Tran Quoc Trung (s3891724): Adapters, Firebase store manage, design UX/UI, code Chat, Message, Admin  -25%
-  2. Huynh Ky Thanh (s3884734): Adapters, Firebase store manage, design UX/UI, code Log in, Register, User, Cart, Product and Order  -25%
+  1. Tran Quoc Trung (s3891724): Adapters, Firebase store manage, design UX/UI, code Chat, Message, Admin and Service  -25%
+  2. Huynh Ky Thanh (s3884734): Adapters, Firebase store manage, design UX/UI, code Log in, Register, User, Cart, Product, Order and Broadcast  -25%
   3. Ho Tran Minh Khoi (s3877653): Adapters, Firebase store manage, design UX/UI, code Product, Cart and User -25%
   4. Tran Minh Khoi (s3916827): Adapters, Firebase store manage, design UX/UI, code Voucher, Admin   -25%
  
@@ -36,9 +37,8 @@
   14. **User order**: User can view the list of the product they have ordered.
   15.  **Order status**: Order can be set to "delivering" by seller, and set to "completed" by customer.
   16. **User account**: User update account information(user name, phone number, add new shipping info).
-  17. **Log out**: Admin and user can log out of their account.
-  18. **Internet Connection Broadcast Receiver**: Check for internet connection while using app, which is required for database access.
-  19. **Notification Service**: Listen for database update, then notify the appropriate user accordingly.
+  17. **Internet Connection Broadcast Receiver**: Check for internet connection while using app, which is required for database access.
+  18. **Notification Service**: Listen for new incoming message, new order and update of order status, then notify the appropriate user accordingly.
   
 
 ## Technology used:
