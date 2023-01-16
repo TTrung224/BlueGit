@@ -5,16 +5,16 @@
 
 ## Team Members:
 
-  1. Tran Quoc Trung(s3891724)
-  2. Huynh Ky Thanh(s3884734)
-  3. Ho Tran Minh Khoi(s3877653)
-  4. Tran Minh Khoi(s3916827)
+  1. Tran Quoc Trung (s3891724)
+  2. Huynh Ky Thanh (s3884734)
+  3. Ho Tran Minh Khoi (s3877653)
+  4. Tran Minh Khoi (s3916827)
   
 
 ## Work distribution:
 
-  1. Tran Quoc Trung (s3891724): Adapters, Firebase store manage, design UX/UI, code Chat, Message, Admin  -25%
-  2. Huynh Ky Thanh (s3884734): Adapters, Firebase store manage, design UX/UI, code Log in, Register, User, Cart, Product and Order  -25%
+  1. Tran Quoc Trung (s3891724): Adapters, Firebase store manage, design UX/UI, code Chat, Message, Admin and Service  -25%
+  2. Huynh Ky Thanh (s3884734): Adapters, Firebase store manage, design UX/UI, code Log in, Register, User, Cart, Product, Order and Broadcast  -25%
   3. Ho Tran Minh Khoi (s3877653): Adapters, Firebase store manage, design UX/UI, code Product, Cart and User -25%
   4. Tran Minh Khoi (s3916827): Adapters, Firebase store manage, design UX/UI, code Voucher, Admin   -25%
  
