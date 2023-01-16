@@ -1,6 +1,7 @@
 
 # COSC2657_A3
 
+! [Project Logo] (https://github.com/TTrung224/BlueGit/blob/main/app/src/main/res/drawable/bluegit_logo.png)
 
 ## Team Members:
 
