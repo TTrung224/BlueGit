@@ -156,6 +156,9 @@ public class AccountActivity extends AppCompatActivity{
                             addressList.clear();
                         }
                         addressList.add(info);
+                        adapter = new ArrayAdapter<String>(AccountActivity.this,
+                                android.R.layout.simple_spinner_item,
+                                addressList);
                         shippingInfoSpin.setAdapter(adapter);
 
                     } else {

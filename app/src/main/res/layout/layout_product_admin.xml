@@ -42,10 +42,12 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="54dp"
         android:text="Car"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/adminProductImageItem"
@@ -69,13 +71,11 @@
 
     <TextView
         android:id="@+id/adminProductPriceItem"
-        android:layout_width="124dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
         android:layout_marginStart="5dp"
         android:layout_marginTop="49dp"
-        android:layout_marginEnd="128dp"
         android:layout_toEndOf="@+id/adminProductImageItem"
         android:text="30k"
         android:textColor="@color/black" />
@@ -100,9 +100,9 @@
         android:layout_width="63dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="2dp"
+        android:layout_toStartOf="@+id/adminProductQuantity"
         android:text="Quantity:"
         android:textColor="@color/black" />
 
@@ -113,7 +113,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="42dp"
+        android:layout_marginEnd="40dp"
         android:text="10"
         android:textColor="@color/black" />
 
