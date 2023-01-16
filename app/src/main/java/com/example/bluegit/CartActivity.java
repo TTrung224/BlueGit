@@ -53,6 +53,7 @@ public class CartActivity extends AppCompatActivity {
     TextView voucherName;
     TextView voucherDiscount;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String uid;
 
     Button itemListDisabler;
     Voucher voucher = null;
@@ -71,6 +72,8 @@ public class CartActivity extends AppCompatActivity {
         itemListDisabler = findViewById(R.id.itemListDisabler);
         voucherName = findViewById(R.id.voucherName);
         voucherDiscount = findViewById(R.id.voucherDiscount);
+
+        uid = FirebaseAuth.getInstance().getUid();
 
         fireStoreManager.getCurrentUser(new FireStoreManager.GetUserDataCallBack() {
             @Override
@@ -149,6 +152,9 @@ public class CartActivity extends AppCompatActivity {
                                         fireStoreManager.emptyCart();
                                         Toast.makeText(CartActivity.this, "Successfully create a new order", Toast.LENGTH_SHORT).show();
                                         orderProgress.setVisibility(View.GONE);
+                                        Intent intent = new Intent(CartActivity.this, NotificationService.class);
+                                        intent.putExtra("uid", uid);
+                                        startForegroundService(intent);
                                         finish();
                                     }
 

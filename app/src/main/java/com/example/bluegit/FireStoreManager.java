@@ -33,6 +33,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -564,6 +565,22 @@ public class FireStoreManager {
         });
     }
 
+
+    public void getBuyOrdersRef(getOrdersRefCallBack callBack){
+        DocumentReference dbUser = db.collection("users").document(currentUser.getUid());
+        dbUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    ArrayList<DocumentReference> orderRefList = (ArrayList<DocumentReference>) task.getResult().get("buyOrderRef");
+                    callBack.onSuccess(orderRefList);
+                } else {
+                    callBack.onFailure(task.getException());
+                }
+            }
+        });
+    }
+
     public void getAllOrders(GetOrdersCallBack callBack){
         CollectionReference dbOrders = db.collection("orders");
         dbOrders.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -929,6 +946,11 @@ public class FireStoreManager {
     // Callback interfaces
     public interface AddOrdersCallBack{
         void onSuccess();
+        void onFailure(Exception e);
+    }
+
+    public interface getOrdersRefCallBack {
+        void onSuccess(ArrayList<DocumentReference> result);
         void onFailure(Exception e);
     }
 

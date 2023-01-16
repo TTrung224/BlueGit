@@ -61,7 +61,9 @@ public class LoginActivity extends AppCompatActivity {
     private final String[] permissionArrays = {
             Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.READ_MEDIA_IMAGES,
-            Manifest.permission.INTERNET};
+            Manifest.permission.INTERNET,
+            Manifest.permission.POST_NOTIFICATIONS,
+            Manifest.permission.FOREGROUND_SERVICE};
 
     EditText tEmail;
     EditText tPassword;
@@ -78,8 +80,16 @@ public class LoginActivity extends AppCompatActivity {
 
         if((ActivityCompat.checkSelfPermission(this, permissionArrays[0]) != PackageManager.PERMISSION_GRANTED) ||
 //                (ActivityCompat.checkSelfPermission(this, permissionArrays[1]) != PackageManager.PERMISSION_GRANTED) ||
-                (ActivityCompat.checkSelfPermission(this, permissionArrays[2]) != PackageManager.PERMISSION_GRANTED)){
+                (ActivityCompat.checkSelfPermission(this, permissionArrays[2]) != PackageManager.PERMISSION_GRANTED) ||
+//                (ActivityCompat.checkSelfPermission(this, permissionArrays[3]) != PackageManager.PERMISSION_GRANTED) ||
+                (ActivityCompat.checkSelfPermission(this, permissionArrays[4]) != PackageManager.PERMISSION_GRANTED)){
             ActivityCompat.requestPermissions(this, permissionArrays, 99);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if(ActivityCompat.checkSelfPermission(this, permissionArrays[3]) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this, permissionArrays, 99);
+            }
         }
 
         tEmail = findViewById(R.id.login_email);
@@ -103,7 +113,9 @@ public class LoginActivity extends AppCompatActivity {
                 .enableAutoManage(this, 1, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.d("DEBUGGING", connectionResult.getErrorMessage());
+//                        Log.d("DEBUGGING", connectionResult.getErrorMessage());
+                        Toast.makeText(LoginActivity.this, "Unable to connect to Goolge Client", Toast.LENGTH_SHORT).show();
+                        recreate();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -231,7 +243,6 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
-
                 }
             }
         }

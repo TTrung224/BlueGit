@@ -67,7 +67,6 @@ public class AdminAccountAdapter  extends RecyclerView.Adapter<AdminAccountAdapt
 
         String balanceStr = "balance: " + nf.format(users.get(position).getBalance());
         holder.accountBalance.setText(balanceStr);
-
     }
 
 

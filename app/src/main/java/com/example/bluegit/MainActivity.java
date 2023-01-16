@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tUserBalance;
     ImageButton searchBtn;
     RecyclerView productDisplay;
+    FirebaseUser currentUser;
 
     GoogleSignInOptions gso;
     GoogleApiClient googleApiClient;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         profilePic = findViewById(R.id.otherImg);
         progressBar = findViewById(R.id.display_progress);
         tSearchBar = findViewById(R.id.search_bar);
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         tUserBalance = findViewById(R.id.user_balance);
         searchBtn = findViewById(R.id.search_button);
         productDisplay = findViewById(R.id.items_display);
-        fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
         MyBroadcastReceiver broadcastReceiver = new MyBroadcastReceiver();
@@ -100,13 +102,20 @@ public class MainActivity extends AppCompatActivity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+        if(currentUser!=null){
+            Intent intent = new Intent(this, NotificationService.class);
+            intent.putExtra("uid", currentUser.getUid());
+            this.startForegroundService(intent);
+        } else {
+            finish();
+        }
+        fireStoreManager = new FireStoreManager(this, currentUser);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser != null){
             fireStoreManager.getCurrentUser(new FireStoreManager.GetUserDataCallBack() {
                 @Override
@@ -168,20 +177,22 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("SIGN OUT", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-        FirebaseAuth.getInstance().signOut();
+                        stopService(new Intent(MainActivity.this, NotificationService.class));
+                        FirebaseAuth.getInstance().signOut();
 
-        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
-            @Override
-            public void onResult(@NonNull Status status) {
-                if(status.isSuccess()){
-                    googleApiClient.disconnect();
-                    finish();
-                }
-            }
-        });
+                        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(@NonNull Status status) {
+                                if(status.isSuccess()){
+                                    googleApiClient.disconnect();
+                                    finish();
+                                }
+                            }
+                        });
 
-        finish();
-    }}).setNegativeButton("CANCEL", null).show();}
+                        finish();
+                    }})
+                .setNegativeButton("CANCEL", null).show();}
 
 
     public void onChatsClick(View view) {
