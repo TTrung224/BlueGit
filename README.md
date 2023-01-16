@@ -54,6 +54,8 @@
 ## Open issues:
 
  At the moment, the system is not very scalable. If we encounter too much traffic, where there are too many users and user's activities, the system will definitely suffer from long load time due to time to get/put data from and to FireStore. 
+ For the chat function, due to the adapter implementing Firestore ViewHolder, we are unable to scroll the view to the end of the chat room. Because of this, if the user has a very long conversation, it might be inconvenient to have to scroll down every time the activity is started.
+ The notification for chat will be shown to the user eventhough they are already in the chat activity.
 
 ## Known Bugs:
 
