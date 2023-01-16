@@ -1,7 +1,7 @@
 
 # COSC2657_A3
 
-![Project Logo](https://github.com/TTrung224/BlueGit/blob/main/readme_logo.png)
+![Project Logo](https://github.com/TTrung224/BlueGit/blob/main/app/src/main/res/drawable/bluegit_logo.png)
 
 ## Team Members:
 
@@ -39,7 +39,7 @@
   16. **User account**: User update account information(user name, phone number, add new shipping info).
   17. **Log out**: Admin and user can log out of their account.
   18. **Internet Connection Broadcast Receiver**: Check for internet connection while using app, which is required for database access.
-  19. **Notification Service**: Listen for database update, then notify the appropriate user accordingly.
+  19. **Notification Service**: Listen for new incoming message, new order and update of order status, then notify the appropriate user accordingly.
   
 
 ## Technology used:
