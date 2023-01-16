@@ -7,6 +7,15 @@ android {
     namespace 'com.example.bluegit'
     compileSdk 33
 
+    signingConfigs {
+        debug {
+            storeFile rootProject.file('debug.keystore')
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storePassword 'android'
+        }
+    }
+
     defaultConfig {
         applicationId "com.example.bluegit"
         minSdk 23
@@ -16,6 +25,7 @@ android {
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
+
 
     buildTypes {
         release {
