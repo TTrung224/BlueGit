@@ -19,6 +19,11 @@
   4. Tran Minh Khoi (s3916827): Adapters, Firebase store manage, design UX/UI, code Voucher, Admin   -25%
  
 
+## Admin account:
+  email: admin@bluegit.com
+  password: bluegit
+
+
 ## Functionalities:
 
   1. **Authentication**: Login by Gmail, email and password. *NOTE: If user uses Google login after registering with that google email, the Google Auth will overwrite the previous authentication data. User data will remain but user will have to use Google Auth from that point on to authenticate their account.*
