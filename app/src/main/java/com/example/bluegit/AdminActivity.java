@@ -10,8 +10,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bluegit.model.User;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -22,6 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class AdminActivity extends AppCompatActivity {
     //Admin
     public static final int NAV_TO_VOUCHER = 1;
@@ -31,6 +36,8 @@ public class AdminActivity extends AppCompatActivity {
     public static final int NAV_TO_MANAGE_ORDERS = 5;
 
     FireStoreManager fireStoreManager;
+    TextView balance;
+    FirebaseUser currentUser;
 
     GoogleSignInOptions gso;
     GoogleApiClient googleApiClient;
@@ -38,6 +45,7 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+        balance = findViewById(R.id.adminBalanceDisplay);
 
 
         fireStoreManager = new FireStoreManager(this, FirebaseAuth.getInstance().getCurrentUser());
@@ -53,15 +61,36 @@ public class AdminActivity extends AppCompatActivity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
                 .build();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if(currentUser != null){
             String welcomeMessage = "WELCOME! " + currentUser.getDisplayName();
             Toast.makeText(AdminActivity.this, welcomeMessage, Toast.LENGTH_SHORT).show();
-        }else{
+        }else {
             finish();
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FireStoreManager fireStoreManager = new FireStoreManager(AdminActivity.this, currentUser);
+        fireStoreManager.getUserById(currentUser.getUid(), new FireStoreManager.GetUserDataCallBack() {
+            @Override
+            public void onSuccess(User result) {
+                NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                String balanceA = nf.format(result.getBalance());
+                balance.setText(balanceA);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(AdminActivity.this, "Fail to load Admin balance", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 
 
     public void signOutClick(View view){

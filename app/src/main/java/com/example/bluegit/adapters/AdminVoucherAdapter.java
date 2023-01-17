@@ -2,7 +2,6 @@ package com.example.bluegit.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +25,6 @@ import java.util.Locale;
 
 
 public class AdminVoucherAdapter extends RecyclerView.Adapter<AdminVoucherAdapter.ViewHolder> {
-    private RecyclerViewOnClickListener recyclerViewOnClickListener;
     private ArrayList<Voucher> vouchers;
     private LayoutInflater layoutInflater;
     private Context context;
