@@ -36,14 +36,14 @@
 
     <TextView
         android:id="@+id/adminProductNameItem"
-        android:layout_width="262dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
         android:layout_alignStart="@+id/adminProductPriceItem"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="18dp"
-        android:layout_marginEnd="54dp"
+        android:layout_marginEnd="2dp"
         android:text="Car"
         android:textColor="@color/black"
         android:textSize="20sp"
