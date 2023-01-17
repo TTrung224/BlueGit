@@ -3,6 +3,8 @@
 
 ![Project Logo](https://github.com/TTrung224/BlueGit/blob/main/readme_logo.png)
 
+## GitHub repository: https://github.com/TTrung224/BlueGit.git
+
 ## Team Members:
 
   1. Tran Quoc Trung (s3891724)
